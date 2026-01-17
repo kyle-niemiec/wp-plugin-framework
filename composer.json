@@ -1,10 +1,21 @@
 {
-	"name": "designink/designink-wp-framework",
-	"description": "DesignInk Digital's internal framework for facilitating WordPress development.",
-	"license": "GPL-3.0",
-	"version": "1.1.2",
 	"authors": [{
 		"name": "Kyle Niemiec",
 		"email": "kyle@designinkdigital.com"
-	}]
+	}],
+	"autoload": {
+		"psr-4": {
+			"DesignInk\\WordPress\\Framework\\": ""
+		}
+	},
+	"bin": ["bin/wppf"],
+	"description": "DesignInk Digital's internal framework for facilitating WordPress development.",
+	"license": "GPL-3.0",
+	"name": "designink/designink-wp-framework",
+	"require-dev": {
+		"symfony/console": "^8.0"
+	},
+	"type": "library",
+	"version": "1.1.2"
+	
 }
