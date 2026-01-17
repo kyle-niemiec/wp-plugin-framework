@@ -10,7 +10,7 @@
 
 defined( 'ABSPATH' ) or exit;
 
-use DesignInk\WordPress\Framework\v1_1_2\Plugin;
+use WPPF\v1_1_2\Plugin;
 
 // Include the framework
 require_once __DIR__ . '/vendor/designink/designink-wp-framework/index.php';

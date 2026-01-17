@@ -24,8 +24,8 @@
 
 defined( 'ABSPATH' ) or exit;
 
-use DesignInk\WordPress\Framework\v1_1_2\Action_Scheduler\Cron_Manager;
-use DesignInk\WordPress\Framework\v1_1_2\Action_Scheduler\Timer_Manager;
+use WPPF\v1_1_2\Action_Scheduler\Cron_Manager;
+use WPPF\v1_1_2\Action_Scheduler\Timer_Manager;
 
 $Timers = Timer_Manager::get_timers();
 $Now = new \DateTime( 'now', new \DateTimeZone( 'GMT' ) );

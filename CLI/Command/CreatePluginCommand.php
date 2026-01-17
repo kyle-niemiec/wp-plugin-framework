@@ -1,10 +1,10 @@
 <?php
 
-namespace DesignInk\WordPress\Framework\CLI\Command;
+namespace WPPF\CLI\Command;
 
-use DesignInk\WordPress\Framework\CLI\Static\CliUtil;
-use DesignInk\WordPress\Framework\CLI\Static\HelperBundle;
-use DesignInk\WordPress\Framework\CLI\Static\StyleUtil;
+use WPPF\CLI\Static\CliUtil;
+use WPPF\CLI\Static\HelperBundle;
+use WPPF\CLI\Static\StyleUtil;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\QuestionHelper;

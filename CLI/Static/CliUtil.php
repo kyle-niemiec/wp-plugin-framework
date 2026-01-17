@@ -1,6 +1,6 @@
 <?php
 
-namespace DesignInk\WordPress\Framework\CLI\Static;
+namespace WPPF\CLI\Static;
 
 /**
  * A static class to hold general utilities for console functions.

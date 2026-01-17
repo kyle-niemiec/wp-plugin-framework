@@ -22,15 +22,15 @@
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GNU General Public License v3.0
  */
 
-namespace DesignInk\WordPress\Framework\v1_1_2\Admin;
+namespace WPPF\v1_1_2\Admin;
 
 defined( 'ABSPATH' ) or exit;
 
-use DesignInk\WordPress\Framework\v1_1_2\Admin\Admin_Notice_Queue;
-use DesignInk\WordPress\Framework\v1_1_2\DesignInk_Framework_Shadow_Plugin;
-use DesignInk\WordPress\Framework\v1_1_2\Utility;
+use WPPF\v1_1_2\Admin\Admin_Notice_Queue;
+use WPPF\v1_1_2\DesignInk_Framework_Shadow_Plugin;
+use WPPF\v1_1_2\Utility;
 
-if ( ! class_exists( '\DesignInk\WordPress\Framework\v1_1_2\Admin\Admin_Notice', false ) ) {
+if ( ! class_exists( '\WPPF\v1_1_2\Admin\Admin_Notice', false ) ) {
 
 	/**
 	 * A class intended to provide application notifications to the admin users. Built off transients to be one-time use.

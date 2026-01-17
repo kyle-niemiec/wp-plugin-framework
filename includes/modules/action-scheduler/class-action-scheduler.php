@@ -22,17 +22,17 @@
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GNU General Public License v3.0
  */
 
-namespace DesignInk\WordPress\Framework\v1_1_2;
+namespace WPPF\v1_1_2;
 
 defined( 'ABSPATH' ) or exit;
 
-use DesignInk\WordPress\Framework\v1_1_2\Action_Scheduler\Cron_Manager;
-use DesignInk\WordPress\Framework\v1_1_2\Action_Scheduler\Form_Builder;
-use DesignInk\WordPress\Framework\v1_1_2\Action_Scheduler\Interval_Timer;
-use DesignInk\WordPress\Framework\v1_1_2\Action_Scheduler\Simple_Timer;
-use DesignInk\WordPress\Framework\v1_1_2\Module;
+use WPPF\v1_1_2\Action_Scheduler\Cron_Manager;
+use WPPF\v1_1_2\Action_Scheduler\Form_Builder;
+use WPPF\v1_1_2\Action_Scheduler\Interval_Timer;
+use WPPF\v1_1_2\Action_Scheduler\Simple_Timer;
+use WPPF\v1_1_2\Module;
 
-if ( ! class_exists( '\DesignInk\WordPress\Framework\v1_1_2\Action_Scheduler', false ) ) {
+if ( ! class_exists( '\WPPF\v1_1_2\Action_Scheduler', false ) ) {
 
 	/**
 	 * A class to manage the DesignInk custom Action Scheduler solution for WordPress.

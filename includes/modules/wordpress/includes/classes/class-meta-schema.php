@@ -22,11 +22,11 @@
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GNU General Public License v3.0
  */
 
-namespace DesignInk\WordPress\Framework\v1_1_2;
+namespace WPPF\v1_1_2;
 
 defined( 'ABSPATH' ) or exit;
 
-if ( ! class_exists( '\DesignInk\WordPress\Framework\v1_1_2\Meta_Schema', false ) ) {
+if ( ! class_exists( '\WPPF\v1_1_2\Meta_Schema', false ) ) {
 
 	/**
 	 * A class for validating input patterns and types for Meta stored in the database.
@@ -78,7 +78,7 @@ if ( ! class_exists( '\DesignInk\WordPress\Framework\v1_1_2\Meta_Schema', false 
 
 				if ( is_array( $pattern ) ) {
 					foreach ( $pattern as $key => $Schema ) {
-						// Throw exception if fields aren't type \DesignInk\WordPress\Framework\v1_1_2\Meta_Schema
+						// Throw exception if fields aren't type \WPPF\v1_1_2\Meta_Schema
 						if ( ! ( $Schema instanceof Meta_Schema ) ) {
 							$message = "When 'array' type Meta Schema has an array passed as the pattern, all pattern elements must be of type %s. %s passed to field %s";
 							$format = sprintf( $message, Meta_Schema::class, gettype( $Schema ), $key );

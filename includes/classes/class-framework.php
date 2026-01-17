@@ -22,14 +22,14 @@
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GNU General Public License v3.0
  */
 
-namespace DesignInk\WordPress\Framework\v1_1_2;
+namespace WPPF\v1_1_2;
 
 defined( 'ABSPATH' ) or exit;
 
-use DesignInk\WordPress\Framework\v1_1_2\Autoloader;
-use DesignInk\WordPress\Framework\v1_1_2\Singleton;
+use WPPF\v1_1_2\Autoloader;
+use WPPF\v1_1_2\Singleton;
 
-if ( ! class_exists( '\DesignInk\WordPress\Framework\v1_1_2\Framework', false ) ) {
+if ( ! class_exists( '\WPPF\v1_1_2\Framework', false ) ) {
 
 	/**
 	 * The wrappper class for a proprietary set of code which seeks to facilitate WordPress development and encourage use of the documented coding standards.
@@ -43,7 +43,7 @@ if ( ! class_exists( '\DesignInk\WordPress\Framework\v1_1_2\Framework', false ) 
 		const VERSION = '1.1.2';
 
 		/**
-		 * @var \DesignInk\WordPress\Framework\v1_1_2\Autoloader Class autoloader instance.
+		 * @var \WPPF\v1_1_2\Autoloader Class autoloader instance.
 		 */
 		protected $autoloader;
 
@@ -67,9 +67,9 @@ if ( ! class_exists( '\DesignInk\WordPress\Framework\v1_1_2\Framework', false ) 
 		}
 
 		/**
-		 * Return the DesignInk\WordPress\Framework\v1_1_2\Autoloader instance.
+		 * Return the WPPF\v1_1_2\Autoloader instance.
 		 * 
-		 * @return \DesignInk\WordPress\Framework\v1_1_2\Autoloader The instance.
+		 * @return \WPPF\v1_1_2\Autoloader The instance.
 		 */
 		final public function get_autoloader() {
 			return $this->autoloader;
@@ -78,7 +78,7 @@ if ( ! class_exists( '\DesignInk\WordPress\Framework\v1_1_2\Framework', false ) 
 		/**
 		 * Add a plugin instance to the list of registered plugins.
 		 * 
-		 * @param \DesignInk\WordPress\Framework\v1_1_2 $plugin The plugin to register.
+		 * @param \WPPF\v1_1_2 $plugin The plugin to register.
 		 */
 		final public function register_plugin( Plugin $Plugin ) {
 			$class_name = $Plugin->get_class_reflection()->getName();

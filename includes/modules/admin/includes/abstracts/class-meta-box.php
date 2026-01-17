@@ -22,13 +22,13 @@
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GNU General Public License v3.0
  */
 
-namespace DesignInk\WordPress\Framework\v1_1_2\Admin;
+namespace WPPF\v1_1_2\Admin;
 
 defined( 'ABSPATH' ) or exit;
 
-use DesignInk\WordPress\Framework\v1_1_2\Singleton;
+use WPPF\v1_1_2\Singleton;
 
-if ( ! class_exists( '\DesignInk\WordPress\Framework\v1_1_2\Admin\Meta_Box', false ) ) {
+if ( ! class_exists( '\WPPF\v1_1_2\Admin\Meta_Box', false ) ) {
 
 	/**
 	 * A manager for Meta Boxes that appear on admin edit pages. Manages the form rendering and post save hooking processes.

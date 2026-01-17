@@ -22,13 +22,13 @@
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GNU General Public License v3.0
  */
 
-namespace DesignInk\WordPress\Framework\v1_1_2\Action_Scheduler;
+namespace WPPF\v1_1_2\Action_Scheduler;
 
 defined( 'ABSPATH' ) or exit;
 
-use DesignInk\WordPress\Framework\v1_1_2\Utility;
+use WPPF\v1_1_2\Utility;
 
-if ( ! class_exists( '\DesignInk\WordPress\Framework\v1_1_2\Action_Scheduler\Action', false ) ) {
+if ( ! class_exists( '\WPPF\v1_1_2\Action_Scheduler\Action', false ) ) {
 
 	/**
 	 * A class to represent a callable Action assigned to a Timer and all of it's properties.

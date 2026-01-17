@@ -22,13 +22,13 @@
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GNU General Public License v3.0
  */
 
-namespace DesignInk\WordPress\Framework\v1_1_2\Plugin;
+namespace WPPF\v1_1_2\Plugin;
 
 defined( 'ABSPATH' ) or exit;
 
-use DesignInk\WordPress\Framework\v1_1_2\Post_Meta;
+use WPPF\v1_1_2\Post_Meta;
 
-if ( ! class_exists( '\DesignInk\WordPress\Framework\v1_1_2\Plugin\Post', false ) ) {
+if ( ! class_exists( '\WPPF\v1_1_2\Plugin\Post', false ) ) {
 
 	/**
 	 * A class to represent and help deal with common custom post type functionality.
@@ -72,7 +72,7 @@ if ( ! class_exists( '\DesignInk\WordPress\Framework\v1_1_2\Plugin\Post', false 
 		 * 
 		 * @param string $meta_key The meta key of the Meta to return.
 		 *
-		 * @return null|\DesignInk\WordPress\Framework\v1_1_2\Post_Meta The Post meta if found or NULL.
+		 * @return null|\WPPF\v1_1_2\Post_Meta The Post meta if found or NULL.
 		 */
 		final public function get_meta( string $meta_key = '' ) {
 
@@ -131,7 +131,7 @@ if ( ! class_exists( '\DesignInk\WordPress\Framework\v1_1_2\Plugin\Post', false 
 		/**
 		 * Add a Post Meta to this Post.
 		 * 
-		 * @param \DesignInk\WordPress\Framework\v1_1_2\Post_Meta
+		 * @param \WPPF\v1_1_2\Post_Meta
 		 */
 		final protected function add_meta( Post_Meta $Meta ) {
 			if ( ! array_key_exists( $Meta->key(), $this->Meta ) ) {

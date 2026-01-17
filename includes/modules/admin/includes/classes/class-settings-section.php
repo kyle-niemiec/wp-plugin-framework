@@ -22,24 +22,24 @@
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GNU General Public License v3.0
  */
 
-namespace DesignInk\WordPress\Framework\v1_1_2\Admin\Pages;
+namespace WPPF\v1_1_2\Admin\Pages;
 
 defined( 'ABSPATH' ) or exit;
 
-use DesignInk\WordPress\Framework\v1_1_2\Utility;
-use DesignInk\WordPress\Framework\v1_1_2\Admin\Pages\Settings_Field;
+use WPPF\v1_1_2\Utility;
+use WPPF\v1_1_2\Admin\Pages\Settings_Field;
 
-if ( ! class_exists( '\DesignInk\WordPress\Framework\v1_1_2\Admin\Pages\Settings_Section', false ) ) {
+if ( ! class_exists( '\WPPF\v1_1_2\Admin\Pages\Settings_Section', false ) ) {
 
 	/**
 	 * A class to automate the process of creating a page under the 'settings' menu item.
 	 */
 	final class Settings_Section {
 
-		/** @var \DesignInk\WordPress\Framework\v1_1_2\Admin\Pages Settings Page parent instance */
+		/** @var \WPPF\v1_1_2\Admin\Pages Settings Page parent instance */
 		protected $Settings_Page;
 
-		/** @var \DesignInk\WordPress\Framework\v1_1_2\Admin\Pages\Settings_Field[] Fields registered to this Section. */
+		/** @var \WPPF\v1_1_2\Admin\Pages\Settings_Field[] Fields registered to this Section. */
 		protected $Settings_Fields;
 
 		/** @var string The section identifier for the settings section. */
@@ -57,14 +57,14 @@ if ( ! class_exists( '\DesignInk\WordPress\Framework\v1_1_2\Admin\Pages\Settings
 		/**
 		 * Return the Settings Page instance.
 		 * 
-		 * @return \DesignInk\WordPress\Framework\v1_1_2\Admin\Pages $Settings_Page The Settings Page instance.
+		 * @return \WPPF\v1_1_2\Admin\Pages $Settings_Page The Settings Page instance.
 		 */
 		final public function get_settings_page() { return $this->Settings_Page; }
 
 		/**
 		 * Return the Settings Field instances.
 		 * 
-		 * @return \DesignInk\WordPress\Framework\v1_1_2\Admin\Pages\Settings_Field[] $Settings_Fields The Settings Fields in this Section instance.
+		 * @return \WPPF\v1_1_2\Admin\Pages\Settings_Field[] $Settings_Fields The Settings Fields in this Section instance.
 		 */
 		final public function get_settings_fields() { return $this->Settings_Fields; }
 
@@ -78,7 +78,7 @@ if ( ! class_exists( '\DesignInk\WordPress\Framework\v1_1_2\Admin\Pages\Settings
 		/**
 		 * Set the initial values for the Settings Section.
 		 * 
-		 * @param \DesignInk\WordPress\Framework\v1_1_2\Admin\Pages $Settings_Page The parent Settings Page that these settings belong to.
+		 * @param \WPPF\v1_1_2\Admin\Pages $Settings_Page The parent Settings Page that these settings belong to.
 		 * @param string $section_name The section identifier.
 		 * @param array $args The optional arguments to pass to the Section.
 		 */

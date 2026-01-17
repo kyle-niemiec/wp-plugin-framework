@@ -22,13 +22,13 @@
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GNU General Public License v3.0
  */
 
-namespace DesignInk\WordPress\Framework\v1_1_2\Admin\Pages;
+namespace WPPF\v1_1_2\Admin\Pages;
 
 defined( 'ABSPATH' ) or exit;
 
-use DesignInk\WordPress\Framework\v1_1_2\Admin\Pages\Page;
+use WPPF\v1_1_2\Admin\Pages\Page;
 
-if ( ! class_exists( '\DesignInk\WordPress\Framework\v1_1_2\Admin\Pages\Management_Page', false ) ) {
+if ( ! class_exists( '\WPPF\v1_1_2\Admin\Pages\Management_Page', false ) ) {
 
 	/**
 	 * A class to abstract and automate the process of creating a page under the 'tools' menu item.

@@ -22,14 +22,14 @@
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GNU General Public License v3.0
  */
 
-namespace DesignInk\WordPress\Framework\v1_1_2;
+namespace WPPF\v1_1_2;
 
 defined( 'ABSPATH' ) or exit;
 
-use DesignInk\WordPress\Framework\v1_1_2\Plugin;
-use DesignInk\WordPress\Framework\v1_1_2\Utility;
+use WPPF\v1_1_2\Plugin;
+use WPPF\v1_1_2\Utility;
 
-if ( ! class_exists( '\DesignInk\WordPress\Framework\v1_1_2\Admin_Module', false ) ) {
+if ( ! class_exists( '\WPPF\v1_1_2\Admin_Module', false ) ) {
 
 	/**
 	 * A class to represent and help deal with common plugin admin functionality.
@@ -62,7 +62,7 @@ if ( ! class_exists( '\DesignInk\WordPress\Framework\v1_1_2\Admin_Module', false
 		}
 
 		/**
-		 * Search for \DesignInk\WordPress\Framework\v1_1_2\Post_Type classes in the Plugin { static::$post_types_dir } and register them.
+		 * Search for \WPPF\v1_1_2\Post_Type classes in the Plugin { static::$post_types_dir } and register them.
 		 */
 		private function register_available_screens() {
 			$reflection = $this->get_class_reflection();
@@ -76,7 +76,7 @@ if ( ! class_exists( '\DesignInk\WordPress\Framework\v1_1_2\Admin_Module', false
 						require_once ( $screens_dir . $file );
 						$screen_name = Utility::pascal_underscorify( $matches[1] );
 
-						if ( class_exists( $screen_name ) && is_subclass_of( $screen_name, 'DesignInk\WordPress\Framework\v1_1_2\Admin\Screens' ) ) {
+						if ( class_exists( $screen_name ) && is_subclass_of( $screen_name, 'WPPF\v1_1_2\Admin\Screens' ) ) {
 							$screen_name::construct();
 							$this->loaded_screens[] = $screen_name;
 						}

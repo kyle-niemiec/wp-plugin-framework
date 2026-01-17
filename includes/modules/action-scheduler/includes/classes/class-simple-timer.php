@@ -22,14 +22,14 @@
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GNU General Public License v3.0
  */
 
-namespace DesignInk\WordPress\Framework\v1_1_2\Action_Scheduler;
+namespace WPPF\v1_1_2\Action_Scheduler;
 
 defined( 'ABSPATH' ) or exit;
 
-use DesignInk\WordPress\Framework\v1_1_2\DesignInk_Framework_Shadow_Plugin;
-use DesignInk\WordPress\Framework\v1_1_2\Utility;
+use WPPF\v1_1_2\DesignInk_Framework_Shadow_Plugin;
+use WPPF\v1_1_2\Utility;
 
-if ( ! class_exists( '\DesignInk\WordPress\Framework\v1_1_2\Action_Scheduler\Simple_Timer', false ) ) {
+if ( ! class_exists( '\WPPF\v1_1_2\Action_Scheduler\Simple_Timer', false ) ) {
 
 	/**
 	 * A Timer instance that bases it's run times off of even intervals from a specified start times. It can also return how many missed intervals a Timer may potentially have.

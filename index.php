@@ -29,15 +29,15 @@
 
 defined( 'ABSPATH' ) or exit;
 
-use DesignInk\WordPress\Framework\v1_1_2\Framework;
-use DesignInk\WordPress\Framework\v1_1_2\Autoloader;
+use WPPF\v1_1_2\Framework;
+use WPPF\v1_1_2\Autoloader;
 
 global $DESIGNINK_FRAMEWORKS;
 
 /**
  * The Autoloader is really all we need to start calling things up, so fire it up if it hasn't been.
  */
-if ( ! class_exists( '\DesignInk\WordPress\Framework\v1_1_2\Autoloader', false ) ) {
+if ( ! class_exists( '\WPPF\v1_1_2\Autoloader', false ) ) {
 	require_once ( plugin_dir_path( __FILE__ ) . 'includes/classes/class-autoloader.php' );
 	Autoloader::instance()->autoload_directory_recursive( __DIR__ . '/includes' );
 }
@@ -45,7 +45,7 @@ if ( ! class_exists( '\DesignInk\WordPress\Framework\v1_1_2\Autoloader', false )
 /**
  * Set global function for accessing Framework instances.
  * 
- * @return \DesignInk\WordPress\Framework\v1_1_2\Framework[] The DesignInk WordPress frameworks by version.
+ * @return \WPPF\v1_1_2\Framework[] The DesignInk WordPress frameworks by version.
  */
 if ( ! function_exists( 'designink_frameworks' ) ) {
 
@@ -61,13 +61,13 @@ if ( ! function_exists( 'designink_frameworks' ) ) {
 /**
  * Instantiate the current Framework version and add to the Frameworks list.
  */
-if ( ! class_exists( '\DesignInk\WordPress\Framework\v1_1_2\Framework', false ) ) {
+if ( ! class_exists( '\WPPF\v1_1_2\Framework', false ) ) {
 	$DESIGNINK_FRAMEWORKS[ Framework::get_version() ] = Framework::instance();
 }
 
 /**
  * Initialize the shadow plugin
  */
-if ( ! class_exists( '\DesignInk\WordPress\Framework\v1_1_2\DesignInk_Framework_Shadow_Plugin', false ) ) {
+if ( ! class_exists( '\WPPF\v1_1_2\DesignInk_Framework_Shadow_Plugin', false ) ) {
 	require_once( __DIR__ . '/designink-framework-shadow-plugin.php' );
 }

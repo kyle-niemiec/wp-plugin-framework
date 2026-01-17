@@ -22,14 +22,14 @@
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GNU General Public License v3.0
  */
 
-namespace DesignInk\WordPress\Framework\v1_1_2\WooCommerce;
+namespace WPPF\v1_1_2\WooCommerce;
 
 defined( 'ABSPATH' ) or exit;
 
-use DesignInk\WordPress\Framework\v1_1_2\Utility;
-use DesignInk\WordPress\Framework\v1_1_2\WooCommerce\Email;
+use WPPF\v1_1_2\Utility;
+use WPPF\v1_1_2\WooCommerce\Email;
 
-if ( ! trait_exists( '\DesignInk\WordPress\Framework\v1_1_2\WooCommerce\Email_Traits', false ) ) {
+if ( ! trait_exists( '\WPPF\v1_1_2\WooCommerce\Email_Traits', false ) ) {
 
 	/**
 	 * A trait to expand the capabilities of the WooCommerce_Plugin to include email-related functionality.

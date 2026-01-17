@@ -22,15 +22,15 @@
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GNU General Public License v3.0
  */
 
-namespace DesignInk\WordPress\Framework\v1_1_2;
+namespace WPPF\v1_1_2;
 
 defined( 'ABSPATH' ) or exit;
 
-use DesignInk\WordPress\Framework\v1_1_2\Admin\Meta_Box;
-use DesignInk\WordPress\Framework\v1_1_2\Utility;
-use DesignInk\WordPress\Framework\v1_1_2\Singleton;
+use WPPF\v1_1_2\Admin\Meta_Box;
+use WPPF\v1_1_2\Utility;
+use WPPF\v1_1_2\Singleton;
 
-if ( ! class_exists( '\DesignInk\WordPress\Framework\v1_1_2\Post_Type', false ) ) {
+if ( ! class_exists( '\WPPF\v1_1_2\Post_Type', false ) ) {
 
 	/**
 	 * In this class, we attempt to define and encapsulate the functionalities of a single "Post Type" in WordPress.
@@ -40,7 +40,7 @@ if ( ! class_exists( '\DesignInk\WordPress\Framework\v1_1_2\Post_Type', false ) 
 		/** @var array The arguments passed in for registering the Post Type. */
 		protected $args;
 
-		/** @var \DesignInk\WordPress\Framework\v1_1_2\Admin\Meta_Box[] A list of Meta Boxes to display for this Post Type. */
+		/** @var \WPPF\v1_1_2\Admin\Meta_Box[] A list of Meta Boxes to display for this Post Type. */
 		protected $Meta_Boxes = array();
 
 		/**
@@ -181,7 +181,7 @@ if ( ! class_exists( '\DesignInk\WordPress\Framework\v1_1_2\Post_Type', false ) 
 		/**
 		 * Add a Meta Box to this Post Type if it is not already added.
 		 * 
-		 * @param \DesignInk\WordPress\Framework\v1_1_2\Admin\Meta_Box
+		 * @param \WPPF\v1_1_2\Admin\Meta_Box
 		 */
 		final public function add_meta_box( Meta_Box $Meta_Box ) {
 			if ( ! array_key_exists( $Meta_Box->get_id(), $this->Meta_Boxes ) ) {
