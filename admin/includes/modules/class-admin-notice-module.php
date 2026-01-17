@@ -16,7 +16,7 @@ namespace WPPF\v1_1_2\Admin;
 defined( 'ABSPATH' ) or exit;
 
 use WPPF\v1_1_2\Admin\Admin_Notices;
-use WPPF\v1_1_2\DesignInk_Framework_Shadow_Plugin;
+use WPPF\v1_1_2\WPPF_Shadow_Plugin;
 use WPPF\v1_1_2\Module;
 
 if ( ! class_exists( '\WPPF\v1_1_2\Admin\Admin_Notice_Module', false ) ) {
@@ -38,7 +38,7 @@ if ( ! class_exists( '\WPPF\v1_1_2\Admin\Admin_Notice_Module', false ) ) {
 		 * WordPress 'admin_enqueue_scripts' hook.
 		 */
 		final public static function _admin_enqueue_scripts() {
-			DesignInk_Framework_Shadow_Plugin::instance()->get_admin_module()->enqueue_js( 'designink-wp-admin-notices', array( 'jquery' ) );
+			WPPF_Shadow_Plugin::instance()->get_admin_module()->enqueue_js( 'wppf-admin-notices', array( 'jquery' ) );
 		}
 
 		/**

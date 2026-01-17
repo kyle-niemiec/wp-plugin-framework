@@ -16,7 +16,7 @@ namespace WPPF\v1_1_2\Admin;
 defined( 'ABSPATH' ) or exit;
 
 use WPPF\v1_1_2\Admin\Admin_Notice_Queue;
-use WPPF\v1_1_2\DesignInk_Framework_Shadow_Plugin;
+use WPPF\v1_1_2\WPPF_Shadow_Plugin;
 use WPPF\v1_1_2\Utility;
 
 if ( ! class_exists( '\WPPF\v1_1_2\Admin\Admin_Notice', false ) ) {
@@ -59,7 +59,7 @@ if ( ! class_exists( '\WPPF\v1_1_2\Admin\Admin_Notice', false ) ) {
 		 * Print the HTML notice (for use by the 'admin_notices' action hook).
 		 */
 		final public function print() {
-			DesignInk_Framework_Shadow_Plugin::instance()->get_admin_module()->get_template( 'admin-notice-print', array( 'Notice' => $this ) );
+			WPPF_Shadow_Plugin::instance()->get_admin_module()->get_template( 'admin-notice-print', array( 'Notice' => $this ) );
 		}
 
 		/**

@@ -17,12 +17,12 @@ defined( 'ABSPATH' ) or exit;
 
 use WPPF\v1_1_2\Module;
 
-if ( ! class_exists( '\WPPF\v1_1_2\Admin\Pages\DesignInk_Settings_Page_Module', false ) ) {
+if ( ! class_exists( '\WPPF\v1_1_2\Admin\Pages\WPPF_Settings_Page_Module', false ) ) {
 
 	/**
 	 * Manage the settings for for this plugin.
 	 */
-	final class DesignInk_Settings_Page_Module extends Module {
+	final class WPPF_Settings_Page_Module extends Module {
 
 		/** @var \WPPF\v1_1_2\Admin\Pages $Settings_Page The Settings Page instance. */
 		public static $Settings_Page;
@@ -39,7 +39,7 @@ if ( ! class_exists( '\WPPF\v1_1_2\Admin\Pages\DesignInk_Settings_Page_Module', 
 		 * WordPress 'admin_menu' hook.
 		 */
 		final public static function _admin_menu() {
-			self::$Settings_Page = new DesignInk_Settings_Page();
+			self::$Settings_Page = new WPPF_Settings_Page();
 		}
 
 		/**
@@ -59,7 +59,7 @@ if ( ! class_exists( '\WPPF\v1_1_2\Admin\Pages\DesignInk_Settings_Page_Module', 
 		private static function settings_sections_registered() {
 			global $wp_settings_sections;
 
-			if ( is_array( $wp_settings_sections ) && array_key_exists( DesignInk_Settings_Page::page_option_group(), $wp_settings_sections ) ) {
+			if ( is_array( $wp_settings_sections ) && array_key_exists( WPPF_Settings_Page::page_option_group(), $wp_settings_sections ) ) {
 				return true;
 			} else {
 				return false;
@@ -73,7 +73,7 @@ if ( ! class_exists( '\WPPF\v1_1_2\Admin\Pages\DesignInk_Settings_Page_Module', 
 		private static function unset_menu() {
 			global $submenu;
 			$root = 'options-general.php';
-			$page = DesignInk_Settings_Page::page_option_group();
+			$page = WPPF_Settings_Page::page_option_group();
 
 			if ( is_array( $submenu ) ) {
 				foreach ( $submenu[ $root ] as $id => $options ) {

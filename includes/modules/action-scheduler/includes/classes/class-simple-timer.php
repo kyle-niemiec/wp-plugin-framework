@@ -15,7 +15,7 @@ namespace WPPF\v1_1_2\Action_Scheduler;
 
 defined( 'ABSPATH' ) or exit;
 
-use WPPF\v1_1_2\DesignInk_Framework_Shadow_Plugin;
+use WPPF\v1_1_2\WPPF_Shadow_Plugin;
 use WPPF\v1_1_2\Utility;
 
 if ( ! class_exists( '\WPPF\v1_1_2\Action_Scheduler\Simple_Timer', false ) ) {
@@ -106,7 +106,7 @@ if ( ! class_exists( '\WPPF\v1_1_2\Action_Scheduler\Simple_Timer', false ) ) {
 		 * @param string $group The name of the group the Timer will have in the form.
 		 */
 		final public static function print_form( string $group ) {
-			DesignInk_Framework_Shadow_Plugin::instance()->get_template( 'simple-timer-form-builder', array( 'group' => $group ) );
+			WPPF_Shadow_Plugin::instance()->get_template( 'simple-timer-form-builder', array( 'group' => $group ) );
 		}
 
 		/**
@@ -160,7 +160,7 @@ if ( ! class_exists( '\WPPF\v1_1_2\Action_Scheduler\Simple_Timer', false ) ) {
 		 * The inherited abstract for printing Timer info.
 		 */
 		final public function print_info() {
-			DesignInk_Framework_Shadow_Plugin::instance()->get_template( 'simple-timer-print-info', array( 'Timer' => $this ) );
+			WPPF_Shadow_Plugin::instance()->get_template( 'simple-timer-print-info', array( 'Timer' => $this ) );
 		}
 
 	}

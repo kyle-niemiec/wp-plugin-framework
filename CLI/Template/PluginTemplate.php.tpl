@@ -13,7 +13,7 @@ defined( 'ABSPATH' ) or exit;
 use WPPF\v1_1_2\Plugin;
 
 // Include the framework
-require_once __DIR__ . '/vendor/designink/designink-wp-framework/index.php';
+require_once __DIR__ . '/vendor/kyle-niemiec/wp-plugin-framework/index.php';
 
 if ( ! class_exists( '{{plugin_class_name}}', false ) ) {
 

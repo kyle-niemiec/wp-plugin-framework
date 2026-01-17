@@ -1,7 +1,7 @@
 {
 	"authors": [{
 		"name": "Kyle Niemiec",
-		"email": "kyle@designinkdigital.com"
+		"email": "kyle@codeflower.io"
 	}],
 	"autoload": {
 		"psr-4": {
@@ -9,9 +9,9 @@
 		}
 	},
 	"bin": ["bin/wppf"],
-	"description": "DesignInk Digital's internal framework for facilitating WordPress development.",
+	"description": "My framework for facilitating WordPress plugin development.",
 	"license": "GPL-3.0",
-	"name": "designink/designink-wp-framework",
+	"name": "kyle-niemiec/wp-plugin-framework",
 	"require-dev": {
 		"symfony/console": "^8.0"
 	},

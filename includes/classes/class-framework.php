@@ -75,7 +75,7 @@ if ( ! class_exists( '\WPPF\v1_1_2\Framework', false ) ) {
 			if ( ! array_search( $Plugin, $this->plugins ) ) {
 				$this->plugins[ $class_name ] = $Plugin;
 			} else {
-				$message = sprintf( "Tring to register plugin to the DesignInk Framework that has already been registered. (Tried to register: %s)", $class_name );
+				$message = sprintf( "Tring to register plugin to WPPF that has already been registered. (Tried to register: %s)", $class_name );
 				Utility::doing_it_wrong( __METHOD__, $message );
 			}
 

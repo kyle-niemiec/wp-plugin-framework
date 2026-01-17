@@ -24,7 +24,7 @@ use WPPF\v1_1_2\Module;
 if ( ! class_exists( '\WPPF\v1_1_2\Action_Scheduler', false ) ) {
 
 	/**
-	 * A class to manage the DesignInk custom Action Scheduler solution for WordPress.
+	 * A class to manage the WPPF Action Scheduler solution.
 	 */
 	final class Action_Scheduler extends Module {
 

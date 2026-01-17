@@ -20,7 +20,7 @@ use WPPF\v1_1_2\Module;
 if ( ! class_exists( '\WPPF\v1_1_2\WordPress', false ) ) {
 
 	/**
-	 * This Module manages the WooCommerce related abstraction and functionality for the DesignInk WP Framework.
+	 * This Module manages the WordPress-specific features of the framework.
 	 */
 	final class WordPress extends Module { }
 

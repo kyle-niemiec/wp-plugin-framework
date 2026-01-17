@@ -16,7 +16,7 @@ namespace WPPF\v1_1_2\Action_Scheduler;
 defined( 'ABSPATH' ) or exit;
 
 use WPPF\v1_1_2\Action_Scheduler\Timer;
-use WPPF\v1_1_2\DesignInk_Framework_Shadow_Plugin;
+use WPPF\v1_1_2\WPPF_Shadow_Plugin;
 
 if ( ! class_exists( '\WPPF\v1_1_2\Action_Scheduler\Form_Builder', false ) ) {
 
@@ -50,8 +50,8 @@ if ( ! class_exists( '\WPPF\v1_1_2\Action_Scheduler\Form_Builder', false ) ) {
 		 * Enqueue the scripts and styles for the form builder.
 		 */
 		final public static function enqueue_form_builder_scripts() {
-			DesignInk_Framework_Shadow_Plugin::instance()->enqueue_css( 'action-scheduler-form-builder' );
-			DesignInk_Framework_Shadow_Plugin::instance()->enqueue_js( 'action-scheduler-form-builder' );
+			WPPF_Shadow_Plugin::instance()->enqueue_css( 'action-scheduler-form-builder' );
+			WPPF_Shadow_Plugin::instance()->enqueue_js( 'action-scheduler-form-builder' );
 		}
 
 		/**
@@ -78,7 +78,7 @@ if ( ! class_exists( '\WPPF\v1_1_2\Action_Scheduler\Form_Builder', false ) ) {
 		 * @param string $group What name to categorize this form under.
 		 */
 		final public static function print_form( string $group ) {
-			DesignInk_Framework_Shadow_Plugin::instance()->get_template( 'timer-form-builder-base', array( 'group' => $group ) );
+			WPPF_Shadow_Plugin::instance()->get_template( 'timer-form-builder-base', array( 'group' => $group ) );
 		}
 
 		/**

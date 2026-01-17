@@ -20,7 +20,7 @@ use WPPF\v1_1_2\Module;
 if ( ! class_exists( '\WPPF\v1_1_2\WooCommerce', false ) ) {
 
 	/**
-	 * This Module manages the WooCommerce solutions by DesignInk for WordPress.
+	 * This Module manages the WooCommerce features.
 	 */
 	final class WooCommerce extends Module { }
 

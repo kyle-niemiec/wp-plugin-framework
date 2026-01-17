@@ -226,7 +226,7 @@ if ( ! class_exists( '\WPPF\v1_1_2\Module', false ) ) {
 		 */
 		final protected function add_autoload_directory( string $directory ) {
 			$this->loaded_includes[] = $directory;
-			return designink_framework()->get_autoloader()->add_autoload_directory( $directory );
+			return wppf_framework()->get_autoloader()->add_autoload_directory( $directory );
 		}
 
 		/**

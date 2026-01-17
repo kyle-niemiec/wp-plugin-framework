@@ -24,7 +24,7 @@ if ( ! class_exists( '\WPPF\v1_1_2\Staging_Detection', false ) ) {
 	final class Staging_Detection extends Module {
 
 		/** @var string The 'option' key to save the expected site URL to. */
-		public const OPTION_KEY = 'designink_staging_detection_expected_domain';
+		public const OPTION_KEY = 'wppf_staging_detection_expected_domain';
 
 		/** @var boolean The static variable this class uses internally as a staging indicator. */
 		private static $staging = false;

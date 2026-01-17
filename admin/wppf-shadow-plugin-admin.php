@@ -17,12 +17,12 @@ defined( 'ABSPATH' ) or exit;
 
 use WPPF\v1_1_2\Admin_Module;
 
-if ( ! class_exists( '\WPPF\v1_1_2\DesignInk_Framework_Shadow_Plugin_Admin', false ) ) {
+if ( ! class_exists( '\WPPF\v1_1_2\WPPF_Shadow_Plugin_Admin', false ) ) {
 
 	/**
 	 * The 'shadow' plugin for the framework that will control the loading of crucial modules.
 	 */
-	final class DesignInk_Framework_Shadow_Plugin_Admin extends Admin_Module {
+	final class WPPF_Shadow_Plugin_Admin extends Admin_Module {
 
 		/**
 		 * Module entry point.
@@ -35,7 +35,7 @@ if ( ! class_exists( '\WPPF\v1_1_2\DesignInk_Framework_Shadow_Plugin_Admin', fal
 		 * WordPress 'admin_enqueue_scripts' hook.
 		 */
 		final public static function _admin_enqueue_scripts() {
-			self::instance()->enqueue_css( 'designink-admin-styles' );
+			self::instance()->enqueue_css( 'wppf-admin-styles' );
 		}
 
 	}

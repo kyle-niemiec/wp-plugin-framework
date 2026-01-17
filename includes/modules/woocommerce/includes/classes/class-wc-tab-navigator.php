@@ -15,7 +15,7 @@ namespace WPPF\v1_1_2\WooCommerce;
 
 defined( 'ABSPATH' ) or exit;
 
-use WPPF\v1_1_2\DesignInk_Framework_Shadow_Plugin;
+use WPPF\v1_1_2\WPPF_Shadow_Plugin;
 use WPPF\v1_1_2\Utility;
 
 if ( ! class_exists( '\WPPF\v1_1_2\WooCommerce\WC_Tab_Navigator', false ) ) {
@@ -83,18 +83,18 @@ if ( ! class_exists( '\WPPF\v1_1_2\WooCommerce\WC_Tab_Navigator', false ) ) {
 		 * Print the Navigator HTML.
 		 */
 		final public function print_navigator() {
-			DesignInk_Framework_Shadow_Plugin::instance()->get_template( 'woocommerce/wc-tab-navigator', array( 'Navigator' => $this ) );
+			WPPF_Shadow_Plugin::instance()->get_template( 'woocommerce/wc-tab-navigator', array( 'Navigator' => $this ) );
 		}
 
 		/**
-		 * Check whether the DesignInk WC Tab Navigator scripts have been enqueued and maybe enqueue them.
+		 * Check whether the WPPF WC Tab Navigator scripts have been enqueued and maybe enqueue them.
 		 */
 		final public static function enqueue_navigator_script() {
-			$script = 'designink-wc-tab-navigator';
+			$script = 'wppf-wc-tab-navigator';
 
 			if ( ! wp_script_is( $script, 'enqueued' ) ) {
-				DesignInk_Framework_Shadow_Plugin::instance()->enqueue_js( $script );
-				DesignInk_Framework_Shadow_Plugin::instance()->enqueue_css( $script );
+				WPPF_Shadow_Plugin::instance()->enqueue_js( $script );
+				WPPF_Shadow_Plugin::instance()->enqueue_css( $script );
 			}
 
 			if ( ! wp_script_is( 'woocommerce_admin_styles', 'enqueued' ) ) {

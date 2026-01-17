@@ -17,14 +17,14 @@ defined( 'ABSPATH' ) or exit;
 
 use WPPF\v1_1_2\Plugin;
 
-if ( ! class_exists( '\WPPF\v1_1_2\DesignInk_Framework_Shadow_Plugin', false ) ) {
+if ( ! class_exists( '\WPPF\v1_1_2\WPPF_Shadow_Plugin', false ) ) {
 
 	/**
 	 * The 'shadow' plugin for the framework that will control the loading of crucial modules.
 	 */
-	final class DesignInk_Framework_Shadow_Plugin extends Plugin { }
+	final class WPPF_Shadow_Plugin extends Plugin { }
 
 	// Start it up
-	DesignInk_Framework_Shadow_Plugin::instance();
+	WPPF_Shadow_Plugin::instance();
 
 }

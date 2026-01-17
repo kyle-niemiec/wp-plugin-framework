@@ -21,9 +21,9 @@ $Now = new \DateTime( 'now', new \DateTimeZone( 'GMT' ) );
 
 ?>
 
-<div class="designink-action-scheduler-viewer wrap">
+<div class="wppf-action-scheduler-viewer wrap">
 
-	<h1>DesignInk Action Scheduler Viewer</h1>
+	<h1>WPPF Action Scheduler Viewer</h1>
 
 	<?php if ( empty( $Timers ) ) : ?>
 

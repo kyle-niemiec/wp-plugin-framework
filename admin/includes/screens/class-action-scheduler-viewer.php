@@ -16,7 +16,7 @@ namespace WPPF\v1_1_2\Action_Scheduler;
 defined( 'ABSPATH' ) or exit;
 
 use WPPF\v1_1_2\Admin\Pages\Management_Page;
-use WPPF\v1_1_2\DesignInk_Framework_Shadow_Plugin;
+use WPPF\v1_1_2\WPPF_Shadow_Plugin;
 
 if ( ! class_exists( '\WPPF\v1_1_2\Action_Scheduler\Action_Scheduler_Viewer', false ) ) {
 
@@ -26,13 +26,13 @@ if ( ! class_exists( '\WPPF\v1_1_2\Action_Scheduler\Action_Scheduler_Viewer', fa
 	final class Action_Scheduler_Viewer extends Management_Page {
 
 		/** @var string The page option group. */
-		final public static function page_option_group() { return 'designink-action-scheduler-viewer'; }
+		final public static function page_option_group() { return 'wppf-action-scheduler-viewer'; }
 
 		/** @var string The page title. */
-		final public static function page_title() { return 'DesignInk Action Viewer'; }
+		final public static function page_title() { return 'WPPF Action Viewer'; }
 
 		/** @var string The page menu title. */
-		final public static function menu_title() { return 'DesignInk Actions'; }
+		final public static function menu_title() { return 'WPPF Actions'; }
 
 		/** @var string The page capability. */
 		final public static function page_capability() { return 'manage_options'; }
@@ -50,7 +50,7 @@ if ( ! class_exists( '\WPPF\v1_1_2\Action_Scheduler\Action_Scheduler_Viewer', fa
 		 * Required inherited function to render the Page.
 		 */
 		final public static function render() {
-			DesignInk_Framework_Shadow_Plugin::instance()->get_admin_module()->get_template( 'action-scheduler-viewer' );
+			WPPF_Shadow_Plugin::instance()->get_admin_module()->get_template( 'action-scheduler-viewer' );
 		}
 
 	}

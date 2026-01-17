@@ -184,7 +184,7 @@ if ( ! class_exists( '\WPPF\v1_1_2\Action_Scheduler\Timer', false ) ) {
 		 * Run each action individually, set the last run time, and save the Timer.
 		 */
 		private function run() {
-			do_action( sprintf( 'designink_action_scheduler_before_timer_run_%s', $this->id ), $this->id );
+			do_action( sprintf( 'wppf_action_scheduler_before_timer_run_%s', $this->id ), $this->id );
 
 			foreach ( $this->Actions as $Action ) {
 				$Action->do();
@@ -192,7 +192,7 @@ if ( ! class_exists( '\WPPF\v1_1_2\Action_Scheduler\Timer', false ) ) {
 				$this->save();
 			}
 
-			do_action( sprintf( 'designink_action_scheduler_after_timer_run_%s', $this->id ), $this->id );
+			do_action( sprintf( 'wppf_action_scheduler_after_timer_run_%s', $this->id ), $this->id );
 		}
 
 		/**

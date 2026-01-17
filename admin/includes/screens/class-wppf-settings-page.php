@@ -17,21 +17,21 @@ defined( 'ABSPATH' ) or exit;
 
 use WPPF\v1_1_2\Admin\Pages\Options_Page;
 
-if ( ! class_exists( '\WPPF\v1_1_2\Admin\Pages\DesignInk_Settings_Page', false ) ) {
+if ( ! class_exists( '\WPPF\v1_1_2\Admin\Pages\WPPF_Settings_Page', false ) ) {
 
 	/**
 	 * The options page configuration for general settings regarding the modules included in this plugin.
 	 */
-	final class DesignInk_Settings_Page extends Options_Page {
+	final class WPPF_Settings_Page extends Options_Page {
 
 		/** @var string The page option group. */
-		final public static function page_option_group() { return 'designink-settings'; }
+		final public static function page_option_group() { return 'wppf-settings'; }
 
 		/** @var string The page title. */
-		final public static function page_title() { return 'DesignInk Settings'; }
+		final public static function page_title() { return 'WPPF Settings'; }
 
 		/** @var string The page menu title. */
-		final public static function menu_title() { return 'DesignInk Settings'; }
+		final public static function menu_title() { return 'WPPF Settings'; }
 
 		/** @var string The page capability. */
 		final public static function page_capability() { return 'manage_options'; }

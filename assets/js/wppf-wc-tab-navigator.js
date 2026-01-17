@@ -6,7 +6,7 @@
  * 
  * @param {HTMLElement} container The element containing the ".panel-wrap" tabs and content.
  */
-function DesignInkWcTabNavigator( container ) {
+function WPPF_WcTabNavigator( container ) {
 
 	if ( ! container ) {
 		return;
@@ -19,7 +19,7 @@ function DesignInkWcTabNavigator( container ) {
 /**
  * Add listeners to all tabs and show any active tabs.
  */
-DesignInkWcTabNavigator.prototype.init = function() {
+WPPF_WcTabNavigator.prototype.init = function() {
 	const tabs = this.panel.querySelectorAll( 'ul.wc-tabs > li > a' );
 	const that = this;
 
@@ -39,7 +39,7 @@ DesignInkWcTabNavigator.prototype.init = function() {
  * 
  * @param {Event} event The event of the click, used for the target.
  */
-DesignInkWcTabNavigator.prototype.handleTabClick = function( event ) {
+WPPF_WcTabNavigator.prototype.handleTabClick = function( event ) {
 	const tabId = event.target.parentElement.getAttribute( 'data-tab-id' );
 	this.setTabActive( tabId );
 	this.showContent( tabId );
@@ -50,7 +50,7 @@ DesignInkWcTabNavigator.prototype.handleTabClick = function( event ) {
  * 
  * @param {string} tabId The 'data-tab-id' attribute.
  */
-DesignInkWcTabNavigator.prototype.setTabActive = function( tabId ) {
+WPPF_WcTabNavigator.prototype.setTabActive = function( tabId ) {
 	const tabs = this.panel.querySelectorAll( 'ul.wc-tabs > li' );
 
 	tabs.forEach( tab => {
@@ -69,7 +69,7 @@ DesignInkWcTabNavigator.prototype.setTabActive = function( tabId ) {
  * 
  * @param {string} tabId The 'data-tab-id' attribute of the associated tab.
  */
-DesignInkWcTabNavigator.prototype.showContent = function( tabId ) {
+WPPF_WcTabNavigator.prototype.showContent = function( tabId ) {
 	const children = this.panel.children;
 
 	for ( let i = 1; i < children.length; i++ ) {

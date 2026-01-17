@@ -81,7 +81,7 @@ export function upgrade_version( cb ) {
 
 						// Replace PHP file versions
 						gulp.src( '**/*.php' )
-							.pipe( replace( /DesignInk\\WordPress\\Framework(\\v[0-9_]+)?/g, sprintf( 'DesignInk\\WordPress\\Framework\\v%s', res.version.replace( /\./g, '_' ) ) ) )
+							.pipe( replace( /WPPF(\\v[0-9_]+)?/g, sprintf( 'WPPF\\v%s', res.version.replace( /\./g, '_' ) ) ) )
 							.pipe( gulp.dest( './' ) );
 
 						cb();
