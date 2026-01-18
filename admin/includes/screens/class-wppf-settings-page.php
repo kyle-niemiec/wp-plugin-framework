@@ -15,7 +15,7 @@ namespace WPPF\v1_1_2\Admin\Pages;
 
 defined( 'ABSPATH' ) or exit;
 
-use WPPF\v1_1_2\Admin\Pages\Options_Page;
+use WPPF\v1_1_2\WordPress\Admin\Pages\Options_Page;
 
 if ( ! class_exists( '\WPPF\v1_1_2\Admin\Pages\WPPF_Settings_Page', false ) ) {
 

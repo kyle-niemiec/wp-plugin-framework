@@ -11,14 +11,14 @@
  * @package WPPF
  */
 
-namespace WPPF\v1_1_2\Admin\Pages;
+namespace WPPF\v1_1_2\WordPress\Admin\Pages;
 
 defined( 'ABSPATH' ) or exit;
 
 use WPPF\v1_1_2\Framework\Singleton;
 use WPPF\v1_1_2\Framework\Utility;
 
-if ( ! class_exists( '\WPPF\v1_1_2\Admin\Pages\Page', false ) ) {
+if ( ! class_exists( '\WPPF\v1_1_2\WordPress\Admin\Pages\Page', false ) ) {
 
 	/**
 	 * A class to abstract and automate the process of building Pages.
@@ -68,7 +68,7 @@ if ( ! class_exists( '\WPPF\v1_1_2\Admin\Pages\Page', false ) ) {
 		/**
 		 * Return the Sections associated with this Settings Page.
 		 * 
-		 * @return \WPPF\v1_1_2\Admin\Pages\Settings_Section[] The Sections of this Page.
+		 * @return \WPPF\v1_1_2\WordPress\Admin\Pages\Settings_Section[] The Sections of this Page.
 		 */
 		final public static function get_sections() { return $this->Sections; }
 

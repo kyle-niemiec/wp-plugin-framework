@@ -15,8 +15,8 @@ namespace WPPF\v1_1_2\WooCommerce;
 
 defined( 'ABSPATH' ) or exit;
 
-use WPPF\v1_1_2\Admin\Admin_Notice;
-use WPPF\v1_1_2\Admin\Admin_Notice_Queue;
+use WPPF\v1_1_2\WordPress\Admin\Admin_Notice;
+use WPPF\v1_1_2\WordPress\Admin\Admin_Notice_Queue;
 use WPPF\v1_1_2\WordPress\Plugin;
 use WPPF\v1_1_2\WooCommerce\Email_Traits;
 

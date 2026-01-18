@@ -11,13 +11,13 @@
  * @package WPPF
  */
 
-namespace WPPF\v1_1_2;
+namespace WPPF\v1_1_2\WordPress;
 
 defined( 'ABSPATH' ) or exit;
 
 use WPPF\v1_1_2\Framework\Module;
 
-if ( ! class_exists( '\WPPF\v1_1_2\Admin', false ) ) {
+if ( ! class_exists( '\WPPF\v1_1_2\WordPress\Admin', false ) ) {
 
 	/**
 	 * This Module is not a Module which is necessarily loaded only when TRUE === is_admin(), rather this namespace simply

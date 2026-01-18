@@ -15,9 +15,9 @@ namespace WPPF\v1_1_2\Admin;
 
 defined( 'ABSPATH' ) or exit;
 
-use WPPF\v1_1_2\Admin\Admin_Notice;
+use WPPF\v1_1_2\WordPress\Admin\Admin_Notice;
 
-if ( ! class_exists( '\WPPF\v1_1_2\Admin\Admin_Notice_Queue', false ) ) {
+if ( ! class_exists( '\WPPF\v1_1_2\WordPress\Admin\Admin_Notice_Queue', false ) ) {
 
 	/**
 	 * Utility functions class to hold useful chunks of code we find ourselves often reusing.

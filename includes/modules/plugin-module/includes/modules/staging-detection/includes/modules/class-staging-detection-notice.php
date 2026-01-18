@@ -15,7 +15,7 @@ namespace WPPF\v1_1_2\Plugin\Staging_Detection;
 
 defined( 'ABSPATH' ) or exit;
 
-use WPPF\v1_1_2\Admin\Admin_Notices;
+use WPPF\v1_1_2\WordPress\Admin\Admin_Notices;
 use WPPF\v1_1_2\Framework\Module;
 use WPPF\v1_1_2\Staging_Detection;
 use WPPF\v1_1_2\Framework\Utility;

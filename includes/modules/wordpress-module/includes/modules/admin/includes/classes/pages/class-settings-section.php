@@ -11,14 +11,14 @@
  * @package WPPF
  */
 
-namespace WPPF\v1_1_2\Admin\Pages;
+namespace WPPF\v1_1_2\WordPress\Admin\Pages;
 
 defined( 'ABSPATH' ) or exit;
 
 use WPPF\v1_1_2\Framework\Utility;
-use WPPF\v1_1_2\Admin\Pages\Settings_Field;
+use WPPF\v1_1_2\WordPress\Admin\Pages\Settings_Field;
 
-if ( ! class_exists( '\WPPF\v1_1_2\Admin\Pages\Settings_Section', false ) ) {
+if ( ! class_exists( '\WPPF\v1_1_2\WordPress\Admin\Pages\Settings_Section', false ) ) {
 
 	/**
 	 * A class to automate the process of creating a page under the 'settings' menu item.
@@ -28,7 +28,7 @@ if ( ! class_exists( '\WPPF\v1_1_2\Admin\Pages\Settings_Section', false ) ) {
 		/** @var \WPPF\v1_1_2\Admin\Pages Settings Page parent instance */
 		protected $Settings_Page;
 
-		/** @var \WPPF\v1_1_2\Admin\Pages\Settings_Field[] Fields registered to this Section. */
+		/** @var \WPPF\v1_1_2\WordPress\Admin\Pages\Settings_Field[] Fields registered to this Section. */
 		protected $Settings_Fields;
 
 		/** @var string The section identifier for the settings section. */
@@ -53,7 +53,7 @@ if ( ! class_exists( '\WPPF\v1_1_2\Admin\Pages\Settings_Section', false ) ) {
 		/**
 		 * Return the Settings Field instances.
 		 * 
-		 * @return \WPPF\v1_1_2\Admin\Pages\Settings_Field[] $Settings_Fields The Settings Fields in this Section instance.
+		 * @return \WPPF\v1_1_2\WordPress\Admin\Pages\Settings_Field[] $Settings_Fields The Settings Fields in this Section instance.
 		 */
 		final public function get_settings_fields() { return $this->Settings_Fields; }
 
