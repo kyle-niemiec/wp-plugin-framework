@@ -15,7 +15,7 @@ namespace WPPF\v1_1_2\Action_Scheduler;
 
 defined( 'ABSPATH' ) or exit;
 
-use WPPF\v1_1_2\Module;
+use WPPF\v1_1_2\Framework\Module;
 
 if ( ! class_exists( '\WPPF\v1_1_2\Action_Scheduler_Viewer_Module', false ) ) {
 

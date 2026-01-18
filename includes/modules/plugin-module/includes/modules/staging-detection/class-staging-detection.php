@@ -11,11 +11,13 @@
  * @package WPPF
  */
 
-namespace WPPF\v1_1_2;
+namespace WPPF\v1_1_2\Plugin;
+
+use WPPF\v1_1_2\Framework\Module;
 
 defined( 'ABSPATH' ) or exit;
 
-if ( ! class_exists( '\WPPF\v1_1_2\Staging_Detection', false ) ) {
+if ( ! class_exists( '\WPPF\v1_1_2\Plugin\Staging_Detection', false ) ) {
 
 	/**
 	 * A Module which registers a site host as an expected host and throws a notification if the expected

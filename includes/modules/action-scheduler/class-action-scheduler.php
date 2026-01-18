@@ -19,7 +19,7 @@ use WPPF\v1_1_2\Action_Scheduler\Cron_Manager;
 use WPPF\v1_1_2\Action_Scheduler\Form_Builder;
 use WPPF\v1_1_2\Action_Scheduler\Interval_Timer;
 use WPPF\v1_1_2\Action_Scheduler\Simple_Timer;
-use WPPF\v1_1_2\Module;
+use WPPF\v1_1_2\Framework\Module;
 
 if ( ! class_exists( '\WPPF\v1_1_2\Action_Scheduler', false ) ) {
 

@@ -15,7 +15,7 @@ namespace WPPF\v1_1_2\Plugin;
 
 defined( 'ABSPATH' ) or exit;
 
-use WPPF\v1_1_2\Utility;
+use WPPF\v1_1_2\Framework\Utility;
 
 if ( ! class_exists( '\WPPF\v1_1_2\Plugin\Upgrader_Schema', false ) ) {
 

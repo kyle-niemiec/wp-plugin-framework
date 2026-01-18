@@ -17,7 +17,7 @@ defined( 'ABSPATH' ) or exit;
 
 use WPPF\v1_1_2\Admin\Admin_Notice_Queue;
 use WPPF\v1_1_2\WPPF_Shadow_Plugin;
-use WPPF\v1_1_2\Utility;
+use WPPF\v1_1_2\Framework\Utility;
 
 if ( ! class_exists( '\WPPF\v1_1_2\Admin\Admin_Notice', false ) ) {
 

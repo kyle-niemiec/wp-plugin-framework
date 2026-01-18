@@ -15,7 +15,7 @@ namespace WPPF\v1_1_2;
 
 defined( 'ABSPATH' ) or exit;
 
-use WPPF\v1_1_2\Admin_Module;
+use WPPF\v1_1_2\Framework\Admin_Module;
 
 if ( ! class_exists( '\WPPF\v1_1_2\WPPF_Shadow_Plugin_Admin', false ) ) {
 

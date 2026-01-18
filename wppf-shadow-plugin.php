@@ -15,7 +15,7 @@ namespace WPPF\v1_1_2;
 
 defined( 'ABSPATH' ) or exit;
 
-use WPPF\v1_1_2\Plugin;
+use WPPF\v1_1_2\WordPress\Plugin;
 
 if ( ! class_exists( '\WPPF\v1_1_2\WPPF_Shadow_Plugin', false ) ) {
 

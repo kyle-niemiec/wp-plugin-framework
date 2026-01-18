@@ -15,7 +15,7 @@ namespace WPPF\v1_1_2\Admin;
 
 defined( 'ABSPATH' ) or exit;
 
-use WPPF\v1_1_2\Singleton;
+use WPPF\v1_1_2\Framework\Singleton;
 
 if ( ! class_exists( '\WPPF\v1_1_2\Admin\Meta_Box', false ) ) {
 

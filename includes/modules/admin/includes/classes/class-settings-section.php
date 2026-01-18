@@ -15,7 +15,7 @@ namespace WPPF\v1_1_2\Admin\Pages;
 
 defined( 'ABSPATH' ) or exit;
 
-use WPPF\v1_1_2\Utility;
+use WPPF\v1_1_2\Framework\Utility;
 use WPPF\v1_1_2\Admin\Pages\Settings_Field;
 
 if ( ! class_exists( '\WPPF\v1_1_2\Admin\Pages\Settings_Section', false ) ) {

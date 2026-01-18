@@ -17,8 +17,8 @@
 
 defined( 'ABSPATH' ) or exit;
 
-use WPPF\v1_1_2\Framework;
-use WPPF\v1_1_2\Autoloader;
+use WPPF\v1_1_2\Framework\Framework;
+use WPPF\v1_1_2\Framework\Autoloader;
 
 global $WPPF_FRAMEWORKS;
 
@@ -26,7 +26,7 @@ global $WPPF_FRAMEWORKS;
  * The Autoloader is really all we need to start calling things up, so fire it up if it hasn't been.
  */
 if ( ! class_exists( '\WPPF\v1_1_2\Autoloader', false ) ) {
-	require_once ( plugin_dir_path( __FILE__ ) . 'includes/classes/class-autoloader.php' );
+	require_once ( plugin_dir_path( __FILE__ ) . 'includes/modules/framework-module/classes/class-autoloader.php' );
 	Autoloader::instance()->autoload_directory_recursive( __DIR__ . '/includes' );
 }
 
