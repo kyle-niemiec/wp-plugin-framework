@@ -1,6 +1,6 @@
-# Node.js
-node_modules/
-package-lock.json
-
-# Composer
+# Any vendor folder
 vendor/
+
+# Doctum
+/docs/api/*
+.doctum-cache

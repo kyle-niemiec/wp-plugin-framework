@@ -31,7 +31,7 @@ if ( ! class_exists( '\WPPF\v1_1_2\Meta', false ) ) {
 		/** @var string Whether the meta data is being updated as a single key or with multiple keys. */
 		protected $single = true;
 
-		/** @var mixed The current array of multiple-key meta values, or the current, unseriealized value of a single key. */
+		/** @var mixed The current array of multiple-key meta values, or the current, unserialized value of a single key. */
 		protected $data;
 
 		/**
