@@ -13,7 +13,7 @@
 
 defined( 'ABSPATH' ) or exit;
 
-use WPPF\v1_1_2\Action_Scheduler\Form_Builder;
+use WPPF\v1_1_2\Plugin\Action_Scheduler\Form_Builder;
 
 $now = new \DateTime( 'now', new \DateTimeZone( 'GMT' ) );
 

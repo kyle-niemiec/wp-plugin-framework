@@ -11,14 +11,14 @@
  * @package WPPF
  */
 
-namespace WPPF\v1_1_2\Action_Scheduler;
+namespace WPPF\v1_1_2\Plugin\Action_Scheduler;
 
 defined( 'ABSPATH' ) or exit;
 
 use WPPF\v1_1_2\WPPF_Shadow_Plugin;
 use WPPF\v1_1_2\Framework\Utility;
 
-if ( ! class_exists( '\WPPF\v1_1_2\Action_Scheduler\Simple_Timer', false ) ) {
+if ( ! class_exists( '\WPPF\v1_1_2\Plugin\Action_Scheduler\Simple_Timer', false ) ) {
 
 	/**
 	 * A Timer instance that bases it's run times off of even intervals from a specified start times. It can also return how many missed intervals a Timer may potentially have.

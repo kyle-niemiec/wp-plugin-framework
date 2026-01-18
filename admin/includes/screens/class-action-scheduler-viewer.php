@@ -18,7 +18,7 @@ defined( 'ABSPATH' ) or exit;
 use WPPF\v1_1_2\Admin\Pages\Management_Page;
 use WPPF\v1_1_2\WPPF_Shadow_Plugin;
 
-if ( ! class_exists( '\WPPF\v1_1_2\Action_Scheduler\Action_Scheduler_Viewer', false ) ) {
+if ( ! class_exists( '\WPPF\v1_1_2\Plugin\Action_Scheduler\Action_Scheduler_Viewer', false ) ) {
 
 	/**
 	 * The options page configuration for general settings regarding the modules included in this plugin.
