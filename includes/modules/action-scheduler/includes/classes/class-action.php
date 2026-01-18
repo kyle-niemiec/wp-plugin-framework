@@ -24,12 +24,14 @@ if ( ! class_exists( '\WPPF\v1_1_2\Action_Scheduler\Action', false ) ) {
 	 */
 	final class Action {
 
-		/**
-		 * @var callable	$action			The action function which will be called.
-		 * @var array		$callable_args	The arguments which will be passed to the callable.
-		 * @var string		$id				The ID of the Action, unique to the timer.
-		 */
-		public $action, $callable_args, $id;
+		/** @var callable $action The action function which will be called. */
+		public $action;
+
+		/** @var array $callable_args The arguments which will be passed to the callable. */
+		public $callable_args;
+
+		/** @var string $id The ID of the Action, unique to the timer. */
+		public $id;
 
 		/** @var array The default properties that belong to Actions. */
 		private static $default_arguments = array(

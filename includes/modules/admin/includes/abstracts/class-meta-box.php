@@ -24,12 +24,17 @@ if ( ! class_exists( '\WPPF\v1_1_2\Admin\Meta_Box', false ) ) {
 	 */
 	abstract class Meta_Box extends Singleton {
 
-		/**
-		 * @var string $context The placement of the meta box in the page, e.g. 'normal', 'side', or 'advanced'.
-		 * @var string $priority The priority of the context, e.g. 'normal', 'low', or 'high'.
-		 * @var string|array $screen The ID(s) of the screen(s) that the Meta Box should appear on.
-		 */
-		public $context, $priority, $screen, $permissions;
+		/** @var string $context The placement of the meta box in the page, e.g. 'normal', 'side', or 'advanced'. */
+		public $context;
+
+		/** @var string $priority The priority of the context, e.g. 'normal', 'low', or 'high'. */
+		public $priority;
+
+		/** @var string|array $screen The ID(s) of the screen(s) that the Meta Box should appear on. */
+		public $screen;
+
+		/** @var string $permissions The permissions to assess the current user by. */
+		public $permissions;
 
 		/** @var array The default arguments. */
 		private static $default_arguments = array(

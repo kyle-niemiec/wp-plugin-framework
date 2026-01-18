@@ -25,12 +25,14 @@ if ( ! class_exists( '\WPPF\v1_1_2\Action_Scheduler\Interval_Timer', false ) ) {
 	 */
 	final class Interval_Timer extends Timer {
 
-		/**
-		 * @var int $multiplier		The amount of seconds/hours/days/weeks to measure by.
-		 * @var string $interval	The interval base specifier in seconds for the Timer interval.
-		 * @var array $start		The initial start time of the Timer.
-		 */
-		public $multiplier, $interval, $start;
+		/** @var int $multiplier The amount of seconds/hours/days/weeks to measure by. */
+		public $multiplier;
+		
+		/** @var string $interval The interval base specifier in seconds for the Timer interval. */
+		public $interval;
+
+		/** @var array $start The initial start time of the Timer. */
+		public $start;
 
 		/** @var array The default arguments provided to any Action class instance. */
 		private static $default_arguments = array(
