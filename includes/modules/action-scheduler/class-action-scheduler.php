@@ -35,7 +35,7 @@ if ( ! class_exists( '\WPPF\v1_1_2\Action_Scheduler', false ) ) {
 			self::register_timer_forms();
 
 			add_filter( 'cron_schedules', array( Cron_Manager::class, '_cron_schedules' ) );
-			add_action( Cron_Manager::WP_CRON_SCHEDULE_HOOK, array( Cron_Manager::class, '_di_action_scheduler_update_hook' ) );
+			add_action( Cron_Manager::WP_CRON_SCHEDULE_HOOK, array( Cron_Manager::class, '_wppf_action_scheduler_update_hook' ) );
 
 			Cron_Manager::check_cron_timer();
 		}

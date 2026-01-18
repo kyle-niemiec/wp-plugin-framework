@@ -25,7 +25,7 @@ if ( ! class_exists( '\WPPF\v1_1_2\Admin\Admin_Notices', false ) ) {
 	final class Admin_Notices {
 
 		/** @var string The string identifying the transient used for the Admin Notice queue. */
-		const NOTICE_QUEUE_TRANSIENT = '_di_admin_notice_queue';
+		const NOTICE_QUEUE_TRANSIENT = '_wppf_admin_notice_queue';
 
 		/**
 		 * Add an Admin Notice to the global queue.
