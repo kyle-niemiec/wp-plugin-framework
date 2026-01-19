@@ -250,7 +250,7 @@ final class FrameworkVersionUpgradeCommand extends Command
 			$contents = file_get_contents( $path );
 
 			$updated = preg_replace(
-				'/WPPF(\\\\v[0-9_]+)?/',
+				'/WPPF\\\\v\d{1,3}_\d{1,3}_\d{1,3}/',
 				$replacement,
 				$contents,
 				-1,
