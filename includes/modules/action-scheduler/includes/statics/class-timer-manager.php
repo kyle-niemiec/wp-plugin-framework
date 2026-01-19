@@ -25,7 +25,7 @@ if ( ! class_exists( '\WPPF\v1_1_2\Plugin\Action_Scheduler\Timer_Manager', false
 	final class Timer_Manager {
 
 		/** @var string The option name that Timers get saved under in the database. */
-		const TIMERS_OPTION = 'di_action_scheduler_timers';
+		const TIMERS_OPTION = 'wppf_action_scheduler_timers';
 
 		/**
 		 * Return all Timers instances from the database in an associative list of their IDs.

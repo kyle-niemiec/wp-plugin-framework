@@ -23,13 +23,13 @@ if ( ! class_exists( '\WPPF\v1_1_2\Plugin\Action_Scheduler\Cron_Manager', false 
 	final class Cron_Manager {
 
 		/** @var string The identifier for the cron schedule interval */
-		const WP_CRON_SCHEDULE = 'di_action_scheduler_cron_interval';
+		const WP_CRON_SCHEDULE = 'wppf_action_scheduler_cron_interval';
 
 		/** @var int The time (in seconds) between checks for timers */
 		const WP_CRON_SCHEDULE_INTERVAL = ( 60 * 5 );
 
 		/** @var string The name of the hook to run when firing the cron */
-		const WP_CRON_SCHEDULE_HOOK = 'di_action_scheduler_update_hook';
+		const WP_CRON_SCHEDULE_HOOK = 'wppf_action_scheduler_update_hook';
 
 		/**
 		 * The WordPress hook for 'cron_schedules'.
@@ -48,7 +48,7 @@ if ( ! class_exists( '\WPPF\v1_1_2\Plugin\Action_Scheduler\Cron_Manager', false 
 		/**
 		 * Function name matches that of the constant stored in this class, function is the hook function run.
 		 */
-		final public static function _di_action_scheduler_update_hook() {
+		final public static function _wppf_action_scheduler_update_hook() {
 			Timer_Manager::run_timer_queue();
 		}
 

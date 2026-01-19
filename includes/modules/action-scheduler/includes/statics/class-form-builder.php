@@ -26,13 +26,13 @@ if ( ! class_exists( '\WPPF\v1_1_2\Plugin\Action_Scheduler\Form_Builder', false 
 	final class Form_Builder {
 
 		/** @var string The name of the form. This is used for input names. */
-		const FORM_BASE_NAME = 'di_action_scheduler';
+		const FORM_BASE_NAME = 'wppf_action_scheduler';
 
 		/** @var string The nonce that gets created with each form. */
-		const FORM_NONCE_NAME = 'di_action_scheduler_form_builder_nonce';
+		const FORM_NONCE_NAME = 'wppf_action_scheduler_form_builder_nonce';
 
 		/** @var string The nonce action. */
-		const FORM_NONCE_ACTION = 'di_action_scheduler_form_builder_update';
+		const FORM_NONCE_ACTION = 'wppf_action_scheduler_form_builder_update';
 
 		/** @var string[] A list of timer instances to have forms for. */
 		private static $timer_classes = array();
