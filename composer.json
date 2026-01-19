@@ -21,6 +21,9 @@
 		"docs:clean": "rm -rf ./docs ; mkdir -p ./docs/api",
 		"docs:generate": "composer docs:clean ; ./vendor/bin/doctum.php update ./doctum.php"
 	},
+	"scripts": {
+		"docs:api": "cd tools/doctum ; vendor/bin/doctum.php update doctum.php"
+	},
 	"type": "library",
 	"version": "1.1.2"
 	

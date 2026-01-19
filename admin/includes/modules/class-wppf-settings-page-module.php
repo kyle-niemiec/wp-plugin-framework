@@ -11,13 +11,14 @@
  * @package WPPF
  */
 
-namespace WPPF\v1_1_2\Admin\Pages;
+namespace WPPF\v1_1_2\Admin;
 
 defined( 'ABSPATH' ) or exit;
 
-use WPPF\v1_1_2\Module;
+use WPPF\v1_1_2\Admin\Screens\WPPF_Settings_Page;
+use WPPF\v1_1_2\Framework\Module;
 
-if ( ! class_exists( '\WPPF\v1_1_2\Admin\Pages\WPPF_Settings_Page_Module', false ) ) {
+if ( ! class_exists( '\WPPF\v1_1_2\Admin\WPPF_Settings_Page_Module', false ) ) {
 
 	/**
 	 * Manage the settings for for this plugin.

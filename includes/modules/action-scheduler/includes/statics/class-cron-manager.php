@@ -11,11 +11,11 @@
  * @package WPPF
  */
 
-namespace WPPF\v1_1_2\Action_Scheduler;
+namespace WPPF\v1_1_2\Plugin\Action_Scheduler;
 
 defined( 'ABSPATH' ) or exit;
 
-if ( ! class_exists( '\WPPF\v1_1_2\Action_Scheduler\Cron_Manager', false ) ) {
+if ( ! class_exists( '\WPPF\v1_1_2\Plugin\Action_Scheduler\Cron_Manager', false ) ) {
 
 	/**
 	 * A class to manage the WP Cron associated with the Action Scheduler and how ofter to check for timers to run.

@@ -11,13 +11,13 @@
  * @package WPPF
  */
 
-namespace WPPF\v1_1_2\Plugin;
+namespace WPPF\v1_1_2;
 
 defined( 'ABSPATH' ) or exit;
 
-use WPPF\v1_1_2\Module;
+use WPPF\v1_1_2\Framework\Module;
 
-if ( ! class_exists( '\WPPF\v1_1_2\Plugin\Plugin_Module', false ) ) {
+if ( ! class_exists( '\WPPF\v1_1_2\Plugin_Module', false ) ) {
 
 	/**
 	 * This Module holds specific Plugin-related functionality that doesn't belong with WordPress native abstractions.
