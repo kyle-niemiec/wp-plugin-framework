@@ -40,7 +40,7 @@ final class StyleUtil
      */
     public static function error( string $message ): string
     {
-        return sprintf( '<bg=red><fg=white>%s</></>', $message );
+        return sprintf( '<bg=red;fg=white>%s</>', $message );
     }
 
 	/**
