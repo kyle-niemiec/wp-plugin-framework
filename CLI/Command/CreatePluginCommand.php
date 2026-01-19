@@ -1,4 +1,15 @@
 <?php
+/**
+ * WordPress Plugin Framework
+ *
+ * Copyright (c) 2008–2026 DesignInk, LLC
+ * Copyright (c) 2026 Kyle Niemiec
+ *
+ * This file is licensed under the GNU General Public License v3.0.
+ * See the LICENSE file for details.
+ *
+ * @package WPPF
+ */
 
 namespace WPPF\CLI\Command;
 
