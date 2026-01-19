@@ -11,13 +11,13 @@
  * @package WPPF
  */
 
-namespace WPPF\v1_1_2\Admin\Screens;
+namespace WPPF\v1_2_0\Admin\Screens;
 
 defined( 'ABSPATH' ) or exit;
 
-use WPPF\v1_1_2\WordPress\Admin\Pages\Options_Page;
+use WPPF\v1_2_0\WordPress\Admin\Pages\Options_Page;
 
-if ( ! class_exists( '\WPPF\v1_1_2\Admin\Screens\WPPF_Settings_Page', false ) ) {
+if ( ! class_exists( '\WPPF\v1_2_0\Admin\Screens\WPPF_Settings_Page', false ) ) {
 
 	/**
 	 * The options page configuration for general settings regarding the modules included in this plugin.

@@ -11,21 +11,21 @@
  * @package WPPF
  */
 
-namespace WPPF\v1_1_2\WordPress\Admin\Pages;
+namespace WPPF\v1_2_0\WordPress\Admin\Pages;
 
 defined( 'ABSPATH' ) or exit;
 
-use WPPF\v1_1_2\WordPress\Admin\Pages\Settings_Section;
-use WPPF\v1_1_2\Framework\Utility;
+use WPPF\v1_2_0\WordPress\Admin\Pages\Settings_Section;
+use WPPF\v1_2_0\Framework\Utility;
 
-if ( ! class_exists( '\WPPF\v1_1_2\WordPress\Admin\Pages\Settings_Field', false ) ) {
+if ( ! class_exists( '\WPPF\v1_2_0\WordPress\Admin\Pages\Settings_Field', false ) ) {
 
 	/**
 	 * A class to automate the process of creating a Settings Field under a Settings Section.
 	 */
 	final class Settings_Field {
 
-		/** @var \WPPF\v1_1_2\WordPress\Admin\Pages\Settings_Section The parent Settings Section. */
+		/** @var \WPPF\v1_2_0\WordPress\Admin\Pages\Settings_Section The parent Settings Section. */
 		protected $Settings_Section;
 
 		/** @var string The identifier key to use when the Settings Field has multiple values. */
@@ -51,7 +51,7 @@ if ( ! class_exists( '\WPPF\v1_1_2\WordPress\Admin\Pages\Settings_Field', false 
 		/**
 		 * Construct the Settings Field.
 		 * 
-		 * @param \WPPF\v1_1_2\WordPress\Admin\Pages\Settings_Section $Settings_Section The parent Settings Section.
+		 * @param \WPPF\v1_2_0\WordPress\Admin\Pages\Settings_Section $Settings_Section The parent Settings Section.
 		 * @param array $args The settings passed to this Settings Field.
 		 */
 		public function __construct( Settings_Section $Settings_Section, array $args ) {

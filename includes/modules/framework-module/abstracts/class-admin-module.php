@@ -11,14 +11,14 @@
  * @package WPPF
  */
 
-namespace WPPF\v1_1_2\Framework;
+namespace WPPF\v1_2_0\Framework;
 
 defined( 'ABSPATH' ) or exit;
 
-use WPPF\v1_1_2\WordPress\Plugin;
-use WPPF\v1_1_2\Framework\Utility;
+use WPPF\v1_2_0\WordPress\Plugin;
+use WPPF\v1_2_0\Framework\Utility;
 
-if ( ! class_exists( '\WPPF\v1_1_2\Framework\Admin_Module', false ) ) {
+if ( ! class_exists( '\WPPF\v1_2_0\Framework\Admin_Module', false ) ) {
 
 	/**
 	 * A class to represent and help deal with common plugin admin functionality.
@@ -51,7 +51,7 @@ if ( ! class_exists( '\WPPF\v1_1_2\Framework\Admin_Module', false ) ) {
 		}
 
 		/**
-		 * Search for {@see \WPPF\v1_1_2\WordPress\Post_Type} classes in the Plugin { static::$post_types_dir } and register them.
+		 * Search for {@see \WPPF\v1_2_0\WordPress\Post_Type} classes in the Plugin { static::$post_types_dir } and register them.
 		 */
 		private function register_available_screens() {
 			$reflection = $this->get_class_reflection();
@@ -65,7 +65,7 @@ if ( ! class_exists( '\WPPF\v1_1_2\Framework\Admin_Module', false ) ) {
 						require_once ( $screens_dir . $file );
 						$screen_name = Utility::pascal_underscorify( $matches[1] );
 
-						if ( class_exists( $screen_name ) && is_subclass_of( $screen_name, 'WPPF\v1_1_2\Admin\Screens' ) ) {
+						if ( class_exists( $screen_name ) && is_subclass_of( $screen_name, 'WPPF\v1_2_0\Admin\Screens' ) ) {
 							$screen_name::construct();
 							$this->loaded_screens[] = $screen_name;
 						}

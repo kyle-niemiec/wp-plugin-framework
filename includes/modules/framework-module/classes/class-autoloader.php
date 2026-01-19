@@ -11,11 +11,11 @@
  * @package WPPF
  */
 
-namespace WPPF\v1_1_2\Framework;
+namespace WPPF\v1_2_0\Framework;
 
 defined( 'ABSPATH' ) or exit;
 
-if ( ! class_exists( '\WPPF\v1_1_2\Framework\Autoloader', false ) ) {
+if ( ! class_exists( '\WPPF\v1_2_0\Framework\Autoloader', false ) ) {
 
 	// Require Singleton abstract first thing since the Autoloader extends it and it won't be autoloaded!
 	require_once ( __DIR__ . '/../abstracts/class-singleton.php' );
@@ -36,7 +36,7 @@ if ( ! class_exists( '\WPPF\v1_1_2\Framework\Autoloader', false ) ) {
 		final protected function __construct() {
 
 			// Check if Utility is loaded sincle this class requires it, but it also does the autoloading \o/.
-			if ( ! class_exists( '\WPPF\v1_1_2\Utility', false ) ) {
+			if ( ! class_exists( '\WPPF\v1_2_0\Utility', false ) ) {
 				$utility_path = __DIR__ . '/../statics/class-utility.php';
 				require_once ( $utility_path );
 			}

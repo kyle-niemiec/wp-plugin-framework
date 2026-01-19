@@ -11,11 +11,11 @@
  * @package WPPF
  */
 
-namespace WPPF\v1_1_2\Framework;
+namespace WPPF\v1_2_0\Framework;
 
 defined( 'ABSPATH' ) or exit;
 
-if ( ! class_exists( '\WPPF\v1_1_2\Framework\Utility', false ) ) {
+if ( ! class_exists( '\WPPF\v1_2_0\Framework\Utility', false ) ) {
 
 	/**
 	 * Utility functions class to hold useful chunks of code we find ourselves often reusing.

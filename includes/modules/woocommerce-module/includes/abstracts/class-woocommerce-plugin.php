@@ -11,16 +11,16 @@
  * @package WPPF
  */
 
-namespace WPPF\v1_1_2\WooCommerce;
+namespace WPPF\v1_2_0\WooCommerce;
 
 defined( 'ABSPATH' ) or exit;
 
-use WPPF\v1_1_2\WordPress\Admin\Admin_Notice;
-use WPPF\v1_1_2\WordPress\Admin\Admin_Notice_Queue;
-use WPPF\v1_1_2\WordPress\Plugin;
-use WPPF\v1_1_2\WooCommerce\Email_Traits;
+use WPPF\v1_2_0\WordPress\Admin\Admin_Notice;
+use WPPF\v1_2_0\WordPress\Admin\Admin_Notice_Queue;
+use WPPF\v1_2_0\WordPress\Plugin;
+use WPPF\v1_2_0\WooCommerce\Email_Traits;
 
-if ( ! class_exists( '\WPPF\v1_1_2\WooCommerce\WooCommerce_Plugin', false ) ) {
+if ( ! class_exists( '\WPPF\v1_2_0\WooCommerce\WooCommerce_Plugin', false ) ) {
 
 	/**
 	 * A super class of the Plugin that includes WooCommerce-specific functionality.

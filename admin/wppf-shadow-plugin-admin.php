@@ -11,13 +11,13 @@
  * @package WPPF
  */
 
-namespace WPPF\v1_1_2;
+namespace WPPF\v1_2_0;
 
 defined( 'ABSPATH' ) or exit;
 
-use WPPF\v1_1_2\Framework\Admin_Module;
+use WPPF\v1_2_0\Framework\Admin_Module;
 
-if ( ! class_exists( '\WPPF\v1_1_2\WPPF_Shadow_Plugin_Admin', false ) ) {
+if ( ! class_exists( '\WPPF\v1_2_0\WPPF_Shadow_Plugin_Admin', false ) ) {
 
 	/**
 	 * The 'shadow' plugin for the framework that will control the loading of crucial modules.
