@@ -17,7 +17,7 @@ defined( 'ABSPATH' ) or exit;
 
 use WPPF\v1_2_0\WordPress\Admin\Admin_Notices;
 use WPPF\v1_2_0\Framework\Module;
-use WPPF\v1_2_0\Staging_Detection;
+use WPPF\v1_2_0\Plugin\Staging_Detection;
 use WPPF\v1_2_0\Framework\Utility;
 
 if ( ! class_exists( '\WPPF\v1_2_0\Plugin\Staging_Detection\Staging_Detection_Notice', false ) ) {
