@@ -241,7 +241,7 @@ final class FrameworkVersionUpgradeCommand extends Command
 
 		// Search for PHP files
 		foreach ( $iterator as $file ) {
-			if ( $file->isDir() || $file->getExtension() !== 'php' ) {
+			if ( $file->isDir() || $file->getExtension() !== 'php' && $file->getExtension() !== 'tpl' ) {
 				continue;
 			}
 
