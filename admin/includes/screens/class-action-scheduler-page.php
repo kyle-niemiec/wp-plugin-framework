@@ -11,19 +11,19 @@
  * @package WPPF
  */
 
-namespace WPPF\v1_1_2\Action_Scheduler;
+namespace WPPF\v1_1_2\Admin\Screens;
 
 defined( 'ABSPATH' ) or exit;
 
 use WPPF\v1_1_2\Admin\Pages\Management_Page;
 use WPPF\v1_1_2\WPPF_Shadow_Plugin;
 
-if ( ! class_exists( '\WPPF\v1_1_2\Plugin\Action_Scheduler\Action_Scheduler_Viewer', false ) ) {
+if ( ! class_exists( '\WPPF\v1_1_2\Admin\Screens\Action_Scheduler_Page', false ) ) {
 
 	/**
 	 * The options page configuration for general settings regarding the modules included in this plugin.
 	 */
-	final class Action_Scheduler_Viewer extends Management_Page {
+	final class Action_Scheduler_Page extends Management_Page {
 
 		/** @var string The page option group. */
 		final public static function page_option_group() { return 'wppf-action-scheduler-viewer'; }

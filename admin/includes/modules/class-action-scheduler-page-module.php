@@ -11,18 +11,19 @@
  * @package WPPF
  */
 
-namespace WPPF\v1_1_2\Action_Scheduler;
+namespace WPPF\v1_1_2\Admin;
 
 defined( 'ABSPATH' ) or exit;
 
+use WPPF\v1_1_2\Admin\Screens\Action_Scheduler_Page;
 use WPPF\v1_1_2\Framework\Module;
 
-if ( ! class_exists( '\WPPF\v1_1_2\Action_Scheduler_Viewer_Module', false ) ) {
+if ( ! class_exists( '\WPPF\v1_1_2\Admin\Action_Scheduler_Page_Module', false ) ) {
 
 	/**
 	 * Manage the settings for for this plugin.
 	 */
-	final class Action_Scheduler_Viewer_Module extends Module {
+	final class Action_Scheduler_Page_Module extends Module {
 
 		/** @var \WPPF\v1_1_2\Admin\Pages\Management_Settings_Page $Page The Page instance. */
 		public static $Page;
@@ -38,7 +39,7 @@ if ( ! class_exists( '\WPPF\v1_1_2\Action_Scheduler_Viewer_Module', false ) ) {
 		 * WordPress 'admin_menu' hook.
 		 */
 		final public static function _admin_menu() {
-			self::$Page = new Action_Scheduler_Viewer();
+			self::$Page = new Action_Scheduler_Page();
 		}
 
 	}
