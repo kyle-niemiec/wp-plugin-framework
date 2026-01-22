@@ -22,13 +22,13 @@ final class StyleUtil
 	 * Create a string surrounded by a specified terminal-compatible color.
 	 * 
 	 * @param string $message The message to colorize.
-	 * @param string $color The terminal-compatible color for the message.
+	 * @param WPPF\CLI\Static\ConsoleColor $color The terminal-compatible color for the message.
 	 * 
 	 * @return string The color-wrapped message.
 	 */
-	public static function color( string $message, string $color ): string
+	public static function color( string $message, ConsoleColor $color ): string
 	{
-		return sprintf( '<fg=%s>%s</>', $color, $message );
+		return sprintf( '<fg=%s>%s</>', $color->value, $message );
 	}
 
     /**
@@ -52,6 +52,6 @@ final class StyleUtil
 	 */
 	public static function optional( string $message ): string
 	{
-		return self::color( $message, 'gray' );
+		return self::color( $message, ConsoleColor::Gray );
 	}
 }
