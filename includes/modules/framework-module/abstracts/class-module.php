@@ -11,14 +11,14 @@
  * @package WPPF
  */
 
-namespace WPPF\v1_2_0\Framework;
+namespace WPPF\v1_2_1\Framework;
 
 defined( 'ABSPATH' ) or exit;
 
-use WPPF\v1_2_0\Framework\Framework;
-use WPPF\v1_2_0\Framework\Singleton;
+use WPPF\v1_2_1\Framework\Framework;
+use WPPF\v1_2_1\Framework\Singleton;
 
-if ( ! class_exists( '\WPPF\v1_2_0\Framework\Module', false ) ) {
+if ( ! class_exists( '\WPPF\v1_2_1\Framework\Module', false ) ) {
 
 	/**
 	 * A class to represent crucial project file system structures and bind their PHP functionalities to WordPress.
@@ -218,7 +218,7 @@ if ( ! class_exists( '\WPPF\v1_2_0\Framework\Module', false ) ) {
 		}
 
 		/**
-		 * An alias for WPPF\v1_2_0\Autoloader::add_autoload_directory()
+		 * An alias for WPPF\v1_2_1\Autoloader::add_autoload_directory()
 		 * 
 		 * @param string $directory The directory to be searched for potential new classes.
 		 * @return bool Whether or not the directory was successfully added to the autoload array.
