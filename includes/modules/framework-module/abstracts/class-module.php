@@ -104,6 +104,10 @@ if ( ! class_exists( '\WPPF\v1_2_0\Framework\Module', false ) ) {
 		 * Our special function for searching for submodule folders, loading them into the current module and PHP environment.
 		 */
 		final protected function register_submodules() {
+			if ( self::is_flat_module() ) {
+				return;
+			}
+
 			$modules_directory = sprintf( '%s%s/%s', plugin_dir_path( $this->get_class_reflection()->getFileName() ), static::$includes_dir, static::$modules_dir );
 
 			if ( is_dir( $modules_directory ) ) {
@@ -207,25 +211,37 @@ if ( ! class_exists( '\WPPF\v1_2_0\Framework\Module', false ) ) {
 		 * Will iterate through the static class instance's includes and autoload any directories it finds.
 		 */
 		final protected function autoload_includes() {
+			if ( self::is_flat_module() ) {
+				return;
+			}
+
 			if ( is_array( static::$includes ) ) {
 				foreach ( static::$includes as $include ) {
 					$__DIR__ = dirname( $this->get_class_reflection()->getFileName() );
 					$includes_path = sprintf( '%s/%s/%s', $__DIR__, static::$includes_dir, $include );
-					$loaded_directories = Framework::instance()->get_autoloader()->autoload_directory_recursive( $includes_path );
+
+					if ( ! is_dir( $includes_path ) ) {
+						break;
+					}
+
+					$loaded_directories = Framework::instance()
+						->get_autoloader()
+						->autoload_directory_recursive( $includes_path );
+
 					$this->loaded_includes = array_merge( $this->loaded_includes, $loaded_directories );
 				}
 			}
 		}
 
 		/**
-		 * An alias for WPPF\v1_2_0\Autoloader::add_autoload_directory()
+		 * Find out if this Module exists as a flat file or within a directory structure.
 		 * 
-		 * @param string $directory The directory to be searched for potential new classes.
-		 * @return bool Whether or not the directory was successfully added to the autoload array.
+		 * @return bool True if the module is a flat file directly under a `modules/` directory.
 		 */
-		final protected function add_autoload_directory( string $directory ) {
-			$this->loaded_includes[] = $directory;
-			return wppf_framework()->get_autoloader()->add_autoload_directory( $directory );
+		private function is_flat_module() {
+			$module_file = $this->get_class_reflection()->getFileName();
+			$parent_folder = basename( dirname( $module_file ) );
+			return 'modules' === $parent_folder;
 		}
 
 		/**

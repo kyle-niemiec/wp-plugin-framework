@@ -35,6 +35,21 @@ if ( ! class_exists( '\WPPF\v1_2_0\Framework\Utility', false ) ) {
 		}
 
 		/**
+		 * Extract a version token from a class or namespace string.
+		 *
+		 * @param string $subject The class or namespace string to search.
+		 *
+		 * @return string The version token (e.g. "v1_2_0") or an empty string if none found.
+		 */
+		final public static function get_namespace_version( string $subject ) {
+			if ( preg_match( '/(v\\d{1,3}_\\d{1,3}_\\d{1,3})/i', $subject, $matches ) ) {
+				return strtolower( $matches[1] );
+			}
+
+			return '';
+		}
+
+		/**
 		 * A function to export object/associative array values to an associative array with matching key/value pairs and alias/value pairs.
 		 * 
 		 * @param object|array $instance The instance from which to export values from.
@@ -181,6 +196,31 @@ if ( ! class_exists( '\WPPF\v1_2_0\Framework\Utility', false ) ) {
 			}
 
 			return $namespace;
+		}
+
+		/**
+		 * Open a PHP file and return the first class/interface/trait name found.
+		 *
+		 * @param string $file The file name with path to find the class name in.
+		 *
+		 * @return string The declared class/interface/trait name or an empty string if none is found.
+		 */
+		final public static function get_file_class_name( string $file ) {
+			if ( ! is_file( $file ) ) {
+				return '';
+			}
+
+			$contents = file_get_contents( $file );
+
+			if ( false === $contents ) {
+				return '';
+			}
+
+			if ( preg_match( '/^\s*(?:abstract|final)?\s+(?:class|interface|trait)\s+([A-Za-z_][A-Za-z0-9_]*)[^{]*\{/m', $contents, $matches ) ) {
+				return $matches[1];
+			}
+
+			return '';
 		}
 
 		/**

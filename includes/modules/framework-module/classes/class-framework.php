@@ -33,6 +33,14 @@ if ( ! class_exists( '\WPPF\v1_2_0\Framework\Framework', false ) ) {
 		const VERSION = '1.2.0';
 
 		/**
+		 * @var string[] The list of backward-compatible versions for the framework.
+		 * 				 Should match the formats `v1_2_0`, `v123_456_789`, etc.
+		 */
+		const COMPATIBILITY_VERSIONS = array(
+			'v0_0_0'
+		);
+
+		/**
 		 * @var \WPPF\v1_2_0\Autoloader Class autoloader instance.
 		 */
 		protected $autoloader;

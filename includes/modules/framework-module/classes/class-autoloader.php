@@ -78,13 +78,17 @@ if ( ! class_exists( '\WPPF\v1_2_0\Framework\Autoloader', false ) ) {
 
 			if ( $this->add_autoload_directory( $directory ) ) {
 				$folders_found[] = $directory;
-				$sub_folders = Utility::scandir( $directory, 'folders' );
+			}
 
-				foreach ( $sub_folders as $sub_folder ) {
-					$sub_folder_path = sprintf( '%s/%s', $directory, $sub_folder );
-					$folders_found = array_merge( $folders_found, $this->autoload_directory_recursive( $sub_folder_path ) );
-				}
+			$sub_folders = Utility::scandir( $directory, 'folders' );
 
+			foreach ( $sub_folders as $sub_folder ) {
+				$sub_folder_path = sprintf( '%s/%s', $directory, $sub_folder );
+
+				$folders_found = array_merge(
+					$folders_found,
+					$this->autoload_directory_recursive( $sub_folder_path )
+				);
 			}
 
 			return $folders_found;
@@ -100,25 +104,58 @@ if ( ! class_exists( '\WPPF\v1_2_0\Framework\Autoloader', false ) ) {
 		/**
 		 * A function which, given a fully-qualified class, will look for a matching, slugified filename using the standard WordPress "class-{$class_name}.php" structure.
 		 * 
-		 * @param string $class_name The name-component of a fully-qualified class to search a manicured list of default class directories for.
+		 * @param string $search_class The name-component of a fully-qualified class to search a manicured list of default class directories for.
 		 */
-		final protected static function search_for_class_file( string $class ) {
-			$class_name = Utility::class_basename( $class );
-			$class_slug = Utility::slugify( $class_name );
-			$filename = sprintf( 'class-%s.php', $class_slug );
+		final protected static function search_for_class_file( string $search_class ) {
+			// Form the name of the file we're searching for
+			$search_class_slug = Utility::slugify( Utility::class_basename( $search_class ) );
+			$search_filename = sprintf( 'class-%s.php', $search_class_slug );
 
+			$search_version = Utility::get_namespace_version( $search_class );
+
+			// Look through all autoload directories for a matching file
 			foreach ( self::instance()->autoload_directories as $directory ) {
-				$directory = trailingslashit( $directory );
-				$file = $directory . $filename;
+				$found_file = trailingslashit( $directory ) . $search_filename;
 
-				if ( file_exists( $file ) ) {
-					$namespace = Utility::get_file_namespace( $file );
+				// If the file name matches, check that the namespace matches
+				if ( file_exists( $found_file ) ) {
+					$found_class = sprintf(
+						'%s\%s',
+						Utility::get_file_namespace( $found_file ),
+						Utility::get_file_class_name( $found_file )
+					);
 
-					if ( ! empty( $namespace ) && false === strpos( $class, $namespace ) ) {
+					$found_version = Utility::get_namespace_version( $found_class );
+
+					if ( $found_class === $search_class ) {
+						// If the full paths match, load it
+						require( $found_file );
 						break;
+					} else if ( array_search( $search_version, Framework::COMPATIBILITY_VERSIONS ) ) {
+						// Check if replacing the namespace version with a supported one matches
+						$supportable_class = str_replace( $found_version, $search_version, $found_class );
+
+						if ( $supportable_class === $search_class ) {
+							// If replacing the version matches the desired namespace, create an alias for the found class
+							require( $found_file );
+
+							$search_not_exist = ! class_exists( $search_class, false )
+											&& ! interface_exists( $search_class, false )
+											&& ! trait_exists( $search_class, false );
+
+							$found_exists = class_exists( $found_class, false )
+											|| interface_exists( $found_class, false )
+											|| trait_exists( $found_class );
+
+							if ( $search_not_exist && $found_exists ) class_alias( $found_class, $search_class, false );
+							break;
+						} else {
+							// If the namespaces don't match, keep looking
+							continue;
+						}
+
 					}
 
-					require ( $file );
 				}
 			}
 		}
