@@ -11,13 +11,13 @@
  * @package WPPF
  */
 
-namespace WPPF\v1_2_1\WordPress;
+namespace WPPF\v1_2_0\WordPress;
 
 defined( 'ABSPATH' ) or exit;
 
-use WPPF\v1_2_1\WordPress\Meta;
+use WPPF\v1_2_0\WordPress\Meta;
 
-if ( ! class_exists( '\WPPF\v1_2_1\WordPress\Post_Meta', false ) ) {
+if ( ! class_exists( '\WPPF\v1_2_0\WordPress\Post_Meta', false ) ) {
 
 	/**
 	 * An abstract for dealing with Post Meta.

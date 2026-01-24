@@ -11,11 +11,11 @@
  * @package WPPF
  */
 
-namespace WPPF\v1_2_1\WordPress;
+namespace WPPF\v1_2_0\WordPress;
 
 defined( 'ABSPATH' ) or exit;
 
-if ( ! class_exists( '\WPPF\v1_2_1\WordPress\Meta_Schema', false ) ) {
+if ( ! class_exists( '\WPPF\v1_2_0\WordPress\Meta_Schema', false ) ) {
 
 	/**
 	 * A class for validating input patterns and types for Meta stored in the database.
@@ -67,7 +67,7 @@ if ( ! class_exists( '\WPPF\v1_2_1\WordPress\Meta_Schema', false ) ) {
 
 				if ( is_array( $pattern ) ) {
 					foreach ( $pattern as $key => $Schema ) {
-						// Throw exception if fields aren't type \WPPF\v1_2_1\Meta_Schema
+						// Throw exception if fields aren't type \WPPF\v1_2_0\Meta_Schema
 						if ( ! ( $Schema instanceof Meta_Schema ) ) {
 							$message = "When 'array' type Meta Schema has an array passed as the pattern, all pattern elements must be of type %s. %s passed to field %s";
 							$format = sprintf( $message, Meta_Schema::class, gettype( $Schema ), $key );

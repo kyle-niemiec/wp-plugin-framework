@@ -11,14 +11,14 @@
  * @package WPPF
  */
 
-namespace WPPF\v1_2_1\Admin\Screens;
+namespace WPPF\v1_2_0\Admin\Screens;
 
 defined( 'ABSPATH' ) or exit;
 
-use WPPF\v1_2_1\WordPress\Admin\Pages\Management_Page;
-use WPPF\v1_2_1\WPPF_Shadow_Plugin;
+use WPPF\v1_2_0\WordPress\Admin\Pages\Management_Page;
+use WPPF\v1_2_0\WPPF_Shadow_Plugin;
 
-if ( ! class_exists( '\WPPF\v1_2_1\Admin\Screens\Action_Scheduler_Page', false ) ) {
+if ( ! class_exists( '\WPPF\v1_2_0\Admin\Screens\Action_Scheduler_Page', false ) ) {
 
 	/**
 	 * The options page configuration for general settings regarding the modules included in this plugin.

@@ -36,7 +36,7 @@ if ( ! class_exists( '\WPPF\v1_2_1\Autoloader', false ) ) {
 /**
  * Set global function for accessing Framework instances.
  * 
- * @return \WPPF\v1_2_1\Framework[] The WordPress plugin frameworks by version.
+ * @return \WPPF\v1_2_0\Framework[] The WordPress plugin frameworks by version.
  */
 if ( ! function_exists( 'wppf_frameworks' ) ) {
 
@@ -52,13 +52,13 @@ if ( ! function_exists( 'wppf_frameworks' ) ) {
 /**
  * Instantiate the current Framework version and add to the Frameworks list.
  */
-if ( ! class_exists( '\WPPF\v1_2_1\Framework', false ) ) {
+if ( ! class_exists( '\WPPF\v1_2_0\Framework', false ) ) {
 	$WPPF_FRAMEWORKS[ Framework::get_version() ] = Framework::instance();
 }
 
 /**
  * Initialize the shadow plugin
  */
-if ( ! class_exists( '\WPPF\v1_2_1\WPPF_Shadow_Plugin', false ) ) {
+if ( ! class_exists( '\WPPF\v1_2_0\WPPF_Shadow_Plugin', false ) ) {
 	require_once( __DIR__ . '/wppf-shadow-plugin.php' );
 }

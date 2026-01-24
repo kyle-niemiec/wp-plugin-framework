@@ -11,17 +11,17 @@
  * @package WPPF
  */
 
-namespace WPPF\v1_2_1\Plugin;
+namespace WPPF\v1_2_0\Plugin;
 
 defined( 'ABSPATH' ) or exit;
 
-use WPPF\v1_2_1\Plugin\Action_Scheduler\Cron_Manager;
-use WPPF\v1_2_1\Plugin\Action_Scheduler\Form_Builder;
-use WPPF\v1_2_1\Plugin\Action_Scheduler\Interval_Timer;
-use WPPF\v1_2_1\Plugin\Action_Scheduler\Simple_Timer;
-use WPPF\v1_2_1\Framework\Module;
+use WPPF\v1_2_0\Plugin\Action_Scheduler\Cron_Manager;
+use WPPF\v1_2_0\Plugin\Action_Scheduler\Form_Builder;
+use WPPF\v1_2_0\Plugin\Action_Scheduler\Interval_Timer;
+use WPPF\v1_2_0\Plugin\Action_Scheduler\Simple_Timer;
+use WPPF\v1_2_0\Framework\Module;
 
-if ( ! class_exists( '\WPPF\v1_2_1\Plugin\Action_Scheduler', false ) ) {
+if ( ! class_exists( '\WPPF\v1_2_0\Plugin\Action_Scheduler', false ) ) {
 
 	/**
 	 * A class to manage the WPPF Action Scheduler solution.

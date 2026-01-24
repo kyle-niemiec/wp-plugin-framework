@@ -11,13 +11,13 @@
  * @package WPPF
  */
 
-namespace WPPF\v1_2_1\WordPress\Admin\Screens;
+namespace WPPF\v1_2_0\WordPress\Admin\Screens;
 
 defined( 'ABSPATH' ) or exit;
 
-use WPPF\v1_2_1\WordPress\Admin\Screens;
+use WPPF\v1_2_0\WordPress\Admin\Screens;
 
-if ( ! class_exists( '\WPPF\v1_2_1\WordPress\Admin\Screens\Post_Screens', false ) ) {
+if ( ! class_exists( '\WPPF\v1_2_0\WordPress\Admin\Screens\Post_Screens', false ) ) {
 
 	/**
 	 * A manager for screens that belong to a post type.

@@ -11,16 +11,16 @@
  * @package WPPF
  */
 
-namespace WPPF\v1_2_1\Plugin\Staging_Detection;
+namespace WPPF\v1_2_0\Plugin\Staging_Detection;
 
 defined( 'ABSPATH' ) or exit;
 
-use WPPF\v1_2_1\WordPress\Admin\Admin_Notices;
-use WPPF\v1_2_1\Framework\Module;
-use WPPF\v1_2_1\Plugin\Staging_Detection;
-use WPPF\v1_2_1\Framework\Utility;
+use WPPF\v1_2_0\WordPress\Admin\Admin_Notices;
+use WPPF\v1_2_0\Framework\Module;
+use WPPF\v1_2_0\Plugin\Staging_Detection;
+use WPPF\v1_2_0\Framework\Utility;
 
-if ( ! class_exists( '\WPPF\v1_2_1\Plugin\Staging_Detection\Staging_Detection_Notice', false ) ) {
+if ( ! class_exists( '\WPPF\v1_2_0\Plugin\Staging_Detection\Staging_Detection_Notice', false ) ) {
 
 	/**
 	 * A Module which registers a site host as an expected host and throws a notification if the expected

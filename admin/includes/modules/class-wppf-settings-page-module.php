@@ -11,21 +11,21 @@
  * @package WPPF
  */
 
-namespace WPPF\v1_2_1\Admin;
+namespace WPPF\v1_2_0\Admin;
 
 defined( 'ABSPATH' ) or exit;
 
-use WPPF\v1_2_1\Admin\Screens\WPPF_Settings_Page;
-use WPPF\v1_2_1\Framework\Module;
+use WPPF\v1_2_0\Admin\Screens\WPPF_Settings_Page;
+use WPPF\v1_2_0\Framework\Module;
 
-if ( ! class_exists( '\WPPF\v1_2_1\Admin\WPPF_Settings_Page_Module', false ) ) {
+if ( ! class_exists( '\WPPF\v1_2_0\Admin\WPPF_Settings_Page_Module', false ) ) {
 
 	/**
 	 * Manage the settings for for this plugin.
 	 */
 	final class WPPF_Settings_Page_Module extends Module {
 
-		/** @var \WPPF\v1_2_1\WordPress\Admin\Pages\Options_Page $Settings_Page The Settings Page instance. */
+		/** @var \WPPF\v1_2_0\WordPress\Admin\Pages\Options_Page $Settings_Page The Settings Page instance. */
 		public static $Settings_Page;
 
 		/**
