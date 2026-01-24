@@ -131,7 +131,7 @@ if ( ! class_exists( '\WPPF\v1_2_1\Framework\Autoloader', false ) ) {
 						// If the full paths match, load it
 						require( $found_file );
 						break;
-					} else if ( array_search( $search_version, Framework::COMPATIBILITY_VERSIONS ) ) {
+					} else if ( is_int( array_search( $search_version, Framework::COMPATIBILITY_VERSIONS ) ) ) {
 						// Check if replacing the namespace version with a supported one matches
 						$supportable_class = str_replace( $found_version, $search_version, $found_class );
 

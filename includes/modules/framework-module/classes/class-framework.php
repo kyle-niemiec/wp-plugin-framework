@@ -37,7 +37,7 @@ if ( ! class_exists( '\WPPF\v1_2_1\Framework\Framework', false ) ) {
 		 * 				 Should match the formats `v1_2_0`, `v123_456_789`, etc.
 		 */
 		const COMPATIBILITY_VERSIONS = array(
-			'v0_0_0'
+			'v1_2_0'
 		);
 
 		/**

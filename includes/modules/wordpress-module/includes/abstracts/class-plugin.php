@@ -65,13 +65,14 @@ if ( ! class_exists( '\WPPF\v1_2_1\WordPress\Plugin', false ) ) {
 			register_activation_hook( $file, array( __CLASS__, 'activation' ) );
 			register_deactivation_hook( $file, array( __CLASS__, 'deactivation' ) );
 
+			parent::__construct( $is_submodule );
+
 			// If this instance directly inherits \WPPF\v1_2_1.
 			if ( is_subclass_of( $this, self::class ) ) {
 				Framework::instance()->register_plugin( $this );
 				$this->maybe_init_admin();
 			}
 
-			parent::__construct( $is_submodule );
 			$this->init_upgrader();
 			$this->register_available_post_types();
 		}

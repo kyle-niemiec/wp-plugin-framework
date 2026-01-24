@@ -18,16 +18,19 @@
 defined( 'ABSPATH' ) or exit;
 
 use WPPF\v1_2_1\Framework\Framework;
-use WPPF\v1_2_1\Framework\Autoloader;
 
 global $WPPF_FRAMEWORKS;
 
 /**
- * The Autoloader is really all we need to start calling things up, so fire it up if it hasn't been.
+ * Require only the basic files until the autoloader kicks in.
  */
 if ( ! class_exists( '\WPPF\v1_2_1\Autoloader', false ) ) {
-	require_once ( plugin_dir_path( __FILE__ ) . 'includes/modules/framework-module/classes/class-autoloader.php' );
-	Autoloader::instance()->autoload_directory_recursive( __DIR__ . '/includes' );
+	require_once ( plugin_dir_path( __FILE__ ) . 'includes/modules/framework-module/includes/abstracts/class-singleton.php' );
+	require_once ( plugin_dir_path( __FILE__ ) . 'includes/modules/framework-module/includes/abstracts/class-module.php' );
+	require_once ( plugin_dir_path( __FILE__ ) . 'includes/modules/framework-module/includes/classes/class-autoloader.php' );
+	require_once ( plugin_dir_path( __FILE__ ) . 'includes/modules/framework-module/includes/classes/class-framework.php' );
+	require_once ( plugin_dir_path( __FILE__ ) . 'includes/modules/plugin-module/includes/modules/upgrader/includes/traits/class-plugin-upgrader-trait.php' );
+	require_once ( plugin_dir_path( __FILE__ ) . 'includes/modules/wordpress-module/includes/abstracts/class-plugin.php' );
 }
 
 /**
