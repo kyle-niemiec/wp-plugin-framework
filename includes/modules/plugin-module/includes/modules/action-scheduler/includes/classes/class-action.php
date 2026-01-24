@@ -11,13 +11,13 @@
  * @package WPPF
  */
 
-namespace WPPF\v1_2_0\Plugin\Action_Scheduler;
+namespace WPPF\v1_2_1\Plugin\Action_Scheduler;
 
 defined( 'ABSPATH' ) or exit;
 
-use WPPF\v1_2_0\Framework\Utility;
+use WPPF\v1_2_1\Framework\Utility;
 
-if ( ! class_exists( '\WPPF\v1_2_0\Plugin\Action_Scheduler\Action', false ) ) {
+if ( ! class_exists( '\WPPF\v1_2_1\Plugin\Action_Scheduler\Action', false ) ) {
 
 	/**
 	 * A class to represent a callable Action assigned to a Timer and all of it's properties.

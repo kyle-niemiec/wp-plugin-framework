@@ -13,8 +13,8 @@
 
 defined( 'ABSPATH' ) or exit;
 
-use WPPF\v1_2_0\Plugin\Action_Scheduler\Cron_Manager;
-use WPPF\v1_2_0\Plugin\Action_Scheduler\Timer_Manager;
+use WPPF\v1_2_1\Plugin\Action_Scheduler\Cron_Manager;
+use WPPF\v1_2_1\Plugin\Action_Scheduler\Timer_Manager;
 
 $Timers = Timer_Manager::get_timers();
 $Now = new \DateTime( 'now', new \DateTimeZone( 'GMT' ) );
