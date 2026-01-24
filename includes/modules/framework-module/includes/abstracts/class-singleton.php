@@ -11,11 +11,11 @@
  * @package WPPF
  */
 
-namespace WPPF\v1_2_0\Framework;
+namespace WPPF\v1_2_1\Framework;
 
 defined( 'ABSPATH' ) or exit;
 
-if ( ! class_exists( '\WPPF\v1_2_0\Framework\Singleton', false ) ) {
+if ( ! class_exists( '\WPPF\v1_2_1\Framework\Singleton', false ) ) {
 
 	/**
 	 * An abstraction to apply to singleton instances for uniform initialization.

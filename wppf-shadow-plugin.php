@@ -11,13 +11,13 @@
  * @package WPPF
  */
 
-namespace WPPF\v1_2_0;
+namespace WPPF\v1_2_1;
 
 defined( 'ABSPATH' ) or exit;
 
-use WPPF\v1_2_0\WordPress\Plugin;
+use WPPF\v1_2_1\WordPress\Plugin;
 
-if ( ! class_exists( '\WPPF\v1_2_0\WPPF_Shadow_Plugin', false ) ) {
+if ( ! class_exists( '\WPPF\v1_2_1\WPPF_Shadow_Plugin', false ) ) {
 
 	/**
 	 * The 'shadow' plugin for the framework that will control the loading of crucial modules.

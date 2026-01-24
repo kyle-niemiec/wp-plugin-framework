@@ -11,14 +11,14 @@
  * @package WPPF
  */
 
-namespace WPPF\v1_2_0\WooCommerce;
+namespace WPPF\v1_2_1\WooCommerce;
 
 defined( 'ABSPATH' ) or exit;
 
-use WPPF\v1_2_0\Framework\Utility;
-use WPPF\v1_2_0\WooCommerce\Email;
+use WPPF\v1_2_1\Framework\Utility;
+use WPPF\v1_2_1\WooCommerce\Email;
 
-if ( ! trait_exists( '\WPPF\v1_2_0\WooCommerce\Email_Traits', false ) ) {
+if ( ! trait_exists( '\WPPF\v1_2_1\WooCommerce\Email_Traits', false ) ) {
 
 	/**
 	 * A trait to expand the capabilities of the WooCommerce_Plugin to include email-related functionality.
