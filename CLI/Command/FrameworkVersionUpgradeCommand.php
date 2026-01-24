@@ -199,7 +199,7 @@ final class FrameworkVersionUpgradeCommand extends Command
 	 */
 	private static function update_framework_version_constant( string $new_version ): bool
 	{
-		$path = sprintf( '%s/includes/modules/framework-module/classes/class-framework.php', getcwd() );
+		$path = sprintf( '%s/includes/modules/framework-module/includes/classes/class-framework.php', getcwd() );
 
 		if ( ! file_exists( $path ) ) {
 			throw new \RuntimeException( "Framework class file not found." );
