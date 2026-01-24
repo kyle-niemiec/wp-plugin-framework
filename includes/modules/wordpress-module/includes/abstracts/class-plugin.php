@@ -67,7 +67,7 @@ if ( ! class_exists( '\WPPF\v1_2_0\WordPress\Plugin', false ) ) {
 
 			parent::__construct( $is_submodule );
 
-			// If this instance directly inherits \WPPF\v1_2_1.
+			// If this instance directly inherits \WPPF\v1_2_0.
 			if ( is_subclass_of( $this, self::class ) ) {
 				Framework::instance()->register_plugin( $this );
 				$this->maybe_init_admin();

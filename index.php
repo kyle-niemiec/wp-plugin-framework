@@ -17,14 +17,14 @@
 
 defined( 'ABSPATH' ) or exit;
 
-use WPPF\v1_2_1\Framework\Framework;
+use WPPF\v1_2_0\Framework\Framework;
 
 global $WPPF_FRAMEWORKS;
 
 /**
  * Require only the basic files until the autoloader kicks in.
  */
-if ( ! class_exists( '\WPPF\v1_2_1\Autoloader', false ) ) {
+if ( ! class_exists( '\WPPF\v1_2_0\Autoloader', false ) ) {
 	require_once ( plugin_dir_path( __FILE__ ) . 'includes/modules/framework-module/includes/abstracts/class-singleton.php' );
 	require_once ( plugin_dir_path( __FILE__ ) . 'includes/modules/framework-module/includes/abstracts/class-module.php' );
 	require_once ( plugin_dir_path( __FILE__ ) . 'includes/modules/framework-module/includes/classes/class-autoloader.php' );
