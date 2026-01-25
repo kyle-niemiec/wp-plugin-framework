@@ -38,17 +38,17 @@ if ( ! class_exists( '\WPPF\v1_2_1\Framework\Module', false ) ) {
 		/**
 		 * @var string The default directory to locate class files under.
 		 */
-		protected static $includes_dir = 'includes';
+		final public static $includes_dir = 'includes';
 
 		/**
 		 * @var string The default directory for loading modules. (Must be separate from the rest of the includes since it must necessarily be used.).
 		 */
-		protected static $modules_dir = 'modules';
+		final public static $modules_dir = 'modules';
 
 		/**
 		 * @var array A list of subdirectories under static::$includes_dir to automatically search for autoloading.
 		 */
-		protected static $includes = array( 'abstracts', 'classes', 'statics', 'traits' );
+		public static $includes = array( 'abstracts', 'classes', 'statics', 'traits' );
 
 		/**
 		 * @var array A list of modules which have been successfully imported via the current module.

@@ -31,7 +31,7 @@ if ( ! class_exists( '\WPPF\v1_2_1\Framework\Admin_Module', false ) ) {
 		/**
 		 * @var array An overridden list of subdirectories under static::$includes_dir to automatically search for autoloading.
 		 */
-		protected static $includes = array( 'statics', 'abstractions', 'classes', 'meta-boxes' );
+		final public static $includes = array( 'statics', 'abstracts', 'classes', 'meta-boxes' );
 
 		/**
 		 * @var array A list of screens which are initialized for the admin panel.
