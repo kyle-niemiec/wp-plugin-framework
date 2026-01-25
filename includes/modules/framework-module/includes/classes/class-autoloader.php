@@ -26,15 +26,19 @@ if ( ! class_exists( '\WPPF\v1_2_1\Framework\Autoloader', false ) ) {
 	final class Autoloader extends Singleton {
 
 		/**
-		 * @var array List of autoload searchable directories
+		 * @var array A map of class filenames to directories they may be found in.
 		 */
-		protected $autoload_directories = array();
+		protected static $class_map = array();
+
+		/**
+		 * @var array A list of module directories already scanned.
+		 */
+		protected static $scanned_modules = array();
 
 		/**
 		 * Protected constructor to prevent more than one instance of autoload directories from being created
 		 */
 		final protected function __construct() {
-
 			// Check if Utility is loaded sincle this class requires it, but it also does the autoloading \o/.
 			if ( ! class_exists( '\WPPF\v1_2_1\Utility', false ) ) {
 				$utility_path = __DIR__ . '/../statics/class-utility.php';
@@ -45,118 +49,185 @@ if ( ! class_exists( '\WPPF\v1_2_1\Framework\Autoloader', false ) ) {
 		}
 
 		/**
-		 * Checks if the passed directory exists, then adds the directory to the list of autoload locations if it does not exists there already.
-		 * 
-		 * @param string $directory The directory to be searched for potential new classes.
-		 * @return bool Whether or not the directory was successfully added to the autoload array.
-		 */
-		final public function add_autoload_directory( string $directory ) {
-			$is_directory = is_dir( $directory );
-
-			if ( ! $is_directory ) {
-				return false;
-			}
-
-			if ( ! in_array( $directory, $this->autoload_directories ) ) {
-				$this->autoload_directories[] = trailingslashit( $directory );
-				return true;
-			}
-
-			return false;
-		}
-
-		/**
-		 * Tranverse a parent folder's structure and add the folder and all subfolders to the Autoloader
-		 * 
-		 * @param string $directory The absolute directory path from the plugin folder to search. Trailing slashes are not necessary and are removed.
-		 * 
-		 * @return array A list of all of the folders that were found.
-		 */
-		final public function autoload_directory_recursive( string $directory ) {
-			$folders_found = array();
-			$directory = rtrim( $directory, '/' );
-
-			if ( $this->add_autoload_directory( $directory ) ) {
-				$folders_found[] = $directory;
-			}
-
-			$sub_folders = Utility::scandir( $directory, 'folders' );
-
-			foreach ( $sub_folders as $sub_folder ) {
-				$sub_folder_path = sprintf( '%s/%s', $directory, $sub_folder );
-
-				$folders_found = array_merge(
-					$folders_found,
-					$this->autoload_directory_recursive( $sub_folder_path )
-				);
-			}
-
-			return $folders_found;
-		}
-
-		/**
 		 * An alias function for linking our class search function to the SPL autoload list.
 		 */
-		final protected static function register_spl_autoload_function() {
+		protected static function register_spl_autoload_function() {
 			spl_autoload_register( array( __CLASS__, 'search_for_class_file' ) );
 		}
 
 		/**
-		 * A function which, given a fully-qualified class, will look for a matching, slugified filename using the standard WordPress "class-{$class_name}.php" structure.
+		 * Read a module directory and cache class file locations.
 		 * 
-		 * @param string $search_class The name-component of a fully-qualified class to search a manicured list of default class directories for.
+		 * @param string $directory The module directory to scan.
+		 * @param string[] $includable_directories A list of includable directories under /includes/.
+		 * 
+		 * @return bool Whether or not the directory was scanned.
 		 */
-		final protected static function search_for_class_file( string $search_class ) {
-			// Form the name of the file we're searching for
+		public function add_module_directory( string $directory, array $includable_directories ) {
+			$directory = rtrim( $directory, '/' );
+
+			if ( ! is_dir( $directory ) ) {
+				return false;
+			}
+
+			// Ensure this module has not been autoloaded already
+			if ( isset( self::$scanned_modules[ $directory ] ) ) {
+				return false;
+			}
+
+			self::$scanned_modules[ $directory ] = true;
+
+			// Scan the module directory itself (non-recursive).
+			self::scan_directory_files( $directory );
+
+			$includes_dir = sprintf( '%s/%s', $directory, Module::$includes_dir );
+
+			if ( is_dir( $includes_dir ) ) {
+				// Scan includable directories recursively.
+				foreach ( $includable_directories as $includable_dir ) {
+					$include_path = sprintf( '%s/%s', $includes_dir, $includable_dir );
+
+					if ( is_dir( $include_path ) ) {
+						self::scan_directory_recursive( $include_path );
+					}
+				}
+
+				// Scan modules directory and recurse into module folders.
+				$modules_dir = sprintf( '%s/%s', $includes_dir, Module::$modules_dir );
+
+				if ( is_dir( $modules_dir ) ) {
+					$module_folders = Utility::scandir( $modules_dir, 'folders' );
+
+					foreach ( $module_folders as $module_folder ) {
+						$module_path = sprintf( '%s/%s', $modules_dir, $module_folder );
+						self::add_module_directory( $module_path, $includable_directories );
+					}
+				}
+			}
+
+			return true;
+		}
+
+		/**
+		 * Search for a class file via the cached class map.
+		 * 
+		 * @param string $search_class The class name to search for.
+		 */
+		public static function search_for_class_file( string $search_class ) {
+			// Form the name of the file we're searching for.
 			$search_class_slug = Utility::slugify( Utility::class_basename( $search_class ) );
 			$search_filename = sprintf( 'class-%s.php', $search_class_slug );
 
+			// Check if any such file name possibility has been registered
+			if ( ! isset( self::$class_map[ $search_filename ] ) ) {
+				return;
+			}
+
 			$search_version = Utility::get_namespace_version( $search_class );
 
-			// Look through all autoload directories for a matching file
-			foreach ( self::instance()->autoload_directories as $directory ) {
+			// Search through all of the directories associated with the filename
+			foreach ( self::$class_map[ $search_filename ] as $directory ) {
 				$found_file = trailingslashit( $directory ) . $search_filename;
 
-				// If the file name matches, check that the namespace matches
-				if ( file_exists( $found_file ) ) {
-					$found_class = sprintf(
-						'%s\%s',
-						Utility::get_file_namespace( $found_file ),
-						Utility::get_file_class_name( $found_file )
-					);
+				$found_class = sprintf(
+					'%s\%s',
+					Utility::get_file_namespace( $found_file ),
+					Utility::get_file_class_name( $found_file )
+				);
 
+				if ( $found_class === $search_class ) {
+					// If the full paths match, load it
+					require( $found_file );
+					break;
+				} else if ( is_int( array_search( $search_version, Framework::COMPATIBILITY_VERSIONS ) ) ) {
+					// Check if replacing the namespace version with a supported one matches
 					$found_version = Utility::get_namespace_version( $found_class );
+					$supportable_class = str_replace( $found_version, $search_version, $found_class );
 
-					if ( $found_class === $search_class ) {
-						// If the full paths match, load it
+					if ( $supportable_class === $search_class ) {
+						// If replacing the version matches the desired namespace, create an alias for the found class
 						require( $found_file );
+
+						$search_not_exist = ! class_exists( $search_class, false )
+										&& ! interface_exists( $search_class, false )
+										&& ! trait_exists( $search_class, false );
+
+						$found_exists = class_exists( $found_class, false )
+										|| interface_exists( $found_class, false )
+										|| trait_exists( $found_class );
+
+						if ( $search_not_exist && $found_exists ) class_alias( $found_class, $search_class, false );
 						break;
-					} else if ( is_int( array_search( $search_version, Framework::COMPATIBILITY_VERSIONS ) ) ) {
-						// Check if replacing the namespace version with a supported one matches
-						$supportable_class = str_replace( $found_version, $search_version, $found_class );
-
-						if ( $supportable_class === $search_class ) {
-							// If replacing the version matches the desired namespace, create an alias for the found class
-							require( $found_file );
-
-							$search_not_exist = ! class_exists( $search_class, false )
-											&& ! interface_exists( $search_class, false )
-											&& ! trait_exists( $search_class, false );
-
-							$found_exists = class_exists( $found_class, false )
-											|| interface_exists( $found_class, false )
-											|| trait_exists( $found_class );
-
-							if ( $search_not_exist && $found_exists ) class_alias( $found_class, $search_class, false );
-							break;
-						} else {
-							// If the namespaces don't match, keep looking
-							continue;
-						}
-
+					} else {
+						continue;
 					}
-
 				}
+			}
+		}
+
+		/**
+		 * Scan a directory (non-recursive) and map any class files found.
+		 * 
+		 * @param string $directory The directory to scan.
+		 */
+		private static function scan_directory_files( string $directory ) {
+			if ( ! is_dir( $directory ) ) {
+				return;
+			}
+
+			$files = Utility::scandir( $directory, 'files' );
+
+			foreach ( $files as $file ) {
+				self::map_class_file( $directory, $file );
+			}
+		}
+
+		/**
+		 * Recursively scan a directory and map any class files found.
+		 * 
+		 * @param string $directory The directory to scan.
+		 */
+		private static function scan_directory_recursive( string $directory ) {
+			$directory = rtrim( $directory, '/' );
+
+			if ( ! is_dir( $directory ) ) {
+				return;
+			}
+
+			$items = Utility::scandir( $directory );
+
+			foreach ( $items as $item ) {
+				$item_path = sprintf( '%s/%s', $directory, $item );
+
+				if ( is_dir( $item_path ) ) {
+					// Scan a directory
+					self::scan_directory_recursive( $item_path );
+				} else if ( is_file( $item_path ) ) {
+					// Scan a file
+					self::map_class_file( $directory, $item );
+				}
+			}
+		}
+
+		/**
+		 * Add a class file to the class map if it matches the expected naming convention.
+		 * 
+		 * @param string $directory The directory where the file is located.
+		 * @param string $file The file name.
+		 */
+		private static function map_class_file( string $directory, string $file ) {
+			if ( ! preg_match( '/^class-([a-z-\.0-9]+)\.php$/i', $file ) ) {
+				return;
+			}
+
+			$directory = rtrim( $directory, '/' );
+
+			if ( ! isset( self::$class_map[ $file ] ) ) {
+				self::$class_map[ $file ] = array();
+			}
+
+			if ( ! in_array( $directory, self::$class_map[ $file ] ) ) {
+				self::$class_map[ $file ][] = $directory;
 			}
 		}
 

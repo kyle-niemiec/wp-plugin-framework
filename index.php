@@ -17,20 +17,25 @@
 
 defined( 'ABSPATH' ) or exit;
 
+use WPPF\v1_2_1\Framework\Autoloader;
 use WPPF\v1_2_1\Framework\Admin_Module;
 use WPPF\v1_2_1\Framework\Framework;
 use WPPF\v1_2_1\Framework\Module;
-use WPPF\v1_2_1\Framework\Module_Autoloader;
 
 global $WPPF_FRAMEWORKS;
 
 /**
- * Autoload directory structure
+ * Require the basic class files to spin up the autoloader.
  */
 if ( ! class_exists( '\WPPF\v1_2_1\Autoloader', false ) ) {
 	require_once ( plugin_dir_path( __FILE__ ) . 'includes/modules/framework-module/includes/classes/class-autoloader.php' );
-	Module_Autoloader::add_module_directory( __DIR__, Module::$includes );
-	Module_Autoloader::add_module_directory( sprintf( '%s/admin', __DIR__ ), Admin_Module::$includes );
+	require_once ( plugin_dir_path( __FILE__ ) . 'includes/modules/framework-module/includes/abstracts/class-module.php' );
+	require_once ( plugin_dir_path( __FILE__ ) . 'includes/modules/plugin-module/includes/modules/upgrader/includes/traits/class-plugin-upgrader-trait.php' );
+	require_once ( plugin_dir_path( __FILE__ ) . 'includes/modules/wordpress-module/includes/abstracts/class-plugin.php' );
+	require_once ( plugin_dir_path( __FILE__ ) . 'includes/modules/framework-module/includes/abstracts/class-admin-module.php' );
+
+	Autoloader::instance()->add_module_directory( __DIR__, Module::$includes );
+	Autoloader::instance()->add_module_directory( sprintf( '%s/admin', __DIR__ ), Admin_Module::$includes );
 }
 
 /**

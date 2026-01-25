@@ -56,18 +56,12 @@ if ( ! class_exists( '\WPPF\v1_2_1\Framework\Module', false ) ) {
 		protected $loaded_modules = array();
 
 		/**
-		 * @var array A list of autoload include folders which have been successfully registered via the current module.
-		 */
-		protected $loaded_includes = array();
-
-		/**
 		 * A protected constructor to ensure only singleton instances of plugins exist.
 		 */
 		protected function __construct( bool $is_submodule = false ) {
 			$this->is_submodule = $is_submodule;
 
 			if ( $this->enabled ) {
-				$this->autoload_includes();
 				$this->register_submodules();
 
 				if ( ! $this->is_submodule ) {
@@ -205,32 +199,6 @@ if ( ! class_exists( '\WPPF\v1_2_1\Framework\Module', false ) ) {
 			}
 
 			return false;
-		}
-
-		/**
-		 * Will iterate through the static class instance's includes and autoload any directories it finds.
-		 */
-		final protected function autoload_includes() {
-			if ( self::is_flat_module() ) {
-				return;
-			}
-
-			if ( is_array( static::$includes ) ) {
-				foreach ( static::$includes as $include ) {
-					$__DIR__ = dirname( $this->get_class_reflection()->getFileName() );
-					$includes_path = sprintf( '%s/%s/%s', $__DIR__, static::$includes_dir, $include );
-
-					if ( ! is_dir( $includes_path ) ) {
-						break;
-					}
-
-					$loaded_directories = Framework::instance()
-						->get_autoloader()
-						->autoload_directory_recursive( $includes_path );
-
-					$this->loaded_includes = array_merge( $this->loaded_includes, $loaded_directories );
-				}
-			}
 		}
 
 		/**
