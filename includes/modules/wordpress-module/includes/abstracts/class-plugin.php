@@ -68,7 +68,7 @@ if ( ! class_exists( '\WPPF\v1_2_1\WordPress\Plugin', false ) ) {
 			parent::__construct( $is_submodule );
 
 			// If this instance directly inherits \WPPF\v1_2_1.
-			if ( is_subclass_of( $this, self::class ) ) {
+			if ( is_subclass_of( $this, self::class ) && ! is_subclass_of( $this, Admin_Module::class ) ) {
 				Framework::instance()->register_plugin( $this );
 				$this->maybe_init_admin();
 			}
@@ -161,6 +161,7 @@ if ( ! class_exists( '\WPPF\v1_2_1\WordPress\Plugin', false ) ) {
 				$admin_module_name = sprintf( '%s\%s_Admin', $namespace, $reflection->getShortName() );
 
 				if ( class_exists( $admin_module_name, false ) && is_subclass_of( $admin_module_name, Admin_Module::class ) ) {
+					Framework::instance()->get_autoloader()->add_module_directory( $folder_name, Admin_Module::$includes );
 					$Admin_Module = $admin_module_name::submodule_instance();
 					$this->admin_module = $Admin_Module;
 					$admin_module_info = new \ReflectionClass( $Admin_Module );

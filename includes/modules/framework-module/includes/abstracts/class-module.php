@@ -62,6 +62,11 @@ if ( ! class_exists( '\WPPF\v1_2_1\Framework\Module', false ) ) {
 			$this->is_submodule = $is_submodule;
 
 			if ( $this->enabled ) {
+				Framework::instance()->get_autoloader()->add_module_directory(
+					dirname( $this->get_class_reflection()->getFileName() ),
+					static::$includes
+				);
+
 				$this->register_submodules();
 
 				if ( ! $this->is_submodule ) {

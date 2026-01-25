@@ -96,6 +96,7 @@ if ( ! class_exists( '\WPPF\v1_2_1\Framework\Autoloader', false ) ) {
 				$modules_dir = sprintf( '%s/%s', $includes_dir, Module::$modules_dir );
 
 				if ( is_dir( $modules_dir ) ) {
+					self::add_module_directory( $modules_dir, $includable_directories );
 					$module_folders = Utility::scandir( $modules_dir, 'folders' );
 
 					foreach ( $module_folders as $module_folder ) {
@@ -134,6 +135,9 @@ if ( ! class_exists( '\WPPF\v1_2_1\Framework\Autoloader', false ) ) {
 					Utility::get_file_namespace( $found_file ),
 					Utility::get_file_class_name( $found_file )
 				);
+
+				$found_class = ltrim( $found_class, '\\' );
+				$search_class = ltrim( $search_class, '\\' );
 
 				if ( $found_class === $search_class ) {
 					// If the full paths match, load it
