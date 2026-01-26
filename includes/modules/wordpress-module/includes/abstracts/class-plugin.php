@@ -11,18 +11,18 @@
  * @package WPPF
  */
 
-namespace WPPF\v1_2_0\WordPress;
+namespace WPPF\v1_2_1\WordPress;
 
 defined( 'ABSPATH' ) or exit;
 
-use WPPF\v1_2_0\Framework\Admin_Module;
-use WPPF\v1_2_0\Framework\Framework;
-use WPPF\v1_2_0\Framework\Module;
-use WPPF\v1_2_0\Framework\Utility;
-use WPPF\v1_2_0\Plugin\Plugin_Upgrader_Trait;
-use WPPF\v1_2_0\WordPress\Post_Type;
+use WPPF\v1_2_1\Framework\Admin_Module;
+use WPPF\v1_2_1\Framework\Framework;
+use WPPF\v1_2_1\Framework\Module;
+use WPPF\v1_2_1\Framework\Utility;
+use WPPF\v1_2_1\Plugin\Plugin_Upgrader_Trait;
+use WPPF\v1_2_1\WordPress\Post_Type;
 
-if ( ! class_exists( '\WPPF\v1_2_0\WordPress\Plugin', false ) ) {
+if ( ! class_exists( '\WPPF\v1_2_1\WordPress\Plugin', false ) ) {
 
 	/**
 	 * A class to represent and help deal with common plugin functionality.
@@ -32,7 +32,7 @@ if ( ! class_exists( '\WPPF\v1_2_0\WordPress\Plugin', false ) ) {
 		// Use Plugin Upgrader trait
 		use Plugin_Upgrader_Trait;
 
-		/** @var \WPPF\v1_2_0\Admin_Module The admin module, if loaded. */
+		/** @var \WPPF\v1_2_1\Admin_Module The admin module, if loaded. */
 		protected $admin_module;
 
 		/** @var string The default directory for loading templates. */
@@ -47,7 +47,7 @@ if ( ! class_exists( '\WPPF\v1_2_0\WordPress\Plugin', false ) ) {
 		/**
 		 * Get the Admin Module.
 		 * 
-		 * @return null|\WPPF\v1_2_0\Admin_Module The Admin Module.
+		 * @return null|\WPPF\v1_2_1\Admin_Module The Admin Module.
 		 */
 		final public function get_admin_module() { return $this->admin_module; }
 
@@ -65,13 +65,14 @@ if ( ! class_exists( '\WPPF\v1_2_0\WordPress\Plugin', false ) ) {
 			register_activation_hook( $file, array( __CLASS__, 'activation' ) );
 			register_deactivation_hook( $file, array( __CLASS__, 'deactivation' ) );
 
-			// If this instance directly inherits \WPPF\v1_2_0.
-			if ( is_subclass_of( $this, self::class ) ) {
+			parent::__construct( $is_submodule );
+
+			// If this instance directly inherits \WPPF\v1_2_1.
+			if ( is_subclass_of( $this, self::class ) && ! is_subclass_of( $this, Admin_Module::class ) ) {
 				Framework::instance()->register_plugin( $this );
 				$this->maybe_init_admin();
 			}
 
-			parent::__construct( $is_submodule );
 			$this->init_upgrader();
 			$this->register_available_post_types();
 		}
@@ -145,7 +146,7 @@ if ( ! class_exists( '\WPPF\v1_2_0\WordPress\Plugin', false ) ) {
 		}
 
 		/**
-		 * Look for the admin module and load it. It was decided the admin module should stay in \WPPF\v1_2_0 and not belong in \WPPF\v1_2_0\Module
+		 * Look for the admin module and load it. It was decided the admin module should stay in \WPPF\v1_2_1 and not belong in \WPPF\v1_2_1\Module
 		 * because it may be cleaner to isolate all of the admin code to one area so we don't have to look for admin functionality in admin and non-admin modules. Admin extensions
 		 * should then only be available to root plugins.
 		 */
@@ -160,6 +161,7 @@ if ( ! class_exists( '\WPPF\v1_2_0\WordPress\Plugin', false ) ) {
 				$admin_module_name = sprintf( '%s\%s_Admin', $namespace, $reflection->getShortName() );
 
 				if ( class_exists( $admin_module_name, false ) && is_subclass_of( $admin_module_name, Admin_Module::class ) ) {
+					Framework::instance()->get_autoloader()->add_module_directory( $folder_name, Admin_Module::$includes );
 					$Admin_Module = $admin_module_name::submodule_instance();
 					$this->admin_module = $Admin_Module;
 					$admin_module_info = new \ReflectionClass( $Admin_Module );
@@ -180,7 +182,7 @@ if ( ! class_exists( '\WPPF\v1_2_0\WordPress\Plugin', false ) ) {
 		}
 
 		/**
-		 * Search for {@see \WPPF\v1_2_0\WordPress\Post_Type} classes in the Plugin { static::$post_types_dir } and register them.
+		 * Search for {@see \WPPF\v1_2_1\WordPress\Post_Type} classes in the Plugin { static::$post_types_dir } and register them.
 		 */
 		private function register_available_post_types() {
 			$reflection = $this->get_class_reflection();

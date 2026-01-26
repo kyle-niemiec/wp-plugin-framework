@@ -17,23 +17,31 @@
 
 defined( 'ABSPATH' ) or exit;
 
-use WPPF\v1_2_0\Framework\Framework;
-use WPPF\v1_2_0\Framework\Autoloader;
+use WPPF\v1_2_1\Framework\Autoloader;
+use WPPF\v1_2_1\Framework\Admin_Module;
+use WPPF\v1_2_1\Framework\Framework;
+use WPPF\v1_2_1\Framework\Module;
 
 global $WPPF_FRAMEWORKS;
 
 /**
- * The Autoloader is really all we need to start calling things up, so fire it up if it hasn't been.
+ * Require the basic class files to spin up the autoloader.
  */
-if ( ! class_exists( '\WPPF\v1_2_0\Autoloader', false ) ) {
-	require_once ( plugin_dir_path( __FILE__ ) . 'includes/modules/framework-module/classes/class-autoloader.php' );
-	Autoloader::instance()->autoload_directory_recursive( __DIR__ . '/includes' );
+if ( ! class_exists( '\WPPF\v1_2_1\Autoloader', false ) ) {
+	require_once ( plugin_dir_path( __FILE__ ) . 'includes/modules/framework-module/includes/classes/class-autoloader.php' );
+	require_once ( plugin_dir_path( __FILE__ ) . 'includes/modules/framework-module/includes/abstracts/class-module.php' );
+	require_once ( plugin_dir_path( __FILE__ ) . 'includes/modules/plugin-module/includes/modules/upgrader/includes/traits/class-plugin-upgrader-trait.php' );
+	require_once ( plugin_dir_path( __FILE__ ) . 'includes/modules/wordpress-module/includes/abstracts/class-plugin.php' );
+	require_once ( plugin_dir_path( __FILE__ ) . 'includes/modules/framework-module/includes/abstracts/class-admin-module.php' );
+
+	Autoloader::instance()->add_module_directory( __DIR__, Module::$includes );
+	Autoloader::instance()->add_module_directory( sprintf( '%s/admin', __DIR__ ), Admin_Module::$includes );
 }
 
 /**
  * Set global function for accessing Framework instances.
  * 
- * @return \WPPF\v1_2_0\Framework[] The WordPress plugin frameworks by version.
+ * @return \WPPF\v1_2_1\Framework[] The WordPress plugin frameworks by version.
  */
 if ( ! function_exists( 'wppf_frameworks' ) ) {
 
@@ -49,13 +57,13 @@ if ( ! function_exists( 'wppf_frameworks' ) ) {
 /**
  * Instantiate the current Framework version and add to the Frameworks list.
  */
-if ( ! class_exists( '\WPPF\v1_2_0\Framework', false ) ) {
+if ( ! class_exists( '\WPPF\v1_2_1\Framework', false ) ) {
 	$WPPF_FRAMEWORKS[ Framework::get_version() ] = Framework::instance();
 }
 
 /**
  * Initialize the shadow plugin
  */
-if ( ! class_exists( '\WPPF\v1_2_0\WPPF_Shadow_Plugin', false ) ) {
+if ( ! class_exists( '\WPPF\v1_2_1\WPPF_Shadow_Plugin', false ) ) {
 	require_once( __DIR__ . '/wppf-shadow-plugin.php' );
 }

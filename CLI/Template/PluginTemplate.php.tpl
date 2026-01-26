@@ -10,7 +10,7 @@
 
 defined( 'ABSPATH' ) or exit;
 
-use WPPF\v1_2_0\WordPress\Plugin;
+use WPPF\v1_2_1\WordPress\Plugin;
 
 // Require the WordPress Plugin Framework
 require_once __DIR__ . '/vendor/kyle-niemiec/wp-plugin-framework/index.php';

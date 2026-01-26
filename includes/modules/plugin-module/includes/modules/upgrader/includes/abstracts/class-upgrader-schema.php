@@ -11,13 +11,13 @@
  * @package WPPF
  */
 
-namespace WPPF\v1_2_0\Plugin;
+namespace WPPF\v1_2_1\Plugin;
 
 defined( 'ABSPATH' ) or exit;
 
-use WPPF\v1_2_0\Framework\Utility;
+use WPPF\v1_2_1\Framework\Utility;
 
-if ( ! class_exists( '\WPPF\v1_2_0\Plugin\Upgrader_Schema', false ) ) {
+if ( ! class_exists( '\WPPF\v1_2_1\Plugin\Upgrader_Schema', false ) ) {
 
 	/**
 	 * A class to control the basic functionality for an Upgrader Schema (super descriptive, ty me).

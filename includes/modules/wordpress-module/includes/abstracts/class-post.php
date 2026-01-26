@@ -11,13 +11,13 @@
  * @package WPPF
  */
 
-namespace WPPF\v1_2_0\WordPress;
+namespace WPPF\v1_2_1\WordPress;
 
 defined( 'ABSPATH' ) or exit;
 
-use WPPF\v1_2_0\WordPress\Post_Meta;
+use WPPF\v1_2_1\WordPress\Post_Meta;
 
-if ( ! class_exists( '\WPPF\v1_2_0\WordPress\Post', false ) ) {
+if ( ! class_exists( '\WPPF\v1_2_1\WordPress\Post', false ) ) {
 
 	/**
 	 * A class to represent and help deal with common custom post type functionality.
@@ -61,7 +61,7 @@ if ( ! class_exists( '\WPPF\v1_2_0\WordPress\Post', false ) ) {
 		 * 
 		 * @param string $meta_key The meta key of the Meta to return.
 		 *
-		 * @return null|\WPPF\v1_2_0\WordPress\Post_Meta The Post meta if found or NULL.
+		 * @return null|\WPPF\v1_2_1\WordPress\Post_Meta The Post meta if found or NULL.
 		 */
 		final public function get_meta( string $meta_key = '' ) {
 
@@ -120,7 +120,7 @@ if ( ! class_exists( '\WPPF\v1_2_0\WordPress\Post', false ) ) {
 		/**
 		 * Add a Post Meta to this Post.
 		 * 
-		 * @param \WPPF\v1_2_0\WordPress\Post_Meta
+		 * @param \WPPF\v1_2_1\WordPress\Post_Meta
 		 */
 		final protected function add_meta( Post_Meta $Meta ) {
 			if ( ! array_key_exists( $Meta->key(), $this->Meta ) ) {
