@@ -11,13 +11,14 @@
  * @package WPPF
  */
 
-use WPPF\CLI\Command\CreatePluginCommand;
-use WPPF\CLI\Command\FrameworkVersionUpgradeCommand;
+namespace WPPF\CLI\Command;
+
 use Symfony\Component\Console\Application;
 
 $application = new Application( 'WP Plugin Framework CLI', '0.0.1' );
 
 // Register commands
+$application->add( new CreatePluginAdminCommand );
 $application->add( new CreatePluginCommand );
 $application->add( new FrameworkVersionUpgradeCommand );
 

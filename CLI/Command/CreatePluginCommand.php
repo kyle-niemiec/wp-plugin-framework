@@ -22,6 +22,7 @@ use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
+use WPPF\CLI\Static\ConsoleColor;
 
 /**
  * A command to gather information from the user and construct a plugin main file for the user in the CWD.
@@ -71,6 +72,11 @@ final class CreatePluginCommand extends Command
 			$output->writeln( StyleUtil::error( "There was an error writing out the plugin file to disk." ) );
 			return Command::FAILURE;
 		}
+
+		$output->writeln( StyleUtil::color(
+			"Plugin file was created!",
+			ConsoleColor::Green
+		) );
 
 		// Success!
 		return Command::SUCCESS;
@@ -172,7 +178,7 @@ final class CreatePluginCommand extends Command
 	 * 
 	 * @return bool Returns true if the plugin file exists, false if it does not.
 	 */
-	private static function check_plugin_exists( string $slug ): bool
+	public static function check_plugin_exists( string $slug ): bool
 	{
 		$output_file = sprintf( '%s/%s.php', getcwd(), $slug );
 		return file_exists( $output_file );
@@ -235,8 +241,8 @@ final class CreatePluginCommand extends Command
 
 		$output->writeln(
 			StyleUtil::color(
-				sprintf( 'Creating plugin class %s (%s)', $plugin_class_name, $slug ),
-				'gray'
+				sprintf( 'Creating plugin class %s (%s.php)', $plugin_class_name, $slug ),
+				ConsoleColor::Cyan
 			)
 		);
 	}
