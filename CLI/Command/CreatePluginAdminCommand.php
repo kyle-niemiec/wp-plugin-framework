@@ -30,9 +30,9 @@ use WPPF\CLI\Static\HelperBundle;
  */
 #[AsCommand(
 	description: 'Create an admin module class from a template.',
-	name: 'make:admin-module'
+	name: 'make:plugin-admin'
 )]
-final class CreateAdminModuleCommand extends Command
+final class CreatePluginAdminCommand extends Command
 {
 	/**
 	 * Set up the helper variables, control user message flow.
