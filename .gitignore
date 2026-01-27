@@ -4,3 +4,6 @@ vendor/
 # Doctum
 /docs
 /.doctum-cache
+
+# PHPUnit
+/.phpunit.cache

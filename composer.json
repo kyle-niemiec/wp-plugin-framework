@@ -14,7 +14,8 @@
 	"name": "kyle-niemiec/wp-plugin-framework",
 	"require-dev": {
 		"symfony/console": "^6.4",
-		"code-lts/doctum": "^5.5"
+		"code-lts/doctum": "^5.5",
+		"phpunit/phpunit": "^10.5"
 	},
 	"scripts": {
 		"cache:clear": "rm -rf ./.doctum-cache ; mkdir ./.doctum-cache",
