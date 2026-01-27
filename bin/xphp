@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+export XDEBUG_SESSION=1
+exec php "$@"
+

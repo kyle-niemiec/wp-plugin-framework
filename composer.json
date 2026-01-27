@@ -8,7 +8,7 @@
 			"WPPF\\": ""
 		}
 	},
-	"bin": ["bin/wppf"],
+	"bin": ["bin/wppf", "bin/xphp"],
 	"description": "My framework for facilitating WordPress plugin development.",
 	"license": "GPL-3.0",
 	"name": "kyle-niemiec/wp-plugin-framework",
@@ -21,7 +21,8 @@
 		"cache:clear": "rm -rf ./.doctum-cache ; mkdir ./.doctum-cache",
 		"docs:clean": "rm -rf ./docs ; mkdir -p ./docs/api",
 		"docs:generate": "composer docs:clean ; ./vendor/bin/doctum.php update ./doctum.php",
-		"framework:version:upgrade": "./bin/wppf framework:version:upgrade"
+		"framework:version:upgrade": "./bin/wppf framework:version:upgrade",
+		"tests:run:all": "bin/xphp vendor/bin/phpunit -c ./phpunit.xml"
 	},
 	"type": "library",
 	"version": "1.2.1"
