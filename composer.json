@@ -5,7 +5,8 @@
 	}],
 	"autoload": {
 		"psr-4": {
-			"WPPF\\": ""
+			"WPPF\\": "",
+			"WPPF\\Tests\\": "tests/"
 		}
 	},
 	"bin": ["bin/wppf", "bin/xphp"],

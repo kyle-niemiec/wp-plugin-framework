@@ -1,6 +1,9 @@
 # All vendor files
 vendor/
 
+# VS Code configurations
+/.vscode
+
 # Doctum
 /docs
 /.doctum-cache

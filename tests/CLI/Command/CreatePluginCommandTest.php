@@ -6,79 +6,18 @@
  */
 
 use PHPUnit\Framework\Attributes\Test;
-use PHPUnit\Framework\TestCase;
-use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
 use WPPF\CLI\Command\CreatePluginCommand;
 use WPPF\CLI\Static\CliUtil;
+use WPPF\Tests\Support\CliPluginTestCase;
 
-final class CreatePluginCommandTest extends TestCase
+final class CreatePluginCommandTest extends CliPluginTestCase
 {
-	/** @var string The intended slug used for the root folder of the plugin. */
-	public const PLUGIN_SLUG = 'my-test-plugin';
-
-	/** @var Application|null The Symfony Command application which executes our context. */
-	private static ?Application $console = null;
-
-	/** @var string|null The directory the command was initiated inside of. */
-	private static ?string $cmdDir = null;
-
-	/** @var string|null The writable directory the command will be executed inside of. */
-	private static ?string $tmpDir = null;
-
 	/**
-	 * Create the test fixtures and temporary directory for the command.
+	 * @inheritDoc
 	 */
-	public static function setUpBeforeClass(): void
-	{
-		// Tear down before set up to unlink possibly existing files from previous test runs.
-		parent::tearDownAfterClass();
-		parent::setUpBeforeClass();
-
-		// Save original directory and go into new one.
-		self::$cmdDir = getcwd();
-
-		self::$tmpDir = sprintf(
-			'%s/%s/%s',
-			rtrim( sys_get_temp_dir(), '/' ),
-			'wppf-tests',
-			self::PLUGIN_SLUG
-		);
-
-		if ( ! is_dir( self::$tmpDir ) ) {
-			mkdir( self::$tmpDir, 0777, true );
-		}
-
-		chdir( self::$tmpDir );
-
-		// Create the Symfony application
-		self::$console = new Application;
-		self::$console->add( new CreatePluginCommand );
-	}
-
-	/**
-	 * Remove the temporary directory after the command runs.
-	 */
-	public static function tearDownAfterClass(): void
-	{
-		parent::tearDownAfterClass();
-		$filename = self::PLUGIN_SLUG . '.php';
-
-		if ( file_exists( $filename ) ) {
-			unlink( $filename );
-		}
-
-		chdir( self::$cmdDir );
-
-		if ( is_dir( self::$tmpDir ) && count( scandir( self::$tmpDir ) ) === 2 ) {
-			rmdir( self::$tmpDir );
-		}
-
-		self::$console = null;
-		self::$cmdDir = null;
-		self::$tmpDir = null;
-	}
+	public static function getCommand(): Command { return new CreatePluginCommand; }
 
 	/**
 	 * Pass: Create a new folder and use the command to create a file inside of it.
