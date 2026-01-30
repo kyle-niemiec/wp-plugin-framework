@@ -132,20 +132,11 @@ final class CreatePluginAdminCommand extends Command
 	 */
 	private static function ask_create_plugin( HelperBundle $bundle ): bool
 	{
-		$q = "Do you want to create the primary plugin file? (y/n): ";
+		$yn = StyleUtil::color( '(yes/no) ', ConsoleColor::Yellow );
+		$q = "Do you want to create the primary plugin file? " . $yn;
 		$question = new Question( $q );
 
-		$question->setValidator( function ( $value ) use ( $q ): string {
-			$value = strtolower( trim( strval( $value ) ) );
-
-			if ( $value === null || trim( $value ) === '' ) {
-				throw new \RuntimeException( "The plugin name cannot be empty." );
-			} else if ( $value !== 'y' && $value !== 'n' ) {
-				throw new \RuntimeException( $q );
-			}
-
-			return $value;
-		} );
+		$question->setValidator( CliUtil::yesNoValidator() );
 
 		$answer = $bundle->helper->ask( $bundle->input, $bundle->output, $question );
 		return 'y' === $answer ? true : false;

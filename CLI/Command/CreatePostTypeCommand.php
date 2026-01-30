@@ -171,19 +171,12 @@ final class CreatePostTypeCommand extends Command
 	 */
 	private static function ask_show_in_menu( HelperBundle $bundle ): bool
 	{
-		$question = new Question( 'Do you want to show this post type in the admin menu? (yes/no) ' );
-
-		$question->setValidator( function ( $value ): string {
-			$value = strtolower( trim( strval( $value ) ) );
-
-			if ( ! in_array( $value, array( 'yes', 'no', 'y', 'n' ) ) ) {
-				throw new \RuntimeException( 'Please answer yes or no.' );
-			}
-
-			return $value;
-		} );
+		$yn = StyleUtil::color( '(yes/no) ', ConsoleColor::Yellow );
+		$question = new Question( 'Do you want to show this post type in the admin menu? ' . $yn );
+		$question->setValidator( CliUtil::yesNoValidator() );
 
 		$answer = $bundle->helper->ask( $bundle->input, $bundle->output, $question );
+
 		return in_array( $answer, array( 'yes', 'y' ) );
 	}
 
@@ -274,6 +267,7 @@ final class CreatePostTypeCommand extends Command
 	 */
 	private static function post_type_class_name( string $singular_name ): string
 	{
+		// Replace everything that isn't a letter or number with an underscore
 		$name = preg_replace( '/[^a-zA-Z\\d]/', '_', $singular_name );
 		return ucwords( $name, '_' );
 	}
@@ -287,6 +281,7 @@ final class CreatePostTypeCommand extends Command
 	 */
 	private static function post_type_slug( string $singular_name ): string
 	{
+		// Replace everything that isn't a letter or number with an underscore
 		$slug = preg_replace( '/[^a-zA-Z\\d]/', '_', $singular_name );
 		$slug = strtolower( trim( $slug, '_' ) );
 

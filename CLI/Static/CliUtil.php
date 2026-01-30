@@ -65,4 +65,23 @@ final class CliUtil
 
 		return implode( '_', $parts );
 	}
+
+	/**
+	 * Create a validator that can acccept yes/no/y/n.
+	 * 
+	 * @return callable A callback for the validator to use against text input.
+	 */
+	public static function yesNoValidator(): callable
+	{
+		return function ( $value ): string {
+			$value = strtolower( trim( strval( $value ) ) );
+
+			if ( ! in_array( $value, array( 'yes', 'no', 'y', 'n' ) ) ) {
+				throw new \RuntimeException( 'Please answer (y)es or (n)o.' );
+			}
+
+			return $value;
+		};
+	}
+
 }
