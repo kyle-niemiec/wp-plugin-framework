@@ -52,14 +52,14 @@ final class CreatePluginAdminCommandTest extends CliPluginTestCase
 	#[Test]
 	public function testAdminModuleFileAlreadyExistsFail(): void
 	{
-		$admin_file = sprintf( 'admin/%s-admin.php', CreatePluginCommandTest::PLUGIN_SLUG );
+		$adminFile = sprintf( 'admin/%s-admin.php', CreatePluginCommandTest::PLUGIN_SLUG );
 		$command = self::$console->find( 'make:plugin-admin' );
 		$tester = new CommandTester( $command );
 		$status = $tester->execute( [] );
 
 		// Assert the Command fails if the admin module file exists
 		self::assertSame( Command::FAILURE, $status );
-		self::assertFileExists( $admin_file );
+		self::assertFileExists( $adminFile );
 
 		self::assertStringContainsString(
 			'Error: The admin module file already exists.',

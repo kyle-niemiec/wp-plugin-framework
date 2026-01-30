@@ -59,15 +59,15 @@ final class CreatePostTypeCommandTest extends CliPluginTestCase
 	#[Test]
 	public function testPostTypeFileAlreadyExistsFail(): void
 	{
-		$target_dir = 'includes/post-types';
-		$target_file = $target_dir . '/album.php';
+		$targetDir = 'includes/post-types';
+		$targetFile = $targetDir . '/album.php';
 
-		if ( ! is_dir( $target_dir ) ) {
-			mkdir( $target_dir, 0777, true );
+		if ( ! is_dir( $targetDir ) ) {
+			mkdir( $targetDir, 0777, true );
 		}
 
-		if ( ! file_exists( $target_file ) ) {
-			file_put_contents( $target_file, "<?php\n// Test post type.\n" );
+		if ( ! file_exists( $targetFile ) ) {
+			file_put_contents( $targetFile, "<?php\n// Test post type.\n" );
 		}
 
 		$command = self::$console->find( 'make:post-type' );
@@ -82,7 +82,7 @@ final class CreatePostTypeCommandTest extends CliPluginTestCase
 		$status = $tester->execute( [], [ 'interactive' => true ] );
 
 		self::assertSame( Command::FAILURE, $status );
-		self::assertFileExists( $target_file );
+		self::assertFileExists( $targetFile );
 
 		self::assertStringContainsString(
 			'Error: The post type file already exists.',
