@@ -46,7 +46,7 @@ final class CreatePluginCommandTest extends CliPluginTestCase
 
 		// Assert the template variables are all as expected
 		$contents = file_get_contents( $output );
-		$class = CliUtil::plugin_class_name( self::PLUGIN_SLUG );
+		$class = CliUtil::underscorify( self::PLUGIN_SLUG, true );
 
 		self::assertStringContainsString( 'Plugin Name: Sample Plugin', $contents );
 		self::assertStringContainsString( 'Plugin URI: https://example.com/plugin', $contents );

@@ -45,7 +45,7 @@ final class CreatePluginCommand extends Command
 	{
 		// Set up command variables
 		$slug = basename( getcwd() );
-		$plugin_class_name = CliUtil::plugin_class_name( $slug );
+		$plugin_class_name = CliUtil::underscorify( $slug, true );
 		$bundle = new HelperBundle( new QuestionHelper, $input, $output );
 
 		// Ensure the plugin file doesn't exist

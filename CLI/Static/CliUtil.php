@@ -48,22 +48,24 @@ final class CliUtil
 	}
 
 	/**
-	 * Convert a lower-dash-case directory name to an Upper_Underscore_Case class name.
+	 * Convert a string to an Upper/lower_underscore_case format.
 	 * 
-	 * @param string $folder_name The name of the slugified folder to convert.
+	 * @param string $str The string to underscorify.
+	 * @param bool $upperCase True if the first letter of each "word" should be uppercase.
 	 * 
-	 * @return string The converted name of the class.
+	 * @return string The underscorified string.
 	 */
-	public static function plugin_class_name( string $folder_name ): string
+	public static function underscorify( string $str, bool $upperCase = false ): string
 	{
-		// Replace dashes with underscores
-		$name = str_replace( '-', '_', $folder_name );
+		// Replace everything that isn't a letter or number with an underscore
+		$str = preg_replace( '/[^a-zA-Z\\d]/', '_', $str );
 
-		// Capitalize each word separated by underscores
-		$parts = explode( '_', $name );
-		$parts = array_map( fn( $part ) => ucfirst( $part ), $parts );
+		if ( $upperCase ) {
+			return ucwords( $str, '_' );
+		} else {
+			return strtolower( trim( $str, '_' ) );
+		}
 
-		return implode( '_', $parts );
 	}
 
 	/**

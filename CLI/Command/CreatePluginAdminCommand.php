@@ -50,7 +50,7 @@ final class CreatePluginAdminCommand extends Command
 
 		$module_class_name = sprintf(
 			'%s_Admin',
-			CliUtil::plugin_class_name( $slug )
+			CliUtil::underscorify( $slug, true )
 		);
 
 		// Ensure the base plugin exists first

@@ -52,58 +52,53 @@ final class CreatePostTypeCommand extends Command
 			)
 		);
 
-		$singular_name = self::ask_singular_name( $bundle );
-		$plural_name = self::ask_plural_name( $bundle );
-		$show_in_menu = self::ask_show_in_menu( $bundle );
-		$menu_name = $singular_name;
+		// Collect post type information
+		$singularName = self::askSingularName( $bundle );
+		$pluralName = self::askPluralName( $bundle );
+		$showInMenu = self::askShowInMenu( $bundle );
+		$menuName = $singularName;
 
-		if ( $show_in_menu ) {
-			$menu_name = self::ask_menu_entry_title( $bundle, $singular_name );
+		if ( $showInMenu ) {
+			$menuName = self::ask_menu_entry_title( $bundle, $singularName );
 		}
 
-		$class_name = self::post_type_class_name( $singular_name );
-		$slug = self::post_type_slug( $singular_name );
+		$className = CliUtil::underscorify( $singularName, true );
+		$slug = CliUtil::underscorify( $singularName );
 
+		// Make sure the post type doesn't already exist
 		if ( self::check_post_type_exists( $slug ) ) {
 			$output->writeln( StyleUtil::error( 'Error: The post type file already exists.' ) );
 			return Command::FAILURE;
 		}
 
-		$output->writeln(
-			StyleUtil::color(
-				sprintf(
-					'Creating post type class %s (includes/post-types/%s.php)',
-					$class_name,
-					$slug
-				),
-				ConsoleColor::BrightCyan
-			)
-		);
-
 		try {
 			$template = CliUtil::apply_template(
 				'PostType',
 				[
-					'{{class_name}}' => $class_name,
+					'{{className}}' => $className,
 					'{{slug}}' => $slug,
-					'{{menu_name}}' => $menu_name,
-					'{{sungular_name}}' => $singular_name,
-					'{{plural_name}}' => $plural_name,
-					'{{show_in_menu}}' => $show_in_menu ? 'true' : 'false',
+					'{{menuName}}' => $menuName,
+					'{{sungular_name}}' => $singularName,
+					'{{pluralName}}' => $pluralName,
+					'{{showInMenu}}' => $showInMenu ? 'true' : 'false',
 				]
 			);
 		} catch ( \RuntimeException $e ) {
 			throw $e;
 		}
 
-		if ( ! self::create_post_type_file( $template, $slug ) ) {
+		if ( ! self::createPostTypeFile( $template, $slug ) ) {
 			$output->writeln( StyleUtil::error( 'There was an error writing out the post type file to disk.' ) );
 			return Command::FAILURE;
 		}
 
 		$output->writeln(
 			StyleUtil::color(
-				'Post type file was created!',
+				sprintf(
+					'Post type `%s` was created at `includes/post-types/%s.php`.',
+					$className,
+					$slug
+				),
 				ConsoleColor::Green
 			)
 		);
@@ -125,7 +120,7 @@ final class CreatePostTypeCommand extends Command
 	 *
 	 * @return string The singular name entered by the user.
 	 */
-	private static function ask_singular_name( HelperBundle $bundle ): string
+	private static function askSingularName( HelperBundle $bundle ): string
 	{
 		$question = new Question( 'What is the singular name of the custom post type? ' );
 
@@ -147,7 +142,7 @@ final class CreatePostTypeCommand extends Command
 	 *
 	 * @return string The plural name entered by the user.
 	 */
-	private static function ask_plural_name( HelperBundle $bundle ): string
+	private static function askPluralName( HelperBundle $bundle ): string
 	{
 		$question = new Question( 'What is the plural name of the custom post type? ' );
 
@@ -169,7 +164,7 @@ final class CreatePostTypeCommand extends Command
 	 *
 	 * @return bool True if the post type should show in the admin menu.
 	 */
-	private static function ask_show_in_menu( HelperBundle $bundle ): bool
+	private static function askShowInMenu( HelperBundle $bundle ): bool
 	{
 		$yn = StyleUtil::color( '(yes/no) ', ConsoleColor::Yellow );
 		$question = new Question( 'Do you want to show this post type in the admin menu? ' . $yn );
@@ -184,25 +179,25 @@ final class CreatePostTypeCommand extends Command
 	 * Ask the user for the admin menu entry title.
 	 *
 	 * @param HelperBundle $bundle The bundle containing the question and IO interfaces.
-	 * @param string $singular_name The singular name for the default.
+	 * @param string $singularName The singular name for the default.
 	 *
 	 * @return string The menu entry title entered by the user.
 	 */
-	private static function ask_menu_entry_title( HelperBundle $bundle, string $singular_name ): string
+	private static function ask_menu_entry_title( HelperBundle $bundle, string $singularName ): string
 	{
 		$question = new Question(
 			sprintf(
 				"What do you want the menu entry title to say? %s ",
-				StyleUtil::optional( sprintf( "Default: '%s'", $singular_name ) )
+				StyleUtil::optional( sprintf( "Default: '%s'", $singularName ) )
 			),
-			$singular_name
+			$singularName
 		);
 
-		$question->setValidator( function ( $value ) use ( $singular_name ): string {
+		$question->setValidator( function ( $value ) use ( $singularName ): string {
 			$clean = trim( strval( $value ) );
 
 			if ( '' === $clean ) {
-				return $singular_name;
+				return $singularName;
 			}
 
 			return $clean;
@@ -220,8 +215,8 @@ final class CreatePostTypeCommand extends Command
 	 */
 	private static function check_post_type_exists( string $slug ): bool
 	{
-		$output_file = self::post_type_file_path( $slug );
-		return file_exists( $output_file );
+		$outputFile = self::postTypeFilePath( $slug );
+		return file_exists( $outputFile );
 	}
 
 	/**
@@ -232,18 +227,18 @@ final class CreatePostTypeCommand extends Command
 	 *
 	 * @return bool The status of the file write operation.
 	 */
-	private static function create_post_type_file( string $template, string $slug ): bool
+	private static function createPostTypeFile( string $template, string $slug ): bool
 	{
-		$output_file = self::post_type_file_path( $slug );
-		$output_dir = dirname( $output_file );
+		$outputFile = self::postTypeFilePath( $slug );
+		$outputDir = dirname( $outputFile );
 
-		if ( ! is_dir( $output_dir ) ) {
-			if ( ! mkdir( $output_dir, 0755, true ) && ! is_dir( $output_dir ) ) {
+		if ( ! is_dir( $outputDir ) ) {
+			if ( ! mkdir( $outputDir, 0755, true ) && ! is_dir( $outputDir ) ) {
 				return false;
 			}
 		}
 
-		return file_put_contents( $output_file, $template );
+		return file_put_contents( $outputFile, $template );
 	}
 
 	/**
@@ -253,38 +248,9 @@ final class CreatePostTypeCommand extends Command
 	 *
 	 * @return string The post type file path.
 	 */
-	private static function post_type_file_path( string $slug ): string
+	private static function postTypeFilePath( string $slug ): string
 	{
 		return sprintf( '%s/includes/post-types/%s.php', getcwd(), $slug );
 	}
 
-	/**
-	 * Convert a singular name into the post type class name.
-	 *
-	 * @param string $singular_name The singular post type name.
-	 *
-	 * @return string The class name for the post type.
-	 */
-	private static function post_type_class_name( string $singular_name ): string
-	{
-		// Replace everything that isn't a letter or number with an underscore
-		$name = preg_replace( '/[^a-zA-Z\\d]/', '_', $singular_name );
-		return ucwords( $name, '_' );
-	}
-
-	/**
-	 * Convert a singular name into the post type slug.
-	 *
-	 * @param string $singular_name The singular post type name.
-	 *
-	 * @return string The slug for the post type.
-	 */
-	private static function post_type_slug( string $singular_name ): string
-	{
-		// Replace everything that isn't a letter or number with an underscore
-		$slug = preg_replace( '/[^a-zA-Z\\d]/', '_', $singular_name );
-		$slug = strtolower( trim( $slug, '_' ) );
-
-		return $slug;
-	}
 }

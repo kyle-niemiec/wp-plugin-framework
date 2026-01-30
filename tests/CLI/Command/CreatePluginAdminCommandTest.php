@@ -41,7 +41,7 @@ final class CreatePluginAdminCommandTest extends CliPluginTestCase
 
 		// Assert the template variables are all as expected
 		$contents = file_get_contents( $output );
-		$class = sprintf( '%s_Admin', CliUtil::plugin_class_name( CreatePluginCommandTest::PLUGIN_SLUG ) );
+		$class = sprintf( '%s_Admin', CliUtil::underscorify( CreatePluginCommandTest::PLUGIN_SLUG, true ) );
 
 		self::assertStringContainsString( "final class {$class} extends Admin_Module", $contents );
 	}
