@@ -13,22 +13,25 @@
 
 namespace WPPF\CLI\Command;
 
+use WPPF\CLI\Static\HelperBundle;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Question\Question;
 
 /**
  * A command to create a post type class for the current plugin.
  */
 #[AsCommand(
-	description: 'Create a post type class from a template.',
+	description: 'Create a custom post type and define basic options.',
 	name: 'make:post-type'
 )]
 final class CreatePostTypeCommand extends Command
 {
 	/**
-	 * Set up the helper variables, control user message flow.
+	 * Set up the helper variables, control message flow.
 	 *
 	 * @param InputInterface $input The terminal input interface.
 	 * @param OutputInterface $output The terminal output interface.
@@ -37,6 +40,81 @@ final class CreatePostTypeCommand extends Command
 	 */
 	protected function execute( InputInterface $input, OutputInterface $output ): int
 	{
+		$bundle = new HelperBundle( new QuestionHelper, $input, $output );
+
+		$singular_name = self::ask_singular_name( $bundle );
+		$plural_name = self::ask_plural_name( $bundle );
+		$show_in_menu = self::ask_show_in_menu( $bundle );
+
 		return Command::SUCCESS;
+	}
+
+	/**
+	 * Ask the user for the singular name of the post type.
+	 *
+	 * @param HelperBundle $bundle The bundle containing the question and IO interfaces.
+	 *
+	 * @return string The singular name entered by the user.
+	 */
+	private static function ask_singular_name( HelperBundle $bundle ): string
+	{
+		$question = new Question( 'Post type singular name: ' );
+
+		$question->setValidator( function ( $value ): string {
+			if ( null === $value || '' === trim( $value ) ) {
+				throw new \RuntimeException( 'The singular name cannot be empty.' );
+			}
+
+			return $value;
+		} );
+
+		return $bundle->helper->ask( $bundle->input, $bundle->output, $question );
+	}
+
+	/**
+	 * Ask the user for the plural name of the post type.
+	 *
+	 * @param HelperBundle $bundle The bundle containing the question and IO interfaces.
+	 *
+	 * @return string The plural name entered by the user.
+	 */
+	private static function ask_plural_name( HelperBundle $bundle ): string
+	{
+		$question = new Question( 'Post type plural name: ' );
+
+		$question->setValidator( function ( $value ): string {
+			if ( null === $value || '' === trim( $value ) ) {
+				throw new \RuntimeException( 'The plural name cannot be empty.' );
+			}
+
+			return $value;
+		} );
+
+		return $bundle->helper->ask( $bundle->input, $bundle->output, $question );
+	}
+
+	/**
+	 * Ask the user if the post type should show in the admin menu.
+	 *
+	 * @param HelperBundle $bundle The bundle containing the question and IO interfaces.
+	 *
+	 * @return bool True if the post type should show in the admin menu.
+	 */
+	private static function ask_show_in_menu( HelperBundle $bundle ): bool
+	{
+		$question = new Question( 'Do you want to show this post type in the admin menu? (yes/no): ' );
+
+		$question->setValidator( function ( $value ): string {
+			$value = strtolower( trim( strval( $value ) ) );
+
+			if ( ! in_array( $value, ['yes', 'no', 'y', 'n'] ) ) {
+				throw new \RuntimeException( 'Please answer yes or no.' );
+			}
+
+			return $value;
+		} );
+
+		$answer = $bundle->helper->ask( $bundle->input, $bundle->output, $question );
+		return in_array( $answer, ['yes', 'y'] );
 	}
 }
