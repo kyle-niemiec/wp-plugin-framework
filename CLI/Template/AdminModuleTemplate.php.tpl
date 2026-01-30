@@ -1,11 +1,11 @@
 <?php
 /**
- * The @see WPPF\v1_2_0\Framework\Module responsible for coordinating functionality in the admin dashboard.
+ * The @see WPPF\v1_2_1\Framework\Module responsible for coordinating functionality in the admin dashboard.
  */
 
 defined( 'ABSPATH' ) or exit;
 
-use WPPF\v1_2_0\Framework\Admin_Module;
+use WPPF\v1_2_1\Framework\Admin_Module;
 
 if ( ! class_exists( '{{module_class_name}}', false ) ) {
 
