@@ -27,7 +27,7 @@ final class CliUtil
 	 * @throws \RuntimeException Will throw an exception if the template is not found or a file error occurs.
 	 * @return string The fully formed template with variables dropped in.
 	 */
-	public static function apply_template( string $component, array $replacements ): string
+	public static function applyTemplate( string $component, array $replacements ): string
 	{
 		// Ensure the requested template exists
 		$template_path = __DIR__ . "/../Template/{$component}Template.php.tpl";

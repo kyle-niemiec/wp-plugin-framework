@@ -72,7 +72,7 @@ final class CreatePostTypeCommand extends Command
 		}
 
 		try {
-			$template = CliUtil::apply_template(
+			$template = CliUtil::applyTemplate(
 				'PostType',
 				[
 					'{{class_name}}' => $className,

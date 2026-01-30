@@ -48,25 +48,25 @@ final class CreatePluginAdminCommand extends Command
 		$slug = basename( getcwd() );
 		$bundle = new HelperBundle( new QuestionHelper, $input, $output );
 
-		$module_class_name = sprintf(
+		$moduleClassName = sprintf(
 			'%s_Admin',
 			CliUtil::underscorify( $slug, true )
 		);
 
 		// Ensure the base plugin exists first
-		if ( ! CreatePluginCommand::check_plugin_exists( $slug ) ) {
+		if ( ! CreatePluginCommand::checkPluginExists( $slug ) ) {
 			$output->writeln( StyleUtil::color(
 				sprintf( "Main plugin file not found (%s.php)", $slug ),
 				ConsoleColor::Yellow )
 			);
 
-			if ( self::ask_create_plugin( $bundle ) ) {
-				$create_plugin_command = new CreatePluginCommand();
-				$create_plugin_input = new ArrayInput( array() );
-				$create_plugin_input->setInteractive( $input->isInteractive() );
-				$status = $create_plugin_command->run( $create_plugin_input, $output );
+			if ( self::askCreatePlugin( $bundle ) ) {
+				$createPluginCommand = new CreatePluginCommand();
+				$createPluginInput = new ArrayInput( array() );
+				$createPluginInput->setInteractive( $input->isInteractive() );
+				$status = $createPluginCommand->run( $createPluginInput, $output );
 
-				if ( Command::SUCCESS !== $status || ! CreatePluginCommand::check_plugin_exists( $slug ) ) {
+				if ( Command::SUCCESS !== $status || ! CreatePluginCommand::checkPluginExists( $slug ) ) {
 					$output->writeln( StyleUtil::error(
 						"The plugin file was not created. Aborting admin module creation."
 					) );
@@ -85,24 +85,24 @@ final class CreatePluginAdminCommand extends Command
 		}
 
 		// Ensure the admin module file doesn't already exist
-		if ( self::check_admin_module_exists( $slug ) ) {
+		if ( self::checkAdminModuleExists( $slug ) ) {
 			$output->writeln( StyleUtil::error( "Error: The admin module file already exists." ) );
 			return Command::FAILURE;
 		}
 
 		$output->writeln(
 			StyleUtil::color(
-				sprintf( 'Creating admin module class %s (admin/%s-admin.php)', $module_class_name, $slug ),
+				sprintf( 'Creating admin module class %s (admin/%s-admin.php)', $moduleClassName, $slug ),
 				ConsoleColor::BrightCyan
 			)
 		);
 
 		// Apply the data to the template
 		try {
-			$template = CliUtil::apply_template(
+			$template = CliUtil::applyTemplate(
 				'AdminModule',
 				array(
-					'{{module_class_name}}' => $module_class_name,
+					'{{module_class_name}}' => $moduleClassName,
 				)
 			);
 		} catch ( \RuntimeException $e ) {
@@ -110,7 +110,7 @@ final class CreatePluginAdminCommand extends Command
 		}
 
 		// Write file
-		if ( ! self::create_admin_module_file( $template, $slug ) ) {
+		if ( ! self::createAdminModuleFile( $template, $slug ) ) {
 			$output->writeln( StyleUtil::error( "There was an error writing out the admin module file to disk." ) );
 			return Command::FAILURE;
 		}
@@ -130,7 +130,7 @@ final class CreatePluginAdminCommand extends Command
 	 * 
 	 * @return bool True if the user wants to create the plugin.
 	 */
-	private static function ask_create_plugin( HelperBundle $bundle ): bool
+	private static function askCreatePlugin( HelperBundle $bundle ): bool
 	{
 		$yn = StyleUtil::color( '(yes/no) ', ConsoleColor::Yellow );
 		$q = "Do you want to create the primary plugin file? " . $yn;
@@ -149,10 +149,10 @@ final class CreatePluginAdminCommand extends Command
 	 *
 	 * @return bool Returns true if the admin module file exists, false if it does not.
 	 */
-	private static function check_admin_module_exists( string $slug ): bool
+	private static function checkAdminModuleExists( string $slug ): bool
 	{
-		$output_file = self::admin_module_file_path( $slug );
-		return file_exists( $output_file );
+		$outputFile = self::adminModuleFilePath( $slug );
+		return file_exists( $outputFile );
 	}
 
 	/**
@@ -163,18 +163,18 @@ final class CreatePluginAdminCommand extends Command
 	 *
 	 * @return bool The status of the file write operation.
 	 */
-	private static function create_admin_module_file( string $template, string $slug ): bool
+	private static function createAdminModuleFile( string $template, string $slug ): bool
 	{
-		$output_file = self::admin_module_file_path( $slug );
-		$output_dir = dirname( $output_file );
+		$outputFile = self::adminModuleFilePath( $slug );
+		$outputDir = dirname( $outputFile );
 
-		if ( ! is_dir( $output_dir ) ) {
-			if ( ! mkdir( $output_dir, 0755, true ) && ! is_dir( $output_dir ) ) {
+		if ( ! is_dir( $outputDir ) ) {
+			if ( ! mkdir( $outputDir, 0755, true ) && ! is_dir( $outputDir ) ) {
 				return false;
 			}
 		}
 
-		return file_put_contents( $output_file, $template );
+		return file_put_contents( $outputFile, $template );
 	}
 
 	/**
@@ -184,8 +184,9 @@ final class CreatePluginAdminCommand extends Command
 	 *
 	 * @return string The admin module file path.
 	 */
-	private static function admin_module_file_path( string $slug ): string
+	private static function adminModuleFilePath( string $slug ): string
 	{
 		return sprintf( '%s/admin/%s-admin.php', getcwd(), $slug );
 	}
+
 }

@@ -43,13 +43,13 @@ final class FrameworkVersionUpgradeCommand extends Command
 	{
 		// Set up command variables
 		$bundle = new HelperBundle( new QuestionHelper, $input, $output );
-		$current_version = self::read_package_version();
+		$currentVersion = self::readPackageVersion();
 
 		// Ensure the current framework version is available in composer.json
-		if ( $current_version !== null ) {
+		if ( $currentVersion !== null ) {
 			$output->writeln(
 				StyleUtil::color(
-					sprintf( 'Current package version: %s', $current_version ),
+					sprintf( 'Current package version: %s', $currentVersion ),
 					'yellow'
 				)
 			);
@@ -60,29 +60,29 @@ final class FrameworkVersionUpgradeCommand extends Command
 		}
 
 		// Get the new version from the user
-		$new_version = self::ask_version( $bundle );
+		$newVersion = self::askVersion( $bundle );
 
 		// Check the user-provided version is formatted correctly
-		if ( ! self::is_valid_version_format( $new_version ) ) {
+		if ( ! self::isValidVersionFormat( $newVersion ) ) {
 			$message = 'Provided version is not in the correct format.';
 			$output->writeln( StyleUtil::error( $message ) );
 			return Command::FAILURE;
 		}
 
 		// Check that the new version is greater than the old
-		if ( ! self::is_newer_version( $new_version, $current_version ) ) {
+		if ( ! self::isNewerVersion( $newVersion, $currentVersion ) ) {
 			$message = 'Provided version is not newer than the old version.';
 			$output->writeln( StyleUtil::error( $message ) );
 			return Command::FAILURE;
 		}
 
-		$output->writeln( StyleUtil::color( $new_version, 'green' ) );
+		$output->writeln( StyleUtil::color( $newVersion, 'green' ) );
 
 		// Update the versions in each file
 		try {
-			self::update_composer_version( $new_version );
-			self::update_framework_version_constant( $new_version );
-			self::update_namespace_versions( $new_version );
+			self::updateComposerVersion( $newVersion );
+			self::updateFrameworkVersionConstant( $newVersion );
+			self::updateNamespaceVersions( $newVersion );
 		} catch ( \RuntimeException $e ) {
 			$output->writeln( StyleUtil::error( $e->getMessage() ) );
 			return Command::FAILURE;
@@ -98,7 +98,7 @@ final class FrameworkVersionUpgradeCommand extends Command
 	 *
 	 * @return string The version entered by the user.
 	 */
-	private static function ask_version( HelperBundle $bundle ): string
+	private static function askVersion( HelperBundle $bundle ): string
 	{
 		$question = new Question(
 			StyleUtil::color( 'Enter the version to bump to (e.g. "1.0.0"):', 'cyan' ) . ' '
@@ -112,7 +112,7 @@ final class FrameworkVersionUpgradeCommand extends Command
 	 *
 	 * @return string|null The current version, or null if missing.
 	 */
-	private static function read_package_version(): ?string
+	private static function readPackageVersion(): ?string
 	{
 		$path = sprintf( '%s/composer.json', getcwd() );
 
@@ -120,13 +120,13 @@ final class FrameworkVersionUpgradeCommand extends Command
 			return null;
 		}
 
-		$composer_json = json_decode( file_get_contents( $path ), true );
+		$composerJson = json_decode( file_get_contents( $path ), true );
 
-		if ( ! is_array( $composer_json ) || ! isset( $composer_json['version'] ) ) {
+		if ( ! is_array( $composerJson ) || ! isset( $composerJson['version'] ) ) {
 			return null;
 		}
 
-		return strval( $composer_json['version'] );
+		return strval( $composerJson['version'] );
 	}
 
 	/**
@@ -136,7 +136,7 @@ final class FrameworkVersionUpgradeCommand extends Command
 	 *
 	 * @return bool True if valid, false otherwise.
 	 */
-	private static function is_valid_version_format( string $version ): bool
+	private static function isValidVersionFormat( string $version ): bool
 	{
 		return boolval( preg_match( '/^\d{1,3}\.\d{1,3}\.\d{1,3}$/', $version ) );
 	}
@@ -144,25 +144,25 @@ final class FrameworkVersionUpgradeCommand extends Command
 	/**
 	 * Check whether the new version is greater than the current version.
 	 *
-	 * @param string $new_version The proposed version string.
-	 * @param string $current_version The current version string.
+	 * @param string $newVersion The proposed version string.
+	 * @param string $currentVersion The current version string.
 	 *
 	 * @return bool True if new version is greater, false otherwise.
 	 */
-	private static function is_newer_version( string $new_version, string $current_version ): bool
+	private static function isNewerVersion( string $newVersion, string $currentVersion ): bool
 	{
-		return version_compare( $new_version, $current_version, '>' );
+		return version_compare( $newVersion, $currentVersion, '>' );
 	}
 
 	/**
 	 * Update the version field in the composer.json file.
 	 *
-	 * @param string $new_version The new version string.
+	 * @param string $newVersion The new version string.
 	 * 
 	 * @throws \RuntimeException Throws an exception if the requested file or version don't exist.
 	 * @return bool True if the write operation succeeded.
 	 */
-	private static function update_composer_version( string $new_version ): bool
+	private static function updateComposerVersion( string $newVersion ): bool
 	{
 		$path = sprintf( '%s/composer.json', getcwd() );
 
@@ -175,7 +175,7 @@ final class FrameworkVersionUpgradeCommand extends Command
 		// Find and replace 1 instance of "version" in the file contents
 		$updated = preg_replace(
 			'/"version"\s*:\s*"[^"]*"/',
-			sprintf( '"version": "%s"', $new_version ),
+			sprintf( '"version": "%s"', $newVersion ),
 			$contents,
 			1,
 			$count
@@ -192,12 +192,12 @@ final class FrameworkVersionUpgradeCommand extends Command
 	/**
 	 * Update the framework version constant in the framework class.
 	 *
-	 * @param string $new_version The new version string.
+	 * @param string $newVersion The new version string.
 	 * 
 	 * @throws \RuntimeException Throws an exception if the framework file or version don't exist.
 	 * @return bool True if the framework file is written out.
 	 */
-	private static function update_framework_version_constant( string $new_version ): bool
+	private static function updateFrameworkVersionConstant( string $newVersion ): bool
 	{
 		$path = sprintf( '%s/includes/modules/framework-module/includes/classes/class-framework.php', getcwd() );
 
@@ -210,7 +210,7 @@ final class FrameworkVersionUpgradeCommand extends Command
 		// Find and replace 1 instance of "VERSION" in the file contents
 		$updated = preg_replace(
 			"/const VERSION = '[^']+';/",
-			sprintf( "const VERSION = '%s';", $new_version ),
+			sprintf( "const VERSION = '%s';", $newVersion ),
 			$contents,
 			1,
 			$count
@@ -227,13 +227,13 @@ final class FrameworkVersionUpgradeCommand extends Command
 	/**
 	 * Replace all WPPF namespace version references across PHP files.
 	 *
-	 * @param string $new_version The new version string.
+	 * @param string $newVersion The new version string.
 	 */
-	private static function update_namespace_versions( string $new_version ): void
+	private static function updateNamespaceVersions( string $newVersion ): void
 	{
 		// Replace the version dots with underscores.
-		$new_version = str_replace( '.', '_', $new_version );
-		$replacement = sprintf( 'WPPF\\v%s', $new_version );
+		$newVersion = str_replace( '.', '_', $newVersion );
+		$replacement = sprintf( 'WPPF\\v%s', $newVersion );
 
 		// Iterate over all files in the CWD
 		$directory = new \RecursiveDirectoryIterator( getcwd(), \FilesystemIterator::SKIP_DOTS );
@@ -262,4 +262,5 @@ final class FrameworkVersionUpgradeCommand extends Command
 			}
 		}
 	}
+
 }
