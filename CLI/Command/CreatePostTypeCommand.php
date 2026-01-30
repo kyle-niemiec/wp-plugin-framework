@@ -59,14 +59,14 @@ final class CreatePostTypeCommand extends Command
 		$menuName = $singularName;
 
 		if ( $showInMenu ) {
-			$menuName = self::ask_menu_entry_title( $bundle, $singularName );
+			$menuName = self::askMenuEntryTitle( $bundle, $singularName );
 		}
 
 		$className = CliUtil::underscorify( $singularName, true );
 		$slug = CliUtil::underscorify( $singularName );
 
 		// Make sure the post type doesn't already exist
-		if ( self::check_post_type_exists( $slug ) ) {
+		if ( self::checkPostTypeExists( $slug ) ) {
 			$output->writeln( StyleUtil::error( 'Error: The post type file already exists.' ) );
 			return Command::FAILURE;
 		}
@@ -75,12 +75,12 @@ final class CreatePostTypeCommand extends Command
 			$template = CliUtil::apply_template(
 				'PostType',
 				[
-					'{{className}}' => $className,
+					'{{class_name}}' => $className,
 					'{{slug}}' => $slug,
-					'{{menuName}}' => $menuName,
+					'{{menu_name}}' => $menuName,
 					'{{sungular_name}}' => $singularName,
-					'{{pluralName}}' => $pluralName,
-					'{{showInMenu}}' => $showInMenu ? 'true' : 'false',
+					'{{plural_name}}' => $pluralName,
+					'{{show_in_menu}}' => $showInMenu ? 'true' : 'false',
 				]
 			);
 		} catch ( \RuntimeException $e ) {
@@ -183,7 +183,7 @@ final class CreatePostTypeCommand extends Command
 	 *
 	 * @return string The menu entry title entered by the user.
 	 */
-	private static function ask_menu_entry_title( HelperBundle $bundle, string $singularName ): string
+	private static function askMenuEntryTitle( HelperBundle $bundle, string $singularName ): string
 	{
 		$question = new Question(
 			sprintf(
@@ -213,7 +213,7 @@ final class CreatePostTypeCommand extends Command
 	 *
 	 * @return bool Returns true if the post type file exists, false if it does not.
 	 */
-	private static function check_post_type_exists( string $slug ): bool
+	private static function checkPostTypeExists( string $slug ): bool
 	{
 		$outputFile = self::postTypeFilePath( $slug );
 		return file_exists( $outputFile );
