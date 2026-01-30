@@ -93,7 +93,7 @@ final class CreatePluginAdminCommand extends Command
 		$output->writeln(
 			StyleUtil::color(
 				sprintf( 'Creating admin module class %s (admin/%s-admin.php)', $module_class_name, $slug ),
-				ConsoleColor::Cyan
+				ConsoleColor::BrightCyan
 			)
 		);
 

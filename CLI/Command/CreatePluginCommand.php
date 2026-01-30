@@ -242,7 +242,7 @@ final class CreatePluginCommand extends Command
 		$output->writeln(
 			StyleUtil::color(
 				sprintf( 'Creating plugin class %s (%s.php)', $plugin_class_name, $slug ),
-				ConsoleColor::Cyan
+				ConsoleColor::BrightCyan
 			)
 		);
 	}

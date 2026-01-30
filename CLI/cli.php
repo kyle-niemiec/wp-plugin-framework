@@ -20,6 +20,7 @@ $application = new Application( 'WP Plugin Framework CLI', '0.0.1' );
 // Register commands
 $application->add( new CreatePluginAdminCommand );
 $application->add( new CreatePluginCommand );
+$application->add( new CreatePostTypeCommand );
 $application->add( new FrameworkVersionUpgradeCommand );
 
 // Run the CLI
