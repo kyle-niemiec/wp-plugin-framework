@@ -19,6 +19,8 @@ use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\ConsoleOutputInterface;
+use Symfony\Component\Console\Output\ConsoleSectionOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
 use WPPF\CLI\Static\ConsoleColor;
@@ -36,23 +38,21 @@ final class CreatePostTypeMetaCommand extends Command
 	 * Set up the helper variables, control message flow.
 	 *
 	 * @param InputInterface $input The terminal input interface.
-	 * @param OutputInterface $output The terminal output interface.
+	 * @param ConsoleOutputInterface $output The terminal output interface.
 	 *
 	 * @return int The command success status.
 	 */
 	protected function execute( InputInterface $input, OutputInterface $output ): int
 	{
-		$bundle = new HelperBundle( new QuestionHelper, $input, $output );
-
 		self::printInformationalMessages( $output );
-		self::askVariableInformationLoop( $bundle );
 
-		// Remind user to set data types.
-		$output->writeln(
-			StyleUtil::optional(
-				'Remdinder: you must set the data types of the default values in {file}.'
-			)
-		);
+		$displaySection = $output->section();
+		$promptSection = $output->section();
+		$bundle = new HelperBundle( new QuestionHelper, $input, $promptSection );
+
+		self::askVariableInformationLoop( $bundle, $promptSection, $displaySection );
+
+		$output->writeln( 'All set. Thanks!' );
 
 		return Command::SUCCESS;
 	}
@@ -64,22 +64,27 @@ final class CreatePostTypeMetaCommand extends Command
 	 * 
 	 * @return array The user-entered variable names and types.
 	 */
-	private static function askVariableInformationLoop( HelperBundle $bundle ): array
+	private static function askVariableInformationLoop(
+		HelperBundle $bundle,
+		ConsoleSectionOutput $promptOutput,
+		ConsoleSectionOutput $displaySection
+	): array
 	{
-
-		$variables = [];
+		$variables = array();
 		$question = new Question( 'Variable name (blank to finish): ' );
 		$question->setValidator( self::snakeCaseValidator() );
 
 		// Loop prompting for user input until they are finished
 		while ( true ) {
-			$value = $bundle->helper->ask( $bundle->input, $bundle->output, $question );
+			$promptOutput->clear();
+			$value = $bundle->helper->ask( $bundle->input, $promptOutput, $question );
 
 			if ( '' === $value ) {
 				break;
 			}
 
 			$variables[] = $value;
+			self::updateVariableDisplay( $displaySection, $variables );
 		}
 
 		return $variables;
@@ -90,7 +95,7 @@ final class CreatePostTypeMetaCommand extends Command
 	 * 
 	 * @param OutputInterface The terminal output interface.
 	 */
-	private function printInformationalMessages( OutputInterface $output ): void
+	private static function printInformationalMessages( OutputInterface $output ): void
 	{
 		$output->writeln(
 			StyleUtil::color(
@@ -115,7 +120,7 @@ final class CreatePostTypeMetaCommand extends Command
 	 * 
 	 * @return callable A callable which can evaluate snake case validity.
 	 */
-	private function snakeCaseValidator(): callable
+	private static function snakeCaseValidator(): callable
 	{
 		return function ( $value ): string {
 			$value = trim( strval( $value ) );
@@ -130,6 +135,22 @@ final class CreatePostTypeMetaCommand extends Command
 
 			return $value;
 		};
+	}
+
+	/**
+	 * Update the variable display section with the current list.
+	 *
+	 * @param ConsoleSectionOutput|null $displaySection The section output for the variable list.
+	 * @param array $variables The collected variable names.
+	 */
+	private static function updateVariableDisplay( ?ConsoleSectionOutput $displaySection, array $variables ): void
+	{
+		if ( null === $displaySection ) {
+			return;
+		}
+
+		$lines = explode( "\n", var_export( $variables, true ) );
+		$displaySection->overwrite( $lines );
 	}
 
 }
