@@ -86,4 +86,13 @@ final class CliUtil
 		};
 	}
 
+	/**
+	 * A shortcut for requiring the {@see WPPF\v1_2_1\Framework\Utility}. It's useful.
+	 */
+	public static function requireFrameworkUtility(): void
+	{
+		define( 'ABSPATH', true );
+		require_once __DIR__ . '../../../includes/modules/framework-module/includes/statics/class-utility.php';
+	}
+
 }

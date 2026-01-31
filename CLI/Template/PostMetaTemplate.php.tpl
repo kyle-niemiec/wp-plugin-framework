@@ -5,7 +5,6 @@
 
 defined( 'ABSPATH' ) or exit;
 
-use WPPF\v1_2_1\WordPress\Meta_Schema;
 use WPPF\v1_2_1\WordPress\Post_Meta;
 
 if ( ! class_exists( '{{class_name}}', false ) ) {

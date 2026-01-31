@@ -313,7 +313,7 @@ if ( ! class_exists( '\WPPF\v1_2_1\Framework\Utility', false ) ) {
 		 * @param string $type The type of filtering to do. Can be 'files' or 'folders'. Actually, it can be anything, but the function won't work if it isn't, and the compiler will throw an error if you don't pass in a string so... your loss.
 		 */
 		final public static function scandir_filter( array &$files, string $path, string $type ) {
-			$path = trailingslashit( $path );
+			$path = rtrim( $path, '/' ) . '/';
 			$filter_function = null;
 
 			// Select filter
