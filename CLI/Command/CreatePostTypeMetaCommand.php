@@ -47,6 +47,7 @@ final class CreatePostTypeMetaCommand extends Command
 		self::printInformationalMessages( $output );
 
 		$displaySection = $output->section();
+
 		$promptSection = $output->section();
 		$bundle = new HelperBundle( new QuestionHelper, $input, $promptSection );
 
@@ -70,6 +71,9 @@ final class CreatePostTypeMetaCommand extends Command
 		ConsoleSectionOutput $displaySection
 	): array
 	{
+		$lines = StyleUtil::color( "|\n| [enter a variable to begin...]\n|", ConsoleColor::Gray );
+		$displaySection->overwrite( explode( "\n", $lines ) );
+
 		$variables = array();
 		$question = new Question( 'Variable name (blank to finish): ' );
 		$question->setValidator( self::snakeCaseValidator() );
@@ -105,7 +109,7 @@ final class CreatePostTypeMetaCommand extends Command
 		);
 
 		$output->writeln(
-			'Which variables do you want the custom post type meta to store?'
+			'Which variables will the custom post type meta store?'
 		);
 
 		$output->writeln(
@@ -140,16 +144,12 @@ final class CreatePostTypeMetaCommand extends Command
 	/**
 	 * Update the variable display section with the current list.
 	 *
-	 * @param ConsoleSectionOutput|null $displaySection The section output for the variable list.
+	 * @param ConsoleSectionOutput $displaySection The section output for the variable list.
 	 * @param array $variables The collected variable names.
 	 */
-	private static function updateVariableDisplay( ?ConsoleSectionOutput $displaySection, array $variables ): void
+	private static function updateVariableDisplay( ConsoleSectionOutput $displaySection, array $variables ): void
 	{
-		if ( null === $displaySection ) {
-			return;
-		}
-
-		$lines = explode( "\n", var_export( $variables, true ) );
+		$lines = explode( "\n", StyleUtil::color( var_export( $variables, true ), ConsoleColor::Green ) );
 		$displaySection->overwrite( $lines );
 	}
 
