@@ -1,6 +1,6 @@
 <?php
 /**
- * A @see WPPF\v1_2_1\WordPress\Post_Meta containing configuration and schema information for meta data.
+ * A {@see use WPPF\v1_2_1\WordPress\Post_Meta} for a custom post type, containing configuration and schema information for meta data.
  */
 
 defined( 'ABSPATH' ) or exit;
@@ -11,16 +11,14 @@ use WPPF\v1_2_1\WordPress\Post_Meta;
 if ( ! class_exists( '{{class_name}}', false ) ) {
 
 	/**
-	 * A class for managing custom post type Meta data.
+	 * A class for managing custom post type {@see use WPPF\v1_2_1\WordPress\Post_Meta} data.
 	 */
 	final class {{class_name}} extends Post_Meta {
+		{{class_properties}}
 
-		/** @var {{var_type}} */
-		public {{var_type}} ${{var_name}};
-
-		/** @var array Default Meta values. */
-		private static $default_values = array(
-			'{{var_name}}' => {{var_type}},
+		/** @var array The user-defined {@see use WPPF\v1_2_1\WordPress\Post_Meta} data. */
+		private static $generated_values = array(
+			{{default_values}}
 		);
 
 		/**
@@ -31,28 +29,18 @@ if ( ! class_exists( '{{class_name}}', false ) ) {
 		final public static function key() { return '_wppf_test_post_data'; }
 
 		/**
-		 * Constructs the Post Series Meta.
+		 * Constructs the {@see use WPPF\v1_2_1\WordPress\Post_Meta}.
 		 * 
-		 * @param \WP_Post $Post The parent WPPF Test Post the Meta values belong to.
+		 * @param \WP_Post $Post The custom post type the {@see use WPPF\v1_2_1\WordPress\Post_Meta} values belong to.
 		 */
 		public function __construct( \WP_Post $Post ) {
-
-			// Set Meta schema
-			$this->set_schema( new Meta_Schema( 'array', array(
-					'current_string'	=> new Meta_Schema(
-						'string', '/^[a-zA-Z0-9 ]+$/', array( 'pattern_hint' => __( "Only letters, numbers, and spaces are allowed." ) )
-					),
-					'is_toggle_active'	=> new Meta_Schema( 'boolean' ),
-					'times_saved'		=> new Meta_Schema( 'array', new Meta_Schema( 'integer' ) ),
-				) )
-			);
-
 			if ( ! $Post ) {
 				$message = sprintf( "No valid Post was passed to the %s constructor.", self::class );
 				throw new \Exception( $message );
 			}
 
-			foreach ( self::$default_values as $property => $value ) {
+            // Set the generated variables to the class.
+			foreach ( self::$generated_values as $property => $value ) {
 				if ( property_exists( $this, $property ) ) {
 					$this->{ $property } = $value;
 				}
@@ -62,14 +50,15 @@ if ( ! class_exists( '{{class_name}}', false ) ) {
 		}
 
 		/**
-		 * The required abstract called when saving the Meta. This function returns what is saved.
+		 * This is called when saving the {@see use WPPF\v1_2_1\WordPress\Post_Meta}. This function returns what is saved.
 		 * 
-		 * @return array The array representation of the Meta.
+		 * @return array The array representation of the {@see use WPPF\v1_2_1\WordPress\Post_Meta}.
 		 */
 		final public function export() {
 			$export = array();
 
-			foreach ( self::$default_values as $property => $default_value ) {
+            // Set all {@see use WPPF\v1_2_1\WordPress\Post_Meta} key values to the export object
+			foreach ( self::$generated_values as $property => $default_value ) {
 				if ( isset( $this->{ $property } ) ) {
 					$export[ $property ] = $this->{ $property };
 				}

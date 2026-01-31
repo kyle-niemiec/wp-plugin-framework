@@ -26,7 +26,7 @@ use Symfony\Component\Console\Question\Question;
 use WPPF\CLI\Static\ConsoleColor;
 
 /**
- * A command to create a post type {@see WPPF\v1_2_1\WordPress\Meta} class for the current plugin.
+ * A command to create a post type {@see WPPF\v1_2_1\WordPress\Post_Meta} class for the current plugin.
  */
 #[AsCommand(
 	description: 'Create a custom post type Meta class from a template.',
@@ -56,7 +56,7 @@ final class CreatePostTypeMetaCommand extends Command
 	}
 
 	/**
-	 * Loop prompting the user to provide variable names and data types for a @see use WPPF\v1_2_1\WordPress\Post_Meta.
+	 * Loop prompting the user to provide variable names and data types for a {@see use WPPF\v1_2_1\WordPress\Post_Meta}.
 	 * 
 	 * @param HelperBundle $bundle The terminal input/output interfaces.
 	 * 
