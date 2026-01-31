@@ -44,7 +44,10 @@ final class CreatePostTypeMetaCommand extends Command
 	 */
 	protected function execute( InputInterface $input, OutputInterface $output ): int
 	{
-		self::printInformationalMessages( $output );
+		$output->writeln( StyleUtil::color(
+			sprintf( 'Creating a new post type meta.' ),
+			ConsoleColor::BrightCyan
+		) );
 
 		$displaySection = $output->section();
 		$promptSection = $output->section();
@@ -68,6 +71,15 @@ final class CreatePostTypeMetaCommand extends Command
 		ConsoleSectionOutput $displaySection
 	): array
 	{
+		$bundle->output->writeln(
+			'Which variables will the meta data hold? Reminder: type variable names in "lower_snake_case".'
+		);
+
+		$bundle->output->writeln( StyleUtil::optional(
+			'A meta box might hold a "current_text_field_value", "times_saved_count", or "is_toggle_button_active" meta value.'
+		) );
+
+		// Set up section prompts
 		$variables = array();
 		self::updateVariableDisplay( $displaySection, $variables );
 
@@ -107,31 +119,6 @@ final class CreatePostTypeMetaCommand extends Command
 
 		$promptSection->clear();
 		return $variables;
-	}
-
-	/**
-	 * Output informational messages.
-	 * 
-	 * @param OutputInterface The terminal output interface.
-	 */
-	private static function printInformationalMessages( OutputInterface $output ): void
-	{
-		$output->writeln(
-			StyleUtil::color(
-				sprintf( 'Creating a new post type meta.' ),
-				ConsoleColor::BrightCyan
-			)
-		);
-
-		$output->writeln(
-			'Which variables will the meta data hold? Reminder: type variable names in "lower_snake_case".'
-		);
-
-		$output->writeln(
-			StyleUtil::optional(
-				'A meta box might hold a "current_text_field_value", "times_saved_count", or "is_toggle_button_active" meta value.'
-			)
-		);
 	}
 
 	/**
