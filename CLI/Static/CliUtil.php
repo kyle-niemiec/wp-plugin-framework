@@ -98,4 +98,68 @@ final class CliUtil
 		require_once __DIR__ . '../../../includes/modules/framework-module/includes/statics/class-utility.php';
 	}
 
+	/**
+	 * Insert text into a function body, either after the opening brace or before the closing brace.
+	 *
+	 * @param string $insertText The text to insert.
+	 * @param string $functionName The function name to target.
+	 * @param string $searchText The full text to search.
+	 * @param string $position The insertion position: "after_opening" or "before_closing".
+	 *
+	 * @return string The updated text with the insertion applied.
+	 */
+	public static function insertIntoFunction(
+		string $insertText,
+		string $functionName,
+		string $searchText,
+		string $position
+	): string {
+		$pattern = sprintf( '/function\\s+%s\\s*\\(/', preg_quote( $functionName, '/' ) );
+
+		if ( ! preg_match( $pattern, $searchText, $match, PREG_OFFSET_CAPTURE ) ) {
+			throw new \RuntimeException( sprintf( 'Function "%s" was not found.', $functionName ) );
+		}
+
+		$functionPos = $match[0][1];
+		$openPos = strpos( $searchText, '{', $functionPos );
+
+		if ( false === $openPos ) {
+			throw new \RuntimeException( sprintf( 'Opening brace not found for function "%s".', $functionName ) );
+		}
+
+		$depth = 0;
+		$closePos = null;
+		$length = strlen( $searchText );
+
+		for ( $i = $openPos; $i < $length; $i++ ) {
+			$char = $searchText[ $i ];
+
+			if ( '{' === $char ) {
+				$depth++;
+			} elseif ( '}' === $char ) {
+				$depth--;
+				if ( 0 === $depth ) {
+					$closePos = $i;
+					break;
+				}
+			}
+		}
+
+		if ( null === $closePos ) {
+			throw new \RuntimeException( sprintf( 'Closing brace not found for function "%s".', $functionName ) );
+		}
+
+		if ( 'after_opening' === $position ) {
+			$insertPos = $openPos + 1;
+		} elseif ( 'before_closing' === $position ) {
+			$insertPos = $closePos;
+		} else {
+			throw new \RuntimeException( 'Position must be "after_opening" or "before_closing".' );
+		}
+
+		return substr( $searchText, 0, $insertPos )
+			. $insertText
+			. substr( $searchText, $insertPos );
+	}
+
 }
