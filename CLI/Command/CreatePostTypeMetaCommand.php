@@ -43,7 +43,29 @@ final class CreatePostTypeMetaCommand extends Command
 	protected function execute( InputInterface $input, OutputInterface $output ): int
 	{
 		$bundle = new HelperBundle( new QuestionHelper, $input, $output );
+
 		self::printInformationalMessages( $output );
+		self::askVariableInformationLoop( $bundle );
+
+		// Remind user to set data types.
+		$output->writeln(
+			StyleUtil::optional(
+				'Remdinder: you must set the data types of the default values in {file}.'
+			)
+		);
+
+		return Command::SUCCESS;
+	}
+
+	/**
+	 * Loop prompting the user to provide variable names and data types for a @see use WPPF\v1_2_1\WordPress\Post_Meta.
+	 * 
+	 * @param HelperBundle $bundle The terminal input/output interfaces.
+	 * 
+	 * @return array The user-entered variable names and types.
+	 */
+	private static function askVariableInformationLoop( HelperBundle $bundle ): array
+	{
 
 		$variables = [];
 		$question = new Question( 'Variable name (blank to finish): ' );
@@ -60,14 +82,7 @@ final class CreatePostTypeMetaCommand extends Command
 			$variables[] = $value;
 		}
 
-		// Remind user to set data types.
-		$output->writeln(
-			StyleUtil::optional(
-				'You must set the data types of the default values in {file}.'
-			)
-		);
-
-		return Command::SUCCESS;
+		return $variables;
 	}
 
 	/**
