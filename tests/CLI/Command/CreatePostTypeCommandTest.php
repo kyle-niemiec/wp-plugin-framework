@@ -40,7 +40,7 @@ final class CreatePostTypeCommandTest extends CliPluginTestCase
 		$status = $tester->execute( [], [ 'interactive' => true ] );
 		self::assertSame( Command::SUCCESS, $status );
 
-		$output = 'includes/post-types/book.php';
+		$output = 'includes/post-types/class-book.php';
 		self::assertFileExists( $output );
 
 		$contents = file_get_contents( $output );
@@ -60,7 +60,7 @@ final class CreatePostTypeCommandTest extends CliPluginTestCase
 	public function testPostTypeFileAlreadyExistsFail(): void
 	{
 		$targetDir = 'includes/post-types';
-		$targetFile = $targetDir . '/album.php';
+		$targetFile = $targetDir . '/class-album.php';
 
 		if ( ! is_dir( $targetDir ) ) {
 			mkdir( $targetDir, 0777, true );

@@ -237,7 +237,7 @@ final class CreatePostTypeCommand extends Command
 		$outputDir = dirname( $outputFile );
 
 		if ( ! is_dir( $outputDir ) ) {
-			mkdir( $outputDir );
+			mkdir( $outputDir, 0777, true );
 		}
 
 		return file_put_contents( $outputFile, $template );
