@@ -47,13 +47,10 @@ final class CreatePostTypeMetaCommand extends Command
 		self::printInformationalMessages( $output );
 
 		$displaySection = $output->section();
-
 		$promptSection = $output->section();
-		$bundle = new HelperBundle( new QuestionHelper, $input, $promptSection );
+		$bundle = new HelperBundle( new QuestionHelper, $input, $output );
 
 		self::askVariableInformationLoop( $bundle, $promptSection, $displaySection );
-
-		$output->writeln( 'All set. Thanks!' );
 
 		return Command::SUCCESS;
 	}
@@ -67,27 +64,50 @@ final class CreatePostTypeMetaCommand extends Command
 	 */
 	private static function askVariableInformationLoop(
 		HelperBundle $bundle,
-		ConsoleSectionOutput $promptOutput,
-		ConsoleSectionOutput $displaySection
+		?ConsoleSectionOutput $promptSection,
+		?ConsoleSectionOutput $displaySection
 	): array
 	{
-		$lines = StyleUtil::color( "|\n| [enter a variable to begin...]\n|", ConsoleColor::Gray );
-		$displaySection->overwrite( explode( "\n", $lines ) );
-
 		$variables = array();
-		$question = new Question( 'Variable name (blank to finish): ' );
-		$question->setValidator( self::snakeCaseValidator() );
+		self::updateVariableDisplay( $displaySection, $variables );
+
+		$nameQuestion = new Question( StyleUtil::color(
+			'Enter a name (blank if finished): ',
+			ConsoleColor::BrightYellow
+		) );
+
+		$nameQuestion->setValidator( self::snakeCaseValidator() );
+
+		$typeQuestion = new Question( StyleUtil::color(
+			'Enter a type (array, boolean, float, integer, string): ',
+			ConsoleColor::BrightYellow
+		) );
+
+		$typeQuestion->setValidator( self::typeValidator() );
 
 		// Loop prompting for user input until they are finished
 		while ( true ) {
-			$promptOutput->clear();
-			$value = $bundle->helper->ask( $bundle->input, $promptOutput, $question );
+			if ( null !== $promptSection ) {
+				$promptSection->clear();
+			}
 
-			if ( '' === $value ) {
+			// Ask for the variable name
+			$name = $bundle->helper->ask( $bundle->input, $promptSection, $nameQuestion );
+
+			if ( '' === $name ) {
 				break;
 			}
 
-			$variables[] = $value;
+			$variables[ $name ] = null;
+			self::updateVariableDisplay( $displaySection, $variables );
+
+			if ( null !== $promptSection ) {
+				$promptSection->clear();
+			}
+
+			// Ask for the variable type
+			$type = $bundle->helper->ask( $bundle->input, $promptSection, $typeQuestion );
+			$variables[ $name ] = $type;
 			self::updateVariableDisplay( $displaySection, $variables );
 		}
 
@@ -109,7 +129,7 @@ final class CreatePostTypeMetaCommand extends Command
 		);
 
 		$output->writeln(
-			'Which variables will the custom post type meta store?'
+			'Which variables will the meta data hold? Reminder: type variable names in "lower_snake_case".'
 		);
 
 		$output->writeln(
@@ -149,8 +169,56 @@ final class CreatePostTypeMetaCommand extends Command
 	 */
 	private static function updateVariableDisplay( ConsoleSectionOutput $displaySection, array $variables ): void
 	{
-		$lines = explode( "\n", StyleUtil::color( var_export( $variables, true ), ConsoleColor::Green ) );
+		if ( null === $displaySection ) {
+			return;
+		}
+
+		$lines = array();
+
+		// Default message if no variables have been defined
+		if ( empty( $variables ) ) {
+			$lines = StyleUtil::color( "|\n| [enter a variable to begin...]\n|", ConsoleColor::Gray );
+			$displaySection->overwrite( explode( "\n", $lines ) );
+			return;
+		}
+
+		// Loop variables and types to print
+		$lines[] = StyleUtil::color( "|", ConsoleColor::Green );
+
+		foreach ( $variables as $name => $type ) {
+			if ( null === $type ) {
+				$lines[] = StyleUtil::color( '| ' . $name, ConsoleColor::BrightCyan );
+			} else {
+				$lines[] = sprintf( StyleUtil::color( '| %s => %s', ConsoleColor::Green ), $name, $type );
+			}
+		}
+
+		$lines[] = StyleUtil::color( "|", ConsoleColor::Green );
 		$displaySection->overwrite( $lines );
+	}
+
+	/**
+	 * Return a callable function which can validate variable types.
+	 *
+	 * @return callable A callable which can evaluate type validity.
+	 */
+	private static function typeValidator(): callable
+	{
+		return function ( $value ): string {
+			$value = strtolower( trim( strval( $value ) ) );
+
+			if ( '' === $value ) {
+				throw new \RuntimeException( 'Please provide a type.' );
+			}
+
+			$allowed = array( 'array', 'boolean', 'float', 'integer', 'string' );
+
+			if ( ! in_array( $value, $allowed, true ) ) {
+				throw new \RuntimeException( 'Allowed types: array, boolean, float, integer, string.' );
+			}
+
+			return $value;
+		};
 	}
 
 }
