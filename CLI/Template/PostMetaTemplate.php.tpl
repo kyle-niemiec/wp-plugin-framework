@@ -25,7 +25,7 @@ if ( ! class_exists( '{{class_name}}', false ) ) {
 		 * 
 		 * @return string The meta key.
 		 */
-		final public static function key() { return '_wppf_test_post_data'; }
+		final public static function key() { return '_{{class_slug}}'; }
 
 		/**
 		 * Constructs the {@see use WPPF\v1_2_1\WordPress\Post_Meta}.

@@ -68,8 +68,13 @@ final class CreatePostTypeMetaCommand extends Command
 
 		// Create the post meta file
 		$postTypeSlug = pathinfo( $selectedPostType, PATHINFO_FILENAME );
-		$className = sprintf( '%s_Post_Meta', CliUtil::underscorify( $postTypeSlug, true ) );
-		$filePath = self::postMetaFilePath( $className );
+
+		if ( str_starts_with( $postTypeSlug, 'class-' ) ) {
+			$postTypeSlug = substr( $postTypeSlug, 6 );
+		}
+
+		$className = sprintf( '%s_Meta', CliUtil::underscorify( $postTypeSlug, true ) );
+		$filePath = self::postMetaFilePath( Utility::slugify( $className ) );
 
 		if ( file_exists( $filePath ) ) {
 			$output->writeln( StyleUtil::error( 'Error: The post meta file already exists.' ) );
@@ -82,6 +87,7 @@ final class CreatePostTypeMetaCommand extends Command
 				array(
 					'{{class_name}}' => $className,
 					'{{class_properties}}' => self::buildClassProperties( $variables ),
+					'{{class_slug}}' => CliUtil::underscorify( $className ),
 					'{{default_values}}' => self::buildDefaultValues( $variables ),
 				)
 			);
@@ -386,7 +392,6 @@ final class CreatePostTypeMetaCommand extends Command
 	 */
 	private static function postMetaFilePath( string $slug ): string
 	{
-		$slug = CliUtil::underscorify( $slug );
 		return sprintf( 'includes/post-meta/class-%s.php', $slug );
 	}
 

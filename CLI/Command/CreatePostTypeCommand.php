@@ -23,6 +23,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
 use WPPF\CLI\Static\ConsoleColor;
+use WPPF\v1_2_1\Framework\Utility;
 
 /**
  * A command to create a post type class for the current plugin.
@@ -63,10 +64,10 @@ final class CreatePostTypeCommand extends Command
 		}
 
 		$className = CliUtil::underscorify( $singularName, true );
-		$slug = CliUtil::underscorify( $singularName );
+		$postTypeKey = CliUtil::underscorify( $singularName );
 
 		// Make sure the post type doesn't already exist
-		if ( self::checkPostTypeExists( $slug ) ) {
+		if ( self::checkPostTypeExists( $postTypeKey ) ) {
 			$output->writeln( StyleUtil::error( 'Error: The post type file already exists.' ) );
 			return Command::FAILURE;
 		}
@@ -76,7 +77,7 @@ final class CreatePostTypeCommand extends Command
 				'PostType',
 				[
 					'{{class_name}}' => $className,
-					'{{slug}}' => $slug,
+					'{{slug}}' => $postTypeKey,
 					'{{menu_name}}' => $menuName,
 					'{{sungular_name}}' => $singularName,
 					'{{plural_name}}' => $pluralName,
@@ -86,6 +87,9 @@ final class CreatePostTypeCommand extends Command
 		} catch ( \RuntimeException $e ) {
 			throw $e;
 		}
+
+		CliUtil::requireFrameworkUtility();
+		$slug = Utility::slugify( $postTypeKey );
 
 		if ( ! self::createPostTypeFile( $template, $slug ) ) {
 			$output->writeln( StyleUtil::error( 'There was an error writing out the post type file to disk.' ) );
@@ -233,9 +237,7 @@ final class CreatePostTypeCommand extends Command
 		$outputDir = dirname( $outputFile );
 
 		if ( ! is_dir( $outputDir ) ) {
-			if ( ! mkdir( $outputDir, 0755, true ) && ! is_dir( $outputDir ) ) {
-				return false;
-			}
+			mkdir( $outputDir );
 		}
 
 		return file_put_contents( $outputFile, $template );
@@ -250,7 +252,7 @@ final class CreatePostTypeCommand extends Command
 	 */
 	private static function postTypeFilePath( string $slug ): string
 	{
-		return sprintf( '%s/includes/post-types/%s.php', getcwd(), $slug );
+		return sprintf( '%s/includes/post-types/class-%s.php', getcwd(), $slug );
 	}
 
 }
