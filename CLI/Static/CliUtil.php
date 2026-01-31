@@ -91,7 +91,10 @@ final class CliUtil
 	 */
 	public static function requireFrameworkUtility(): void
 	{
-		define( 'ABSPATH', true );
+		if ( ! defined( 'ABSPATH' ) ) {
+			define( 'ABSPATH', true );
+		}
+
 		require_once __DIR__ . '../../../includes/modules/framework-module/includes/statics/class-utility.php';
 	}
 

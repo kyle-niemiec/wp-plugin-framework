@@ -22,6 +22,7 @@ use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;
 use Symfony\Component\Console\Output\ConsoleSectionOutput;
+use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Question\Question;
@@ -52,18 +53,19 @@ final class CreatePostTypeMetaCommand extends Command
 			ConsoleColor::BrightCyan
 		) );
 
-		if ( ! $output instanceof ConsoleOutputInterface ) {
-			$output->writeln( StyleUtil::error( 'Interactive console output is required for post type selection.' ) );
-			return Command::FAILURE;
-		}
-
 		// Select post type for meta
 		$bundle = new HelperBundle( new QuestionHelper, $input, $output );
 		$selectedPostType = self::selectPostTypeFile( $bundle );
 
 		// Loop through variable selection options.
-		$displaySection = $output->section();
-		$promptSection = $output->section();
+		if ( $output instanceof ConsoleOutputInterface ) {
+			$displaySection = $output->section();
+			$promptSection = $output->section();
+		} else {
+			$displaySection = $output;
+			$promptSection = $output;
+		}
+
 		$variables = self::askVariableInformationLoop( $bundle, $promptSection, $displaySection );
 
 		// Create the post meta file
@@ -121,13 +123,15 @@ final class CreatePostTypeMetaCommand extends Command
 	 * Loop prompting the user to provide variable names and data types for a {@see use WPPF\v1_2_1\WordPress\Post_Meta}.
 	 * 
 	 * @param HelperBundle $bundle The terminal input/output interfaces.
+	 * @param ConsoleSectionOutput|NullOutput $promptSection The section of the terminal to ask the user questions.
+	 * @param ConsoleSectionOutput|NullOutput $displaySection The section of the terminal to show previous user input.
 	 * 
 	 * @return array The user-entered variable names and types.
 	 */
 	private static function askVariableInformationLoop(
 		HelperBundle $bundle,
-		ConsoleSectionOutput $promptSection,
-		ConsoleSectionOutput $displaySection
+		ConsoleSectionOutput|NullOutput $promptSection,
+		ConsoleSectionOutput|NullOutput $displaySection
 	): array
 	{
 		$promptSection->writeln(
@@ -159,7 +163,7 @@ final class CreatePostTypeMetaCommand extends Command
 		// Loop prompting for user input until they are finished
 		while ( true ) {
 			// Ask for the variable name
-			$promptSection->clear();
+			self::maybeClearPrompt( $promptSection );
 			$name = $bundle->helper->ask( $bundle->input, $promptSection, $nameQuestion );
 
 			if ( '' === $name ) {
@@ -170,13 +174,13 @@ final class CreatePostTypeMetaCommand extends Command
 			self::updateVariableDisplay( $displaySection, $variables );
 
 			// Ask for the variable type
-			$promptSection->clear();
+			self::maybeClearPrompt( $promptSection );
 			$type = $bundle->helper->ask( $bundle->input, $promptSection, $typeQuestion );
 			$variables[ $name ] = $type;
 			self::updateVariableDisplay( $displaySection, $variables );
 		}
 
-		$promptSection->clear();
+		self::maybeClearPrompt( $promptSection );
 		return $variables;
 	}
 
@@ -205,12 +209,14 @@ final class CreatePostTypeMetaCommand extends Command
 	/**
 	 * Update the variable display section with the current list.
 	 *
-	 * @param ConsoleSectionOutput $displaySection The section output for the variable list.
+	 * @param ConsoleSectionOutput|NullOutput $displaySection The section output for the variable list.
 	 * @param array $variables The collected variable names.
 	 */
-	private static function updateVariableDisplay( ConsoleSectionOutput $displaySection, array $variables ): void
-	{
-		if ( null === $displaySection ) {
+	private static function updateVariableDisplay(
+		ConsoleSectionOutput|NullOutput $displaySection,
+		array $variables
+	): void {
+		if ( null === $displaySection || $displaySection instanceof NullOutput ) {
 			return;
 		}
 
@@ -265,7 +271,7 @@ final class CreatePostTypeMetaCommand extends Command
 	/**
 	 * Prompt the user to select a post type file from includes/post-types.
 	 *
-	 * @param ConsoleOutputInterface $output The console output interface.
+	 * @param HelperBundle $bundle The IO interfaces for the terminal.
 	 *
 	 * @throws \RuntimeException Throws an error if post types are not available for selection.
 	 * @return string The selected file name.
@@ -392,7 +398,7 @@ final class CreatePostTypeMetaCommand extends Command
 	 */
 	private static function postMetaFilePath( string $slug ): string
 	{
-		return sprintf( 'includes/post-meta/class-%s.php', $slug );
+		return sprintf( 'includes/classes/class-%s.php', $slug );
 	}
 
 	/**
@@ -412,6 +418,18 @@ final class CreatePostTypeMetaCommand extends Command
 		}
 
 		return file_put_contents( $filePath, $template );
+	}
+
+	/**
+	 * Attempt to clear the prompt for the user if it's a console environment
+	 * 
+	 * @param ConsoleSectionOutput|NullOutput $promptSection
+	 */
+	private static function maybeClearPrompt( ConsoleSectionOutput|NullOutput $promptSection ): void
+	{
+		if ( $promptSection instanceof ConsoleSectionOutput ) {
+			$promptSection->clear();
+		}
 	}
 
 }
