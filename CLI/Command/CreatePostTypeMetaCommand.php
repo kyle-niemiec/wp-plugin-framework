@@ -64,8 +64,8 @@ final class CreatePostTypeMetaCommand extends Command
 	 */
 	private static function askVariableInformationLoop(
 		HelperBundle $bundle,
-		?ConsoleSectionOutput $promptSection,
-		?ConsoleSectionOutput $displaySection
+		ConsoleSectionOutput $promptSection,
+		ConsoleSectionOutput $displaySection
 	): array
 	{
 		$variables = array();
@@ -87,11 +87,8 @@ final class CreatePostTypeMetaCommand extends Command
 
 		// Loop prompting for user input until they are finished
 		while ( true ) {
-			if ( null !== $promptSection ) {
-				$promptSection->clear();
-			}
-
 			// Ask for the variable name
+			$promptSection->clear();
 			$name = $bundle->helper->ask( $bundle->input, $promptSection, $nameQuestion );
 
 			if ( '' === $name ) {
@@ -101,16 +98,14 @@ final class CreatePostTypeMetaCommand extends Command
 			$variables[ $name ] = null;
 			self::updateVariableDisplay( $displaySection, $variables );
 
-			if ( null !== $promptSection ) {
-				$promptSection->clear();
-			}
-
 			// Ask for the variable type
+			$promptSection->clear();
 			$type = $bundle->helper->ask( $bundle->input, $promptSection, $typeQuestion );
 			$variables[ $name ] = $type;
 			self::updateVariableDisplay( $displaySection, $variables );
 		}
 
+		$promptSection->clear();
 		return $variables;
 	}
 
