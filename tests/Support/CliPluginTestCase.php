@@ -124,18 +124,21 @@ abstract class CliPluginTestCase extends TestCase
 	 * 
 	 * @param string $dir The directory to remove.
 	 */
-	private static function rmdirRecursive( string $dir ): void
+	protected static function rmdirRecursive( string $dir ): void
 	{
-		foreach ( glob( $dir . '/*' ) as $file ) {
-			if ( is_dir( $file ) )
-				self::rmdirRecursive( $file );
-			else
-				unlink( $file );
+		if ( ! is_dir( $dir ) ) {
+			return;
 		}
 
-		if ( is_dir( $dir ) ) {
-			rmdir( $dir );
+		foreach ( glob( $dir . '/*' ) as $file ) {
+			if ( is_dir( $file ) ) {
+				self::rmdirRecursive( $file );
+			} else {
+				unlink( $file );
+			}
 		}
+
+		rmdir( $dir );
 	}
 
 }
