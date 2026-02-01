@@ -10,7 +10,6 @@ use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\NullOutput;
-use WPPF\CLI\Command\CreatePostTypeCommand;
 use WPPF\CLI\Command\CreatePostTypeMetaCommand;
 use WPPF\Tests\Support\CliPluginTestCase;
 
@@ -21,6 +20,9 @@ final class CreatePostTypeMetaCommandTest extends CliPluginTestCase
 {
 	/** @var string The expected meta data relative file path. */
 	private static $expectedFile = 'includes/classes/class-test-post-type-meta.php';
+
+	/** @inheritDoc */
+	protected static bool $usesMockPostType = true;
 
 	/**
 	 * @inheritDoc
@@ -35,18 +37,6 @@ final class CreatePostTypeMetaCommandTest extends CliPluginTestCase
 	public function setUp(): void
 	{
 		parent::setUp();
-
-		// Make the post types directory
-		$postTypeFile = CreatePostTypeCommand::POST_TYPES_DIR . '/class-test-post-type.php';
-
-		if ( ! is_dir( CreatePostTypeCommand::POST_TYPES_DIR ) ) {
-			mkdir( CreatePostTypeCommand::POST_TYPES_DIR, 0777, true );
-		}
-
-		// Make the post type file
-		if ( ! file_exists( $postTypeFile ) ) {
-			file_put_contents( $postTypeFile, "<?php\n// Test post type.\n" );
-		}
 
 		// Make the meta class directory
 		if ( ! is_dir( dirname( self::$expectedFile ) ) ) {

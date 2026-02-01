@@ -10,6 +10,7 @@ namespace WPPF\Tests\Support;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
+use WPPF\CLI\Command\CreatePostTypeCommand;
 
 /**
  * An overlying class for WPPF CLI commands that need to construct a mock file system to run.
@@ -30,6 +31,9 @@ abstract class CliPluginTestCase extends TestCase
 
 	/** @var bool True if the test case requires a mock admin file and folder to be generated. */
 	protected static bool $usesMockAdmin = false;
+
+	/** @var bool True if the test case requires a mock post type fixture. */
+	protected static bool $usesMockPostType = false;
 
 	/** @var bool True if the test case requires a mock plugin file to be generated. */
 	protected static bool $usesMockPlugin = false;
@@ -75,6 +79,10 @@ abstract class CliPluginTestCase extends TestCase
 		if ( static::$usesMockAdmin ) {
 			self::createMockAdminFile();
 		}
+
+		if ( static::$usesMockPostType ) {
+			self::createMockPostTypeFile();
+		}
 	}
 
 	/**
@@ -116,6 +124,22 @@ abstract class CliPluginTestCase extends TestCase
 
 		if ( ! file_exists( $pluginAdminFile ) ) {
 			file_put_contents( $pluginAdminFile, "<?php\n// Test admin plugin.\n" );
+		}
+	}
+
+	/**
+	 * Create a mock post type file for commands to use.
+	 */
+	protected static function createMockPostTypeFile(): void
+	{
+		if ( ! is_dir( CreatePostTypeCommand::POST_TYPES_DIR ) ) {
+			mkdir( CreatePostTypeCommand::POST_TYPES_DIR, 0777, true );
+		}
+
+		$postTypeFile = CreatePostTypeCommand::POST_TYPES_DIR . '/class-test-post-type.php';
+
+		if ( ! file_exists( $postTypeFile ) ) {
+			file_put_contents( $postTypeFile, "<?php\nfinal class Test_Post_Type {}\n" );
 		}
 	}
 

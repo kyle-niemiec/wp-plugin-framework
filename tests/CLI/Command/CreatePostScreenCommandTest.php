@@ -17,10 +17,23 @@ use WPPF\Tests\Support\CliPluginTestCase;
  */
 final class CreatePostScreenCommandTest extends CliPluginTestCase
 {
+	/** @inheritDoc */
+	protected static bool $usesMockPostType = true;
+
 	/**
 	 * @inheritDoc
 	 */
 	public static function getCommand(): Command { return new CreatePostScreenCommand; }
+
+	/**
+	 * @inheritDoc
+	 */
+	protected function setUp(): void
+	{
+		parent::setUp();
+		self::rmdirRecursive( 'admin' );
+		self::createMockPostTypeFile();
+	}
 
 	/**
 	 * Pass: Create a post screen class file in the expected folder.
@@ -28,9 +41,6 @@ final class CreatePostScreenCommandTest extends CliPluginTestCase
 	#[Test]
 	public function testCommandCreatesPostScreenPass(): void
 	{
-		self::resetFixtureDirs();
-		self::createPostTypeFixture();
-
 		$command = self::$console->find( 'make:post-screen' );
 		$tester = new CommandTester( $command );
 		$tester->setInputs( [ '0' ] );
@@ -58,9 +68,6 @@ final class CreatePostScreenCommandTest extends CliPluginTestCase
 	#[Test]
 	public function testPostScreenFileAlreadyExistsFail(): void
 	{
-		self::resetFixtureDirs();
-		self::createPostTypeFixture();
-
 		$output = 'admin/includes/screens/class-test-post-type-post-screens.php';
 
 		if ( ! is_dir( dirname( $output ) ) ) {
@@ -91,40 +98,19 @@ final class CreatePostScreenCommandTest extends CliPluginTestCase
 	#[Test]
 	public function testNoPostTypesAvailableFail(): void
 	{
-		self::resetFixtureDirs();
-
 		$command = self::$console->find( 'make:post-screen' );
 		$tester = new CommandTester( $command );
 
 		$this->expectException( \RuntimeException::class );
 		$this->expectExceptionMessage( 'No post types currently exist' );
 
-		$tester->execute( [], [ 'interactive' => true ] );
-	}
+		self::rmdirRecursive( CreatePostTypeCommand::POST_TYPES_DIR );
 
-	/**
-	 * Create the post type fixture used for selecting a post type.
-	 */
-	private static function createPostTypeFixture(): void
-	{
-		if ( ! is_dir( CreatePostTypeCommand::POST_TYPES_DIR ) ) {
-			mkdir( CreatePostTypeCommand::POST_TYPES_DIR, 0777, true );
+		try {
+			$tester->execute( [], [ 'interactive' => true ] );
+		} finally {
+			self::createMockPostTypeFile();
 		}
-
-		$postTypeFile = CreatePostTypeCommand::POST_TYPES_DIR . '/class-test-post-type.php';
-
-		if ( ! file_exists( $postTypeFile ) ) {
-			file_put_contents( $postTypeFile, "<?php\nfinal class Test_Post_Type {}\n" );
-		}
-	}
-
-	/**
-	 * Reset any fixture directories used in the tests.
-	 */
-	private static function resetFixtureDirs(): void
-	{
-		self::rmdirRecursive( 'includes' );
-		self::rmdirRecursive( 'admin' );
 	}
 
 }
