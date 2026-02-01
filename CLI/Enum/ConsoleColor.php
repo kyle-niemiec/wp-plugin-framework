@@ -1,6 +1,6 @@
 <?php
 
-namespace WPPF\CLI\Static;
+namespace WPPF\CLI\Enum;
 
 /**
  * An enumeration of colors which are compatible with the Symfony Console.

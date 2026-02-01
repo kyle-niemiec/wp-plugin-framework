@@ -13,8 +13,8 @@
 
 namespace WPPF\CLI\Command;
 
-use WPPF\CLI\Static\HelperBundle;
-use WPPF\CLI\Static\StyleUtil;
+use WPPF\CLI\Support\HelperBundle;
+use WPPF\CLI\Util\StyleUtil;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\QuestionHelper;

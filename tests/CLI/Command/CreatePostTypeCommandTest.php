@@ -5,6 +5,8 @@
  * @package WPPF
  */
 
+namespace WPPF\Tests\CLI\Command;
+
 use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\Console\Command\Command;
 use WPPF\CLI\Command\CreatePostTypeCommand;

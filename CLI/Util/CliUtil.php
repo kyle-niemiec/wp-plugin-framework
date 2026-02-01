@@ -11,7 +11,7 @@
  * @package WPPF
  */
 
-namespace WPPF\CLI\Static;
+namespace WPPF\CLI\Util;
 
 /**
  * A static class to hold general utilities for console functions.

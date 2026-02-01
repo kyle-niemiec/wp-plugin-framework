@@ -11,7 +11,7 @@
  * @package WPPF
  */
 
-namespace WPPF\CLI\Static;
+namespace WPPF\CLI\Support;
 
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;

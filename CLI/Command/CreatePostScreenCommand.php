@@ -13,16 +13,16 @@
 
 namespace WPPF\CLI\Command;
 
-use WPPF\CLI\Static\CliUtil;
-use WPPF\CLI\Static\HelperBundle;
-use WPPF\CLI\Static\StyleUtil;
+use WPPF\CLI\Util\CliUtil;
+use WPPF\CLI\Support\HelperBundle;
+use WPPF\CLI\Util\StyleUtil;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
-use WPPF\CLI\Static\ConsoleColor;
+use WPPF\CLI\Enum\ConsoleColor;
 use WPPF\v1_2_1\Framework\Utility;
 
 /**

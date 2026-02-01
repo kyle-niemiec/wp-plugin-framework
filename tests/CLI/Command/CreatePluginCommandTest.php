@@ -5,10 +5,12 @@
  * @package WPPF
  */
 
+namespace WPPF\Tests\CLI\Command;
+
 use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\Console\Command\Command;
 use WPPF\CLI\Command\CreatePluginCommand;
-use WPPF\CLI\Static\CliUtil;
+use WPPF\CLI\Util\CliUtil;
 use WPPF\Tests\Support\CliPluginTestCase;
 
 final class CreatePluginCommandTest extends CliPluginTestCase

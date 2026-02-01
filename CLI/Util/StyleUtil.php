@@ -11,7 +11,9 @@
  * @package WPPF
  */
 
-namespace WPPF\CLI\Static;
+namespace WPPF\CLI\Util;
+
+use WPPF\CLI\Enum\ConsoleColor;
 
 /**
  * A static class to hold styling utilities for console text.
@@ -22,7 +24,7 @@ final class StyleUtil
 	 * Create a string surrounded by a specified terminal-compatible color.
 	 * 
 	 * @param string $message The message to colorize.
-	 * @param WPPF\CLI\Static\ConsoleColor $color The terminal-compatible color for the message.
+	 * @param ConsoleColor $color The terminal-compatible color for the message.
 	 * 
 	 * @return string The color-wrapped message.
 	 */
