@@ -281,16 +281,22 @@ final class CreatePostTypeMetaCommand extends Command
 	private static function selectPostTypeFile( HelperBundle $bundle ): string
 	{
 		CliUtil::requireFrameworkUtility();
-		$directory = sprintf( '%s/includes/post-types', getcwd() );
+		$directory = sprintf( '%s/%s', getcwd(), CreatePostTypeCommand::POST_TYPES_DIR );
 
 		if ( ! is_dir( $directory ) ) {
-			throw new \RuntimeException( 'No post types currently exist in `includes/post-types`.' );
+			throw new \RuntimeException( sprintf(
+				'No post types currently exist in `%s`.',
+				CreatePostTypeCommand::POST_TYPES_DIR
+			) );
 		}
 
 		$files = Utility::scandir( $directory, 'files' );
 
 		if ( empty( $files ) ) {
-			throw new \RuntimeException( 'No post types currently exist in `includes/post-types`.' );
+			throw new \RuntimeException( sprintf(
+				'No post types currently exist in `%s`.',
+				CreatePostTypeCommand::POST_TYPES_DIR
+			) );
 		}
 
 		$question = new ChoiceQuestion(

@@ -10,6 +10,7 @@ use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\NullOutput;
+use WPPF\CLI\Command\CreatePostTypeCommand;
 use WPPF\CLI\Command\CreatePostTypeMetaCommand;
 use WPPF\Tests\Support\CliPluginTestCase;
 
@@ -36,11 +37,10 @@ final class CreatePostTypeMetaCommandTest extends CliPluginTestCase
 		parent::setUp();
 
 		// Make the post types directory
-		$postTypesDir = 'includes/post-types';
-		$postTypeFile = $postTypesDir . '/class-test-post-type.php';
+		$postTypeFile = CreatePostTypeCommand::POST_TYPES_DIR . '/class-test-post-type.php';
 
-		if ( ! is_dir( $postTypesDir ) ) {
-			mkdir( $postTypesDir, 0777, true );
+		if ( ! is_dir( CreatePostTypeCommand::POST_TYPES_DIR ) ) {
+			mkdir( CreatePostTypeCommand::POST_TYPES_DIR, 0777, true );
 		}
 
 		// Make the post type file

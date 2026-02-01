@@ -34,6 +34,9 @@ use WPPF\v1_2_1\Framework\Utility;
 )]
 final class CreatePostTypeCommand extends Command
 {
+	/** @var string A reference to the location of the post types folder */
+	public const POST_TYPES_DIR = 'includes/post-types';
+
 	/**
 	 * Set up the helper variables, control message flow.
 	 *
@@ -99,8 +102,9 @@ final class CreatePostTypeCommand extends Command
 		$output->writeln(
 			StyleUtil::color(
 				sprintf(
-					'Post type `%s` was created at `includes/post-types/%s.php`.',
+					'Post type `%s` was created at `%s/%s.php`.',
 					$className,
+					self::POST_TYPES_DIR,
 					$slug
 				),
 				ConsoleColor::Green
@@ -252,7 +256,7 @@ final class CreatePostTypeCommand extends Command
 	 */
 	private static function postTypeFilePath( string $slug ): string
 	{
-		return sprintf( '%s/includes/post-types/class-%s.php', getcwd(), $slug );
+		return sprintf( '%s/%s/class-%s.php', getcwd(), self::POST_TYPES_DIR, $slug );
 	}
 
 }
