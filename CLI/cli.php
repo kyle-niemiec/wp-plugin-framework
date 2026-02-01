@@ -15,12 +15,13 @@ namespace WPPF\CLI\Command;
 
 use Symfony\Component\Console\Application;
 
-$application = new Application( 'WP Plugin Framework CLI', '0.0.1' );
+$application = new Application( 'WP Plugin Framework CLI', '1.0.0' );
 
 // Register commands
 $application->add( new CreatePluginAdminCommand );
 $application->add( new CreatePluginCommand );
 $application->add( new CreatePostTypeCommand );
+$application->add( new CreateMetaBoxCommand );
 $application->add( new CreatePostTypeMetaCommand );
 $application->add( new CreatePostScreenCommand );
 $application->add( new FrameworkVersionUpgradeCommand );

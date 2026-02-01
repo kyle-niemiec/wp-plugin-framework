@@ -29,7 +29,7 @@ if ( ! class_exists( '{{class_name}}', false ) ) {
 		/**
 		 * @inheritDoc
 		 */
-		final public static function get_id() { return sprintf( '%s_edit_screen', {{post_type_class}}::post_type() ); }
+		final public static function get_id() { return '{{meta_box_id}}'; }
 
 		/**
 		 * @inheritDoc
@@ -55,15 +55,13 @@ if ( ! class_exists( '{{class_name}}', false ) ) {
 			}
 
 			// Read the data sent from the admin page
-			$data = self::prepare_data( ?? $Meta ?? );
+			$data = self::prepare_data();
 			{{maybe_save_meta}}
 			return $post_id;
 		}
 
 		/**
 		 * A function you can use to read and modify the data being sent from the admin page.
-		 * 
-		 * @param WPPF\v1_2_1\WordPress\Meta $Meta The meta data object associated with this meta box.
 		 * 
 		 * @return array The data to save to the meta.
 		 */
