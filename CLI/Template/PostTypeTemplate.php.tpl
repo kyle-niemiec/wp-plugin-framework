@@ -10,30 +10,30 @@ use WPPF\v1_2_1\WordPress\Post_Type;
 if ( ! class_exists( '{{class_name}}', false ) ) {
 
 	/**
-	 * A class to represent and help deal with common plugin functionality.
+	 * This class contains the configuration logic for a custom post type.
 	 */
-	final class {{class_name}} extends Post_Type {
-
+	final class {{class_name}} extends Post_Type
+	{
 		/**
-		 * The lower_underscore_case identifier for the post type.
-		 * 
-		 * @return string The @see WPPF\v1_2_1\WordPress\Post_Type name.
+		 * @inheritDoc
 		 */
 		final public static function post_type() { return '{{slug}}'; }
 
 		/**
-		 * Add Meta Box and call parent.
+		 * Add meta boxes and run code when this class is registered to the framework.
 		 */
-		final public function __construct() {
+		final public function __construct()
+		{
 			parent::__construct();
 		}
 
 		/**
-		 * The required options from the abstract.
+		 * The WordPress custom post type options. @see WPPF\v1_2_1\WordPress\Post_Type for the complete list.
 		 * 
-		 * @return array The Post Type options.
+		 * @return array The custom post type options.
 		 */
-		final protected function post_type_options() {
+		final protected function post_type_options()
+		{
 			return array(
 				'labels' => array(
 					'menu_name' => __( '{{menu_name}}' ),

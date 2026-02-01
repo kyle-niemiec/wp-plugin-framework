@@ -10,7 +10,7 @@ use WPPF\v1_2_1\Framework\Admin_Module;
 if ( ! class_exists( '{{module_class_name}}', false ) ) {
 
 	/**
-	 * The admin module for {{module_class_name}}.
+	 * The admin module for the plugin.
 	 */
 	final class {{module_class_name}} extends Admin_Module { }
 
