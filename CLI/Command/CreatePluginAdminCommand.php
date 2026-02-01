@@ -62,7 +62,7 @@ final class CreatePluginAdminCommand extends Command
 
 			if ( self::askCreatePlugin( $bundle ) ) {
 				$createPluginCommand = new CreatePluginCommand();
-				$createPluginInput = new ArrayInput( array() );
+				$createPluginInput = new ArrayInput( [] );
 				$createPluginInput->setInteractive( $input->isInteractive() );
 				$status = $createPluginCommand->run( $createPluginInput, $output );
 
@@ -101,9 +101,9 @@ final class CreatePluginAdminCommand extends Command
 		try {
 			$template = CliUtil::applyTemplate(
 				'AdminModule',
-				array(
+				[
 					'{{module_class_name}}' => $moduleClassName,
-				)
+				]
 			);
 		} catch ( \RuntimeException $e ) {
 			throw $e;

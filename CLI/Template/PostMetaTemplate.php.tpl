@@ -61,7 +61,7 @@ if ( ! class_exists( '{{class_name}}', false ) ) {
 		 */
 		final public function export()
 		{
-			$export = array();
+			$export = [];
 
             // Set all meta data values to the export object
 			foreach ( self::$generated_values as $property => $default_value ) {

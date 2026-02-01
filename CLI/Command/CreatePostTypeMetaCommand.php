@@ -87,13 +87,13 @@ final class CreatePostTypeMetaCommand extends Command
 		try {
 			$template = CliUtil::applyTemplate(
 				'PostMeta',
-				array(
+				[
 					'{{class_name}}' => $className,
 					'{{class_properties}}' => self::buildClassProperties( $variables ),
 					'{{class_slug}}' => CliUtil::underscorify( $className ),
 					'{{default_values}}' => self::buildDefaultValues( $variables ),
 					'{{schemas}}' => self::buildSchemas( $variables ),
-				)
+				]
 			);
 		} catch ( \RuntimeException $e ) {
 			throw $e;
@@ -145,7 +145,7 @@ final class CreatePostTypeMetaCommand extends Command
 		) );
 
 		// Set up section prompts
-		$variables = array();
+		$variables = [];
 		self::updateVariableDisplay( $displaySection, $variables );
 
 		$nameQuestion = new Question( StyleUtil::color(
@@ -222,7 +222,7 @@ final class CreatePostTypeMetaCommand extends Command
 			return;
 		}
 
-		$lines = array();
+		$lines = [];
 
 		// Default message if no variables have been defined
 		if ( empty( $variables ) ) {
@@ -260,9 +260,9 @@ final class CreatePostTypeMetaCommand extends Command
 				throw new \RuntimeException( 'Please provide a type.' );
 			}
 
-			$allowed = array( 'array', 'boolean', 'float', 'integer', 'string' );
+			$allowed = [ 'array', 'boolean', 'float', 'integer', 'string' ];
 
-			if ( ! in_array( $value, $allowed, true ) ) {
+			if ( ! in_array( $value, $allowed ) ) {
 				throw new \RuntimeException( 'Allowed types: array, boolean, float, integer, string.' );
 			}
 

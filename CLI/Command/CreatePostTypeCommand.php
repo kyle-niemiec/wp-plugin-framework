@@ -180,7 +180,7 @@ final class CreatePostTypeCommand extends Command
 
 		$answer = $bundle->helper->ask( $bundle->input, $bundle->output, $question );
 
-		return in_array( $answer, array( 'yes', 'y' ) );
+		return in_array( $answer, [ 'yes', 'y' ] );
 	}
 
 	/**

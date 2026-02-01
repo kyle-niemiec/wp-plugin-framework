@@ -34,18 +34,18 @@ if ( ! class_exists( '{{class_name}}', false ) ) {
 		 */
 		final protected function post_type_options()
 		{
-			return array(
-				'labels' => array(
+			return [
+				'labels' => [
 					'menu_name' => __( '{{menu_name}}' ),
-				),
+				],
 				'singular_name'	=> __( '{{sungular_name}}' ),
 				'plural_name'	=> __( '{{plural_name}}' ),
 				'public'		=> true,
 				'show_in_menu'	=> {{show_in_menu}},
 				'show_ui'		=> true,
 				'has_archive'	=> true,
-				'supports'		=> array( 'title', 'thumbnail' ),
-			);
+				'supports'		=> [ 'title', 'thumbnail' ],
+			];
 		}
 
 	}

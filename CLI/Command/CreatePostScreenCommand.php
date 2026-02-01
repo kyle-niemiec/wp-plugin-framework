@@ -75,10 +75,10 @@ final class CreatePostScreenCommand extends Command
 		try {
 			$template = CliUtil::applyTemplate(
 				'PostScreen',
-				array(
+				[
 					'{{class_name}}' => $className,
 					'{{post_type_class}}' => $postTypeClass,
-				)
+				]
 			);
 		} catch ( \RuntimeException $e ) {
 			throw $e;
