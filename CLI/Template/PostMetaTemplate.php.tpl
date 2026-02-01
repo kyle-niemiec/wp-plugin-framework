@@ -5,6 +5,7 @@
 
 defined( 'ABSPATH' ) or exit;
 
+use WPPF\v1_2_1\WordPress\Meta_Schema;
 use WPPF\v1_2_1\WordPress\Post_Meta;
 
 if ( ! class_exists( '{{class_name}}', false ) ) {
@@ -33,6 +34,11 @@ if ( ! class_exists( '{{class_name}}', false ) ) {
 		 * @param \WP_Post $Post The custom post type the {@see use WPPF\v1_2_1\WordPress\Post_Meta} values belong to.
 		 */
 		public function __construct( \WP_Post $Post ) {
+			// Set Meta schema
+			$this->set_schema( new Meta_Schema( 'array', [
+				{{schemas}}
+			] ) );
+
 			if ( ! $Post ) {
 				$message = sprintf( "No valid Post was passed to the %s constructor.", self::class );
 				throw new \Exception( $message );

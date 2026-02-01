@@ -91,6 +91,7 @@ final class CreatePostTypeMetaCommand extends Command
 					'{{class_properties}}' => self::buildClassProperties( $variables ),
 					'{{class_slug}}' => CliUtil::underscorify( $className ),
 					'{{default_values}}' => self::buildDefaultValues( $variables ),
+					'{{schemas}}' => self::buildSchemas( $variables ),
 				)
 			);
 		} catch ( \RuntimeException $e ) {
@@ -147,7 +148,7 @@ final class CreatePostTypeMetaCommand extends Command
 		self::updateVariableDisplay( $displaySection, $variables );
 
 		$nameQuestion = new Question( StyleUtil::color(
-			'Enter a name (blank if finished): ',
+			'Enter a variable name (blank if finished): ',
 			ConsoleColor::BrightYellow
 		) );
 
@@ -339,6 +340,24 @@ final class CreatePostTypeMetaCommand extends Command
 	}
 
 	/**
+	 * Build the meta schemas block for the template.
+	 *
+	 * @param array $variables The collected variable names and types.
+	 *
+	 * @return string The meta schemas block.
+	 */
+	private static function buildSchemas( array $variables ): string
+	{
+		$lines = [];
+
+		foreach ( $variables as $name => $type ) {
+			$lines[] = sprintf( "'%s' => %s,", $name, self::getTypeSchemaDefinition( $type ) );
+		}
+
+		return implode( "\n\t\t\t\t", $lines );
+	}
+
+	/**
 	 * Return a default value for a given variable type.
 	 * 
 	 * @param string The string representation of the variable type.
@@ -365,6 +384,36 @@ final class CreatePostTypeMetaCommand extends Command
 				break;
 			default:
 				return "null";
+		}
+	}
+
+	/**
+	 * Return a schema definition for a given variable type.
+	 *
+	 * @param string The string representation of the variable type.
+	 *
+	 * @return string The schema definition for a given type.
+	 */
+	private static function getTypeSchemaDefinition( string $type ): string
+	{
+		switch( $type ) {
+			case 'array':
+				return "new Meta_Schema( 'array', new Meta_Schema( 'string', '^[a-zA-Z0-9 ]+$/' ) )";
+				break;
+			case 'boolean':
+				return "new Meta_Schema( 'boolean' )";
+				break;
+			case 'float':
+				return "new Meta_Schema( 'float' )";
+				break;
+			case 'integer':
+				return "new Meta_Schema( 'integer' )";
+				break;
+			case 'string':
+				return "new Meta_Schema( 'string', '^[a-zA-Z0-9 ]+$/', [ 'pattern_hint' => __( \"Only letters, numbers, and spaces are allowed.\" ) ] )";
+				break;
+			default:
+				return "new Meta_Schema( 'string' )";
 		}
 	}
 
