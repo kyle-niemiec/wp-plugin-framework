@@ -25,34 +25,30 @@ final class CreatePostScreenCommandTest extends CliPluginTestCase
 	public static function getCommand(): Command { return new CreatePostScreenCommand; }
 
 	/**
-	 * @inheritDoc
-	 */
-	protected function setUp(): void
-	{
-		parent::setUp();
-		self::rmdirRecursive( 'admin' );
-		self::createMockPostTypeFile();
-	}
-
-	/**
 	 * Pass: Create a post screen class file in the expected folder.
 	 */
 	#[Test]
 	public function testCommandCreatesPostScreenPass(): void
 	{
+		// Select the first post type
 		$this->tester->setInputs( [ '0' ] );
 
+		// Ensure the command completes successfully
 		$status = $this->tester->execute( [], [ 'interactive' => true ] );
 		self::assertSame( Command::SUCCESS, $status );
 
+		// Test if the file is created
 		$output = 'admin/includes/screens/class-test-post-type-post-screens.php';
 		self::assertFileExists( $output );
 
+		// Test the file contents
 		$contents = file_get_contents( $output );
+
 		self::assertStringContainsString(
 			'final class Test_Post_Type_Post_Screens extends Post_Screens',
 			$contents
 		);
+
 		self::assertStringContainsString(
 			'return Test_Post_Type::post_type();',
 			$contents
@@ -67,16 +63,19 @@ final class CreatePostScreenCommandTest extends CliPluginTestCase
 	{
 		$output = 'admin/includes/screens/class-test-post-type-post-screens.php';
 
-		if ( ! is_dir( dirname( $output ) ) ) {
-			mkdir( dirname( $output ), 0777, true );
+		// Create the file before the test
+		$directory = dirname( $output );
+
+		if ( ! is_dir( $directory ) ) {
+			mkdir( $directory, 0777, true );
 		}
 
-		if ( ! file_exists( $output ) ) {
-			file_put_contents( $output, "<?php\n// Test post screen.\n" );
-		}
+		file_put_contents( $output, "<?php\n// Test post screen.\n" );
 
+		// Select the first post type
 		$this->tester->setInputs( [ '0' ] );
 
+		// Ensure the command fails
 		$status = $this->tester->execute( [], [ 'interactive' => true ] );
 		self::assertSame( Command::FAILURE, $status );
 		self::assertFileExists( $output );
@@ -93,16 +92,13 @@ final class CreatePostScreenCommandTest extends CliPluginTestCase
 	#[Test]
 	public function testNoPostTypesAvailableFail(): void
 	{
-		$this->expectException( \RuntimeException::class );
-		$this->expectExceptionMessage( 'No post types currently exist' );
-
+		// Delete all existing post types
 		self::rmdirRecursive( CreatePostTypeCommand::POST_TYPES_DIR );
 
-		try {
-			$this->tester->execute( [], [ 'interactive' => true ] );
-		} finally {
-			self::createMockPostTypeFile();
-		}
+		// Expect command to throw an exception
+		$this->expectException( \RuntimeException::class );
+		$this->expectExceptionMessage( 'No post types currently exist' );
+		$this->tester->execute( [], [ 'interactive' => true ] );
 	}
 
 }
