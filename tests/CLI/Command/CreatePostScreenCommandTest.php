@@ -7,7 +7,6 @@
 
 use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Tester\CommandTester;
 use WPPF\CLI\Command\CreatePostScreenCommand;
 use WPPF\CLI\Command\CreatePostTypeCommand;
 use WPPF\Tests\Support\CliPluginTestCase;
@@ -41,11 +40,9 @@ final class CreatePostScreenCommandTest extends CliPluginTestCase
 	#[Test]
 	public function testCommandCreatesPostScreenPass(): void
 	{
-		$command = self::$console->find( 'make:post-screen' );
-		$tester = new CommandTester( $command );
-		$tester->setInputs( [ '0' ] );
+		$this->tester->setInputs( [ '0' ] );
 
-		$status = $tester->execute( [], [ 'interactive' => true ] );
+		$status = $this->tester->execute( [], [ 'interactive' => true ] );
 		self::assertSame( Command::SUCCESS, $status );
 
 		$output = 'admin/includes/screens/class-test-post-type-post-screens.php';
@@ -78,17 +75,15 @@ final class CreatePostScreenCommandTest extends CliPluginTestCase
 			file_put_contents( $output, "<?php\n// Test post screen.\n" );
 		}
 
-		$command = self::$console->find( 'make:post-screen' );
-		$tester = new CommandTester( $command );
-		$tester->setInputs( [ '0' ] );
+		$this->tester->setInputs( [ '0' ] );
 
-		$status = $tester->execute( [], [ 'interactive' => true ] );
+		$status = $this->tester->execute( [], [ 'interactive' => true ] );
 		self::assertSame( Command::FAILURE, $status );
 		self::assertFileExists( $output );
 
 		self::assertStringContainsString(
 			'already exists',
-			$tester->getDisplay()
+			$this->tester->getDisplay()
 		);
 	}
 
@@ -98,16 +93,13 @@ final class CreatePostScreenCommandTest extends CliPluginTestCase
 	#[Test]
 	public function testNoPostTypesAvailableFail(): void
 	{
-		$command = self::$console->find( 'make:post-screen' );
-		$tester = new CommandTester( $command );
-
 		$this->expectException( \RuntimeException::class );
 		$this->expectExceptionMessage( 'No post types currently exist' );
 
 		self::rmdirRecursive( CreatePostTypeCommand::POST_TYPES_DIR );
 
 		try {
-			$tester->execute( [], [ 'interactive' => true ] );
+			$this->tester->execute( [], [ 'interactive' => true ] );
 		} finally {
 			self::createMockPostTypeFile();
 		}

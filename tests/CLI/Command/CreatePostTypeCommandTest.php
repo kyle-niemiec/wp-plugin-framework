@@ -7,7 +7,6 @@
 
 use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Tester\CommandTester;
 use WPPF\CLI\Command\CreatePostTypeCommand;
 use WPPF\Tests\Support\CliPluginTestCase;
 
@@ -27,17 +26,14 @@ final class CreatePostTypeCommandTest extends CliPluginTestCase
 	#[Test]
 	public function testCommandCreatesPostTypePass(): void
 	{
-		$command = self::$console->find( 'make:post-type' );
-		$tester = new CommandTester( $command );
-
-		$tester->setInputs( [
+		$this->tester->setInputs( [
 			'Book',
 			'Books',
 			'yes',
 			'Library',
 		] );
 
-		$status = $tester->execute( [], [ 'interactive' => true ] );
+		$status = $this->tester->execute( [], [ 'interactive' => true ] );
 		self::assertSame( Command::SUCCESS, $status );
 
 		$output = CreatePostTypeCommand::POST_TYPES_DIR . '/class-book.php';
@@ -69,23 +65,20 @@ final class CreatePostTypeCommandTest extends CliPluginTestCase
 			file_put_contents( $targetFile, "<?php\n// Test post type.\n" );
 		}
 
-		$command = self::$console->find( 'make:post-type' );
-		$tester = new CommandTester( $command );
-
-		$tester->setInputs( [
+		$this->tester->setInputs( [
 			'Album',
 			'Albums',
 			'no',
 		] );
 
-		$status = $tester->execute( [], [ 'interactive' => true ] );
+		$status = $this->tester->execute( [], [ 'interactive' => true ] );
 
 		self::assertSame( Command::FAILURE, $status );
 		self::assertFileExists( $targetFile );
 
 		self::assertStringContainsString(
 			'Error: The post type file already exists.',
-			$tester->getDisplay()
+			$this->tester->getDisplay()
 		);
 	}
 }

@@ -7,7 +7,6 @@
 
 use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Tester\CommandTester;
 use WPPF\CLI\Command\CreatePluginCommand;
 use WPPF\CLI\Static\CliUtil;
 use WPPF\Tests\Support\CliPluginTestCase;
@@ -25,10 +24,7 @@ final class CreatePluginCommandTest extends CliPluginTestCase
 	#[Test]
 	public function testCommandCreatesPluginPass(): void
 	{
-		$command = self::$console->find( 'make:plugin' );
-		$tester = new CommandTester( $command );
-
-		$tester->setInputs( [
+		$this->tester->setInputs( [
 			'Sample Plugin',
 			'https://example.com/plugin',
 			'A sample description.',
@@ -37,7 +33,7 @@ final class CreatePluginCommandTest extends CliPluginTestCase
 		] );
 
 		// Assert command status code success
-		$status = $tester->execute( [], [ 'interactive' => true ] );
+		$status = $this->tester->execute( [], [ 'interactive' => true ] );
 		self::assertSame( Command::SUCCESS, $status );
 
 		// Assert the generate file exists
@@ -63,9 +59,7 @@ final class CreatePluginCommandTest extends CliPluginTestCase
 	public function testPluginFileAlreadyExistsFail(): void
 	{
 		$pluginFile = self::PLUGIN_SLUG . '.php';
-		$command = self::$console->find( 'make:plugin' );
-		$tester = new CommandTester( $command );
-		$status = $tester->execute( [] );
+		$status = $this->tester->execute( [] );
 
 		// Assert the Command fails if the plugin file exists
 		self::assertSame( Command::FAILURE, $status );
@@ -73,7 +67,7 @@ final class CreatePluginCommandTest extends CliPluginTestCase
 
 		self::assertStringContainsString(
 			'Error: A plugin file already exists in this directory.',
-			$tester->getDisplay()
+			$this->tester->getDisplay()
 		);
 	}
 

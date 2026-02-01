@@ -7,7 +7,6 @@
 
 use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Tester\CommandTester;
 use WPPF\CLI\Command\CreatePluginAdminCommand;
 use WPPF\CLI\Static\CliUtil;
 use WPPF\Tests\Support\CliPluginTestCase;
@@ -28,11 +27,8 @@ final class CreatePluginAdminCommandTest extends CliPluginTestCase
 	#[Test]
 	public function testCommandCreatesAdminModulePass(): void
 	{
-		$command = self::$console->find( 'make:plugin-admin' );
-		$tester = new CommandTester( $command );
-
 		// Assert command status code success
-		$status = $tester->execute( [] );
+		$status = $this->tester->execute( [] );
 		self::assertSame( Command::SUCCESS, $status );
 
 		// Assert the generated file exists
@@ -53,9 +49,7 @@ final class CreatePluginAdminCommandTest extends CliPluginTestCase
 	public function testAdminModuleFileAlreadyExistsFail(): void
 	{
 		$adminFile = sprintf( 'admin/%s-admin.php', CreatePluginCommandTest::PLUGIN_SLUG );
-		$command = self::$console->find( 'make:plugin-admin' );
-		$tester = new CommandTester( $command );
-		$status = $tester->execute( [] );
+		$status = $this->tester->execute( [] );
 
 		// Assert the Command fails if the admin module file exists
 		self::assertSame( Command::FAILURE, $status );
@@ -63,7 +57,7 @@ final class CreatePluginAdminCommandTest extends CliPluginTestCase
 
 		self::assertStringContainsString(
 			'Error: The admin module file already exists.',
-			$tester->getDisplay()
+			$this->tester->getDisplay()
 		);
 	}
 

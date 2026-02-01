@@ -10,6 +10,7 @@ namespace WPPF\Tests\Support;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Tester\CommandTester;
 use WPPF\CLI\Command\CreatePostTypeCommand;
 
 /**
@@ -22,6 +23,9 @@ abstract class CliPluginTestCase extends TestCase
 
 	/** @var Command The CLI command to be tested. */
 	protected static Command $command;
+
+	/** @var string|null The name of the CLI command to be tested. */
+	protected static ?string $commandName = null;
 
 	/** @var Application|null The Symfony Command application which executes our context. */
 	protected static ?Application $console = null;
@@ -40,6 +44,9 @@ abstract class CliPluginTestCase extends TestCase
 
 	/** @var string|null The writable directory the command will be executed inside of. */
 	protected static ?string $tmpDir = null;
+
+	/** @var CommandTester The command tester for the current test. */
+	protected CommandTester $tester;
 
 	/**
 	 * Set the command the test will be running on.
@@ -69,7 +76,18 @@ abstract class CliPluginTestCase extends TestCase
 
 		// Create the Symfony application
 		static::$console = new Application;
-		static::$console->add( static::getCommand() );
+		static::$command = static::getCommand();
+		static::$console->add( static::$command );
+
+		static::$commandName = static::$command->getName();
+		if ( null === static::$commandName ) {
+			foreach ( static::$console->all() as $name => $command ) {
+				if ( $command === static::$command ) {
+					static::$commandName = $name;
+					break;
+				}
+			}
+		}
 
 		// Create mock files
 		if ( static::$usesMockPlugin ) {
@@ -83,6 +101,29 @@ abstract class CliPluginTestCase extends TestCase
 		if ( static::$usesMockPostType ) {
 			self::createMockPostTypeFile();
 		}
+	}
+
+	/**
+	 * Set up the CommandTester for the current test.
+	 */
+	protected function setUp(): void
+	{
+		parent::setUp();
+
+		if ( null === static::$commandName ) {
+			foreach ( static::$console?->all() ?? [] as $name => $command ) {
+				if ( $command === static::$command ) {
+					static::$commandName = $name;
+					break;
+				}
+			}
+		}
+
+		if ( null === static::$commandName ) {
+			throw new \RuntimeException( 'Command name not available for CommandTester.' );
+		}
+
+		$this->tester = new CommandTester( static::$console->find( static::$commandName ) );
 	}
 
 	/**
