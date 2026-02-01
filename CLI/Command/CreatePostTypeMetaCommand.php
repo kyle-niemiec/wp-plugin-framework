@@ -57,18 +57,7 @@ final class CreatePostTypeMetaCommand extends Command
 		$bundle = new HelperBundle( new QuestionHelper, $input, $output );
 		$selectedPostType = self::selectPostTypeFile( $bundle );
 
-		// Loop through variable selection options.
-		if ( $output instanceof ConsoleOutputInterface ) {
-			$displaySection = $output->section();
-			$promptSection = $output->section();
-		} else {
-			$displaySection = $output;
-			$promptSection = $output;
-		}
-
-		$variables = self::askVariableInformationLoop( $bundle, $promptSection, $displaySection );
-
-		// Create the post meta file
+		// Ensure meta file doesn't already exist
 		$postTypeSlug = pathinfo( $selectedPostType, PATHINFO_FILENAME );
 
 		if ( str_starts_with( $postTypeSlug, 'class-' ) ) {
@@ -83,6 +72,18 @@ final class CreatePostTypeMetaCommand extends Command
 			return Command::FAILURE;
 		}
 
+		// Loop through variable selection options.
+		if ( $output instanceof ConsoleOutputInterface ) {
+			$displaySection = $output->section();
+			$promptSection = $output->section();
+		} else {
+			$displaySection = $output;
+			$promptSection = $output;
+		}
+
+		$variables = self::askVariableInformationLoop( $bundle, $promptSection, $displaySection );
+
+		// Create the meta file
 		try {
 			$template = CliUtil::applyTemplate(
 				'PostMeta',
