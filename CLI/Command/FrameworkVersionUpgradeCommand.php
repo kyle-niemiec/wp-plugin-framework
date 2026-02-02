@@ -14,6 +14,7 @@
 namespace WPPF\CLI\Command;
 
 use WPPF\CLI\Support\HelperBundle;
+use WPPF\CLI\Support\PluginCliCommand;
 use WPPF\CLI\Util\StyleUtil;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -21,6 +22,7 @@ use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
+use WPPF\CLI\Enum\ConsoleColor;
 
 /**
  * A command to bump the framework version.
@@ -29,7 +31,7 @@ use Symfony\Component\Console\Question\Question;
 	description: 'Bump the framework version across all files.',
 	name: 'framework:version:upgrade'
 )]
-final class FrameworkVersionUpgradeCommand extends Command
+final class FrameworkVersionUpgradeCommand extends PluginCliCommand
 {
 	/**
 	 * Set up the helper variables, control user message flow.
@@ -50,7 +52,7 @@ final class FrameworkVersionUpgradeCommand extends Command
 			$output->writeln(
 				StyleUtil::color(
 					sprintf( 'Current package version: %s', $currentVersion ),
-					'yellow'
+					ConsoleColor::Yellow
 				)
 			);
 		} else {
@@ -76,7 +78,7 @@ final class FrameworkVersionUpgradeCommand extends Command
 			return Command::FAILURE;
 		}
 
-		$output->writeln( StyleUtil::color( $newVersion, 'green' ) );
+		$output->writeln( StyleUtil::color( $newVersion, ConsoleColor::Green ) );
 
 		// Update the versions in each file
 		try {
@@ -101,7 +103,7 @@ final class FrameworkVersionUpgradeCommand extends Command
 	private static function askVersion( HelperBundle $bundle ): string
 	{
 		$question = new Question(
-			StyleUtil::color( 'Enter the version to bump to (e.g. "1.0.0"):', 'cyan' ) . ' '
+			StyleUtil::color( 'Enter the version to bump to (e.g. "1.0.0"): ', ConsoleColor::Cyan )
 		);
 
 		return strval( $bundle->helper->ask( $bundle->input, $bundle->output, $question ) );

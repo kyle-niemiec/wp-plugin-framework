@@ -21,8 +21,8 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Question\ChoiceQuestion;
 use WPPF\CLI\Enum\ConsoleColor;
+use WPPF\CLI\Support\PluginCliCommand;
 use WPPF\v1_2_1\Framework\Utility;
 
 /**
@@ -32,8 +32,11 @@ use WPPF\v1_2_1\Framework\Utility;
 	description: 'Create a post screen class from a template.',
 	name: 'make:post-screen'
 )]
-final class CreatePostScreenCommand extends Command
+final class CreatePostScreenCommand extends PluginCliCommand
 {
+	/** @var bool {@inheritDoc} */
+	protected static bool $requiresPostTypes = true;
+
 	/**
 	 * Set up the helper variables, control message flow.
 	 *
@@ -50,10 +53,9 @@ final class CreatePostScreenCommand extends Command
 		) );
 
 		$bundle = new HelperBundle( new QuestionHelper, $input, $output );
-		CliUtil::requireFrameworkUtility();
 
 		// Ask the user which post type to use
-		$selectedPostType = self::selectPostTypeFile( $bundle );
+		$selectedPostType = $this->promptForPostTypeFile( $bundle );
 
 		$postTypeClass = Utility::get_file_class_name( sprintf(
 			'%s/%s',
@@ -97,45 +99,6 @@ final class CreatePostScreenCommand extends Command
 		);
 
 		return Command::SUCCESS;
-	}
-
-	/**
-	 * Prompt the user to select a post type file from includes/post-types.
-	 *
-	 * @param HelperBundle $bundle The IO interfaces for the terminal.
-	 *
-	 * @throws \RuntimeException Throws an error if post types are not available for selection.
-	 * @return string The selected file name.
-	 */
-	private static function selectPostTypeFile( HelperBundle $bundle ): string
-	{
-		$directory = sprintf( '%s/%s', getcwd(), CreatePostTypeCommand::POST_TYPES_DIR );
-
-		// Check post types exist
-		if ( ! is_dir( $directory ) ) {
-			throw new \RuntimeException( sprintf(
-				'No post types currently exist in `%s`.',
-				CreatePostTypeCommand::POST_TYPES_DIR
-			) );
-		}
-
-		$files = Utility::scandir( $directory, 'files' );
-
-		if ( empty( $files ) ) {
-			throw new \RuntimeException( sprintf(
-				'No post types currently exist in `%s`.',
-				CreatePostTypeCommand::POST_TYPES_DIR
-			) );
-		}
-
-		// Ask which post type
-		$question = new ChoiceQuestion(
-			StyleUtil::color( 'Select which custom post type to use:', ConsoleColor::BrightYellow ),
-			$files
-		);
-
-		$question->setErrorMessage( 'Post type %s is invalid.' );
-		return $bundle->helper->ask( $bundle->input, $bundle->output, $question );
 	}
 
 	/**

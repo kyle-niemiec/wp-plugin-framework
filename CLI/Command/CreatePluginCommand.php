@@ -23,6 +23,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
 use WPPF\CLI\Enum\ConsoleColor;
+use WPPF\CLI\Support\PluginCliCommand;
 
 /**
  * A command to gather information from the user and construct a plugin main file for the user in the CWD.
@@ -31,7 +32,7 @@ use WPPF\CLI\Enum\ConsoleColor;
 	description: 'Create a base plugin file with a series of prompts.',
 	name: 'make:plugin'
 )]
-final class CreatePluginCommand extends Command
+final class CreatePluginCommand extends PluginCliCommand
 {
 	/**
 	 * Set up the helper variables, control user message flow.

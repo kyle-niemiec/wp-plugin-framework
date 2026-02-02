@@ -89,18 +89,24 @@ final class CreatePostScreenCommandTest extends CliPluginTestCase
 	}
 
 	/**
-	 * Fail: No post types exist for selection.
+	 * Pass: No post types exist and the user declines creating one.
 	 */
 	#[Test]
-	public function testNoPostTypesAvailableFail(): void
+	public function testNoPostTypesAvailableDeclineCreationPass(): void
 	{
-		// Delete all existing post types
+		// Delete all existing post types.
 		self::rmdirRecursive( CreatePostTypeCommand::POST_TYPES_DIR );
 
-		// Expect command to throw an exception
-		$this->expectException( \RuntimeException::class );
-		$this->expectExceptionMessage( 'No post types currently exist' );
-		$this->tester->execute( [], [ 'interactive' => true ] );
+		// Decline the dependency prompt.
+		$this->tester->setInputs( [ 'no' ] );
+
+		$status = $this->tester->execute( [], [ 'interactive' => true ] );
+		self::assertSame( Command::SUCCESS, $status );
+
+		self::assertStringContainsString(
+			'You must create a post type before running this command.',
+			$this->tester->getDisplay()
+		);
 	}
 
 }

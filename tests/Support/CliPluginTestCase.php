@@ -160,8 +160,7 @@ abstract class CliPluginTestCase extends TestCase
 	 */
 	private static function createMockAdminFile(): void
 	{
-		// Ensure a base plugin file exists for the admin module to attach to.
-		$pluginAdminFile = sprintf( 'admin/%s.php', self::PLUGIN_SLUG );
+		$pluginAdminFile = sprintf( 'admin/%s-admin.php', self::PLUGIN_SLUG );
 
 		if ( ! file_exists( $pluginAdminFile ) ) {
 			file_put_contents( $pluginAdminFile, "<?php\n// Test admin plugin.\n" );

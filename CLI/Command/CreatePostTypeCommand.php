@@ -23,6 +23,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
 use WPPF\CLI\Enum\ConsoleColor;
+use WPPF\CLI\Support\PluginCliCommand;
 use WPPF\v1_2_1\Framework\Utility;
 
 /**
@@ -32,7 +33,7 @@ use WPPF\v1_2_1\Framework\Utility;
 	description: 'Create a custom post type and define basic options.',
 	name: 'make:post-type'
 )]
-final class CreatePostTypeCommand extends Command
+final class CreatePostTypeCommand extends PluginCliCommand
 {
 	/** @var string A reference to the location of the post types folder */
 	public const POST_TYPES_DIR = 'includes/post-types';
@@ -91,7 +92,6 @@ final class CreatePostTypeCommand extends Command
 			throw $e;
 		}
 
-		CliUtil::requireFrameworkUtility();
 		$slug = Utility::slugify( $postTypeKey );
 
 		if ( ! self::createPostTypeFile( $template, $slug ) ) {

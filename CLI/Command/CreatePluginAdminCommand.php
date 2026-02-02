@@ -17,13 +17,10 @@ use WPPF\CLI\Util\CliUtil;
 use WPPF\CLI\Util\StyleUtil;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Helper\QuestionHelper;
-use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Question\Question;
 use WPPF\CLI\Enum\ConsoleColor;
-use WPPF\CLI\Support\HelperBundle;
+use WPPF\CLI\Support\PluginCliCommand;
 
 /**
  * A command to create an admin module class for the current plugin.
@@ -32,8 +29,11 @@ use WPPF\CLI\Support\HelperBundle;
 	description: 'Create an admin module class from a template.',
 	name: 'make:plugin-admin'
 )]
-final class CreatePluginAdminCommand extends Command
+final class CreatePluginAdminCommand extends PluginCliCommand
 {
+	/** @var bool {@inheritDoc} */
+	protected static bool $requiresPlugin = true;
+
 	/**
 	 * Set up the helper variables, control user message flow.
 	 *
@@ -46,46 +46,14 @@ final class CreatePluginAdminCommand extends Command
 	{
 		// Set up command variables
 		$slug = basename( getcwd() );
-		$bundle = new HelperBundle( new QuestionHelper, $input, $output );
 
 		$moduleClassName = sprintf(
 			'%s_Admin',
 			CliUtil::underscorify( $slug, true )
 		);
 
-		// Ensure the base plugin exists first
-		if ( ! CreatePluginCommand::checkPluginExists( $slug ) ) {
-			$output->writeln( StyleUtil::color(
-				sprintf( "Main plugin file not found (%s.php)", $slug ),
-				ConsoleColor::Yellow )
-			);
-
-			if ( self::askCreatePlugin( $bundle ) ) {
-				$createPluginCommand = new CreatePluginCommand();
-				$createPluginInput = new ArrayInput( [] );
-				$createPluginInput->setInteractive( $input->isInteractive() );
-				$status = $createPluginCommand->run( $createPluginInput, $output );
-
-				if ( Command::SUCCESS !== $status || ! CreatePluginCommand::checkPluginExists( $slug ) ) {
-					$output->writeln( StyleUtil::error(
-						"The plugin file was not created. Aborting admin module creation."
-					) );
-
-					return Command::FAILURE;
-				}
-			} else {
-				$output->writeln( StyleUtil::color(
-					"You must create a plugin before you can create a plugin admin module.",
-					ConsoleColor::Yellow
-				) );
-
-				return Command::SUCCESS;
-			}
-
-		}
-
 		// Ensure the admin module file doesn't already exist
-		if ( self::checkAdminModuleExists( $slug ) ) {
+		if ( $this->adminModuleExists( $slug ) ) {
 			$output->writeln( StyleUtil::error( "Error: The admin module file already exists." ) );
 			return Command::FAILURE;
 		}
@@ -110,7 +78,7 @@ final class CreatePluginAdminCommand extends Command
 		}
 
 		// Write file
-		if ( ! self::createAdminModuleFile( $template, $slug ) ) {
+		if ( ! $this->createAdminModuleFile( $template, $slug ) ) {
 			$output->writeln( StyleUtil::error( "There was an error writing out the admin module file to disk." ) );
 			return Command::FAILURE;
 		}
@@ -124,38 +92,6 @@ final class CreatePluginAdminCommand extends Command
 	}
 
 	/**
-	 * Ask the user if the primary plugin file should be created
-	 * 
-	 * @param HelperBundle $bundle The bundle containing the question and IO interfaces.
-	 * 
-	 * @return bool True if the user wants to create the plugin.
-	 */
-	private static function askCreatePlugin( HelperBundle $bundle ): bool
-	{
-		$yn = StyleUtil::color( '(yes/no) ', ConsoleColor::Yellow );
-		$q = "Do you want to create the primary plugin file? " . $yn;
-		$question = new Question( $q );
-
-		$question->setValidator( CliUtil::yesNoValidator() );
-
-		$answer = $bundle->helper->ask( $bundle->input, $bundle->output, $question );
-		return 'y' === $answer ? true : false;
-	}
-
-	/**
-	 * Check if an expected admin module file already exists.
-	 *
-	 * @param string $slug The lower-dash-case slug pulled from the folder name.
-	 *
-	 * @return bool Returns true if the admin module file exists, false if it does not.
-	 */
-	private static function checkAdminModuleExists( string $slug ): bool
-	{
-		$outputFile = self::adminModuleFilePath( $slug );
-		return file_exists( $outputFile );
-	}
-
-	/**
 	 * Create the admin module file from the completed template string.
 	 *
 	 * @param string $template The file contents to write out.
@@ -163,9 +99,9 @@ final class CreatePluginAdminCommand extends Command
 	 *
 	 * @return bool The status of the file write operation.
 	 */
-	private static function createAdminModuleFile( string $template, string $slug ): bool
+	private function createAdminModuleFile( string $template, string $slug ): bool
 	{
-		$outputFile = self::adminModuleFilePath( $slug );
+		$outputFile = $this->adminModuleFilePath( $slug );
 		$outputDir = dirname( $outputFile );
 
 		if ( ! is_dir( $outputDir ) ) {
@@ -175,18 +111,6 @@ final class CreatePluginAdminCommand extends Command
 		}
 
 		return file_put_contents( $outputFile, $template );
-	}
-
-	/**
-	 * Build the admin module file path for the current plugin.
-	 *
-	 * @param string $slug The lower-dash-case slug pulled from the folder name.
-	 *
-	 * @return string The admin module file path.
-	 */
-	private static function adminModuleFilePath( string $slug ): string
-	{
-		return sprintf( '%s/admin/%s-admin.php', getcwd(), $slug );
 	}
 
 }

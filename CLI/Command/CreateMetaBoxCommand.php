@@ -24,6 +24,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Question\Question;
 use WPPF\CLI\Enum\ConsoleColor;
+use WPPF\CLI\Support\PluginCliCommand;
 use WPPF\v1_2_1\Framework\Utility;
 
 /**
@@ -33,8 +34,14 @@ use WPPF\v1_2_1\Framework\Utility;
 	description: 'Create a meta box class and render template from prompts.',
 	name: 'make:meta-box'
 )]
-final class CreateMetaBoxCommand extends Command
+final class CreateMetaBoxCommand extends PluginCliCommand
 {
+	/** @var bool {@inheritDoc} */
+	protected static bool $requiresAdminModule = true;
+
+	/** @var bool {@inheritDoc} */
+	protected static bool $requiresPostTypes = true;
+
 	/** @var string The directory for admin meta boxes. */
 	private const META_BOX_DIR = 'admin/includes/meta-boxes';
 
@@ -63,21 +70,10 @@ final class CreateMetaBoxCommand extends Command
 		) );
 
 		$bundle = new HelperBundle( new QuestionHelper, $input, $output );
-		CliUtil::requireFrameworkUtility();
-
-		// Ensure admin module file exists.
 		$slug = basename( getcwd() );
-		$adminModuleFile = self::findAdminModuleFile( $slug );
-
-		if ( null === $adminModuleFile ) {
-			$output->writeln( StyleUtil::error(
-				sprintf( 'Admin module file not found. Expected admin/%s-admin.php.', $slug )
-			) );
-			return Command::FAILURE;
-		}
 
 		// Select post type for meta box.
-		$selectedPostType = self::selectPostTypeFile( $bundle );
+		$selectedPostType = $this->promptForPostTypeFile( $bundle );
 		$postTypePath = sprintf( '%s/%s/%s', getcwd(), CreatePostTypeCommand::POST_TYPES_DIR, $selectedPostType );
 		$postTypeClass = Utility::get_file_class_name( $postTypePath );
 
@@ -169,65 +165,6 @@ final class CreateMetaBoxCommand extends Command
 		);
 
 		return Command::SUCCESS;
-	}
-
-	/**
-	 * Find the admin module file for the current plugin.
-	 *
-	 * @param string $slug The current plugin slug.
-	 *
-	 * @return string|null The admin module file path or null.
-	 */
-	private static function findAdminModuleFile( string $slug ): ?string
-	{
-		$primary = sprintf( '%s/admin/%s-admin.php', getcwd(), $slug );
-		if ( file_exists( $primary ) ) {
-			return $primary;
-		}
-
-		$legacy = sprintf( '%s/admin/%s.php', getcwd(), $slug );
-		if ( file_exists( $legacy ) ) {
-			return $legacy;
-		}
-
-		return null;
-	}
-
-	/**
-	 * Prompt the user to select a post type file from includes/post-types.
-	 *
-	 * @param HelperBundle $bundle The IO interfaces for the terminal.
-	 *
-	 * @throws \RuntimeException Throws an error if post types are not available for selection.
-	 * @return string The selected file name.
-	 */
-	private static function selectPostTypeFile( HelperBundle $bundle ): string
-	{
-		$directory = sprintf( '%s/%s', getcwd(), CreatePostTypeCommand::POST_TYPES_DIR );
-
-		if ( ! is_dir( $directory ) ) {
-			throw new \RuntimeException( sprintf(
-				'No post types currently exist in `%s`.',
-				CreatePostTypeCommand::POST_TYPES_DIR
-			) );
-		}
-
-		$files = Utility::scandir( $directory, 'files' );
-
-		if ( empty( $files ) ) {
-			throw new \RuntimeException( sprintf(
-				'No post types currently exist in `%s`.',
-				CreatePostTypeCommand::POST_TYPES_DIR
-			) );
-		}
-
-		$question = new ChoiceQuestion(
-			StyleUtil::color( 'Select which custom post type to use:', ConsoleColor::BrightYellow ),
-			$files
-		);
-
-		$question->setErrorMessage( 'Post type %s is invalid.' );
-		return $bundle->helper->ask( $bundle->input, $bundle->output, $question );
 	}
 
 	/**
