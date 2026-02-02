@@ -8,5 +8,5 @@ defined( 'ABSPATH' ) or exit;
 ?>
 
 <div class="{{class_name_slug}}">
-    {{render_body_html}}
+	{{render_body_html}}
 </div>

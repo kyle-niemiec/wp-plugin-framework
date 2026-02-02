@@ -48,12 +48,6 @@ final class CreateMetaBoxCommand extends PluginCliCommand
 	/** @var string The directory for admin templates. */
 	private const META_BOX_TEMPLATE_DIR = 'admin/templates';
 
-	/** @var string The directory for admin screens. */
-	private const SCREEN_DIR = 'admin/includes/screens';
-
-	/** @var string The directory for post meta classes. */
-	private const POST_META_DIR = 'includes/classes';
-
 	/**
 	 * Set up the helper variables, control message flow.
 	 *
@@ -72,7 +66,7 @@ final class CreateMetaBoxCommand extends PluginCliCommand
 		$bundle = new HelperBundle( new QuestionHelper, $input, $output );
 		$slug = basename( getcwd() );
 
-		// Select post type for meta box.
+		// Select post type for meta box
 		$selectedPostType = $this->promptForPostTypeFile( $bundle );
 		$postTypePath = sprintf( '%s/%s/%s', getcwd(), CreatePostTypeCommand::POST_TYPES_DIR, $selectedPostType );
 		$postTypeClass = Utility::get_file_class_name( $postTypePath );
@@ -82,15 +76,15 @@ final class CreateMetaBoxCommand extends PluginCliCommand
 			return Command::FAILURE;
 		}
 
-		// Collect meta box details.
+		// Collect general meta box details
 		$title = self::askMetaBoxTitle( $bundle );
 		$snakeTitle = CliUtil::underscorify( $title );
 		$metaBoxId = self::askMetaBoxId( $bundle, $snakeTitle );
 		$metaBoxKey = self::askMetaBoxKey( $bundle, $snakeTitle . '_meta' );
 
+		// Ensure the meta box doesn't already exist
 		$className = sprintf( '%s_Meta_Box', CliUtil::underscorify( $metaBoxId, true ) );
 		$templateSlug = Utility::slugify( $className );
-
 		$metaBoxFile = self::metaBoxFilePath( $templateSlug );
 		$renderTemplateFile = self::metaBoxTemplatePath( $templateSlug );
 
@@ -99,7 +93,7 @@ final class CreateMetaBoxCommand extends PluginCliCommand
 			return Command::FAILURE;
 		}
 
-		// Select post meta class to connect (optional).
+		// Select post meta class to connect (optional)
 		$metaInfo = self::selectPostMetaClass( $bundle );
 		$metaClass = $metaInfo['class'] ?? null;
 		$metaVariables = $metaInfo['variables'] ?? [];
@@ -139,6 +133,7 @@ final class CreateMetaBoxCommand extends PluginCliCommand
 			]
 		);
 
+		// Create the template and meta box class files
 		if ( ! self::createFile( $metaBoxTemplate, $metaBoxFile ) ) {
 			$output->writeln( StyleUtil::error( 'There was an error writing out the meta box file to disk.' ) );
 			return Command::FAILURE;
@@ -149,7 +144,9 @@ final class CreateMetaBoxCommand extends PluginCliCommand
 			return Command::FAILURE;
 		}
 
+		// Write out the meta box registration to the screen/post-type
 		$placementStatus = $this->registerMetaBoxPlacement( $bundle, $postTypePath, $className, $postTypeClass );
+
 		if ( Command::FAILURE === $placementStatus ) {
 			return Command::FAILURE;
 		}
@@ -183,11 +180,13 @@ final class CreateMetaBoxCommand extends PluginCliCommand
 		$question = new Question( 'What should the title of the meta box be? ' );
 
 		$question->setValidator( function ( $value ): string {
-			$clean = trim( strval( $value ) );
-			if ( '' === $clean ) {
+			$value = trim( strval( $value ) );
+
+			if ( '' === $value ) {
 				throw new \RuntimeException( 'The title cannot be empty.' );
 			}
-			return $clean;
+
+			return $value;
 		} );
 
 		return $bundle->helper->ask( $bundle->input, $bundle->output, $question );
@@ -262,7 +261,7 @@ final class CreateMetaBoxCommand extends PluginCliCommand
 	}
 
 	/**
-	 * Select a Post_Meta class to connect to the meta box, if available.
+	 * Let the user select a Post_Meta class to connect to the meta box, if available.
 	 *
 	 * @param HelperBundle $bundle The IO interfaces for the terminal.
 	 *
@@ -276,38 +275,40 @@ final class CreateMetaBoxCommand extends PluginCliCommand
 			return [];
 		}
 
-		$choices = array_merge( [ 'None (skip)' ], array_keys( $metaClasses ) );
+		$skip_text = 'None (skip)';
+		$choices = array_merge( [ $skip_text ], array_keys( $metaClasses ) );
+
 		$question = new ChoiceQuestion(
 			StyleUtil::color( 'Select a post meta class to attach (optional):', ConsoleColor::BrightYellow ),
 			$choices
 		);
 
+		// Ask which meta class to attach to the meta box
 		$selection = $bundle->helper->ask( $bundle->input, $bundle->output, $question );
 
-		if ( 'None (skip)' === $selection ) {
+		if ( $skip_text === $selection ) {
 			return [];
 		}
 
-		$metaInfo = $metaClasses[ $selection ];
-		$variables = self::extractMetaVariables( $metaInfo['file'] );
+		$metaPath = $metaClasses[ $selection ];
+		$variables = self::extractMetaVariables( $metaPath );
 
 		return [
-			'class' => $metaInfo['class'],
-			'file' => $metaInfo['file'],
+			'class' => $selection,
+			'file' => $metaPath,
 			'variables' => $variables,
 		];
 	}
 
 	/**
-	 * Find Post_Meta classes in includes/classes using Utility and is_subclass_of.
+	 * Find Post_Meta classes in includes/classes.
 	 *
 	 * @return array The list of meta classes by display name.
 	 */
 	private static function findPostMetaClasses(): array
 	{
-		self::requirePostMetaDependencies();
+		$metaDir = sprintf( '%s/includes/classes', getcwd() );
 
-		$metaDir = sprintf( '%s/%s', getcwd(), self::POST_META_DIR );
 		if ( ! is_dir( $metaDir ) ) {
 			return [];
 		}
@@ -315,59 +316,24 @@ final class CreateMetaBoxCommand extends PluginCliCommand
 		$files = Utility::scandir( $metaDir, 'files' );
 		$metaClasses = [];
 
+		// Loop through files and check which ones extend Post_Meta classes
 		foreach ( $files as $file ) {
-			if ( ! str_ends_with( $file, '.php' ) ) {
-				continue;
-			}
-
 			$path = sprintf( '%s/%s', $metaDir, $file );
-			$className = Utility::get_file_class_name( $path );
+			$contents = file_get_contents( $path );
+			$regexp = '/final class ([A-Za-z_][A-Za-z0-9_]*) extends Post_Meta/';
 
-			if ( '' === $className ) {
+			if ( ! preg_match( $regexp, $contents, $matches ) ) {
 				continue;
 			}
 
-			require_once $path;
-			$namespace = Utility::get_file_namespace( $path );
-			$qualified = $namespace ? sprintf( '\\%s\\%s', $namespace, $className ) : $className;
-
-			if ( class_exists( $qualified ) && is_subclass_of( $qualified, '\WPPF\v1_2_1\WordPress\Post_Meta' ) ) {
-				$display = Utility::class_basename( $qualified );
-				$metaClasses[ $display ] = [
-					'class' => $qualified,
-					'file' => $path,
-				];
-			}
+			$metaClasses[ $matches[1] ] = $path;
 		}
 
 		return $metaClasses;
 	}
 
 	/**
-	 * Ensure Post Meta class dependencies are loaded for is_subclass_of checks.
-	 */
-	private static function requirePostMetaDependencies(): void
-	{
-		$root = dirname( __DIR__, 2 );
-		$metaSchema = sprintf( '%s/includes/modules/wordpress-module/includes/classes/class-meta-schema.php', $root );
-		$metaBase = sprintf( '%s/includes/modules/wordpress-module/includes/abstracts/class-meta.php', $root );
-		$postMeta = sprintf( '%s/includes/modules/wordpress-module/includes/abstracts/class-post-meta.php', $root );
-
-		if ( file_exists( $metaSchema ) ) {
-			require_once $metaSchema;
-		}
-
-		if ( file_exists( $metaBase ) ) {
-			require_once $metaBase;
-		}
-
-		if ( file_exists( $postMeta ) ) {
-			require_once $postMeta;
-		}
-	}
-
-	/**
-	 * Extract variable names and types from a Post_Meta class generated defaults.
+	 * Extract variable names and types from a Post_Meta class property declarations.
 	 *
 	 * @param string $file The meta class file path.
 	 *
@@ -376,18 +342,21 @@ final class CreateMetaBoxCommand extends PluginCliCommand
 	private static function extractMetaVariables( string $file ): array
 	{
 		$contents = file_get_contents( $file );
+		$variables = [];
+
 		if ( false === $contents ) {
 			return [];
 		}
 
-		if ( ! preg_match( '/\\$generated_values\\s*=\\s*\\[(.*?)\\];/s', $contents, $matches ) ) {
+		// Find all the generated variables first.
+		if ( ! preg_match( '/\\$generated_values = \\[\\n(.+)\\n\\];/', $contents, $matches ) ) {
 			return [];
 		}
 
-		$block = $matches[1];
-		$lines = preg_split( '/\\r?\\n/', $block );
-		$variables = [];
+		$lines = preg_split( '/\\n/', $matches[1] );
+		$variable_names = [];
 
+		// Pick out the variable names from the generated values
 		foreach ( $lines as $line ) {
 			$trimmed = trim( $line );
 
@@ -395,48 +364,37 @@ final class CreateMetaBoxCommand extends PluginCliCommand
 				continue;
 			}
 
-			if ( preg_match( '/^[\\\'"]([^\\\'"]+)[\\\'"]\\s*=>\\s*([^,]+),?$/', $trimmed, $matches ) ) {
-				$name = $matches[1];
-				$value = trim( $matches[2] );
-				$variables[ $name ] = self::inferTypeFromValue( $value );
+			if ( preg_match( '/\'([a-z_]+)\' =>/', $trimmed, $var_search ) ) {
+				$variable_names[] = $var_search[1];
+			}
+		}
+
+		// Find the variable types from the class properties by using the names
+		foreach ( $variable_names as $name ) {
+			$pattern = sprintf(
+				'/public (array|bool|float|int|string) \\$%s;/',
+				$name
+			);
+
+			if ( preg_match( $pattern, $contents, $matches ) ) {
+				$type = $matches[1];
+
+				switch ( $type ) {
+					case 'bool':
+						$type = 'boolean';
+						break;
+					case 'int':
+						$type = 'integer';
+						break;
+				}
+
+				$variables[ $name ] = $type;
+			} else {
+				$variables[ $name ] = 'string';
 			}
 		}
 
 		return $variables;
-	}
-
-	/**
-	 * Infer variable type from default values.
-	 *
-	 * @param string $value The default value string.
-	 *
-	 * @return string The inferred type.
-	 */
-	private static function inferTypeFromValue( string $value ): string
-	{
-		$value = trim( $value );
-
-		if ( '[]' === $value || str_starts_with( $value, '[' ) || str_starts_with( $value, 'array' ) ) {
-			return 'array';
-		}
-
-		if ( 'true' === $value || 'false' === $value ) {
-			return 'boolean';
-		}
-
-		if ( preg_match( '/^-?\\d+\\.\\d+$/', $value ) ) {
-			return 'float';
-		}
-
-		if ( preg_match( '/^-?\\d+$/', $value ) ) {
-			return 'integer';
-		}
-
-		if ( preg_match( '/^([\\\'"]).*\\1$/', $value ) ) {
-			return 'string';
-		}
-
-		return 'string';
 	}
 
 	/**
@@ -448,72 +406,71 @@ final class CreateMetaBoxCommand extends PluginCliCommand
 	 */
 	private static function buildSaveMetaSnippet( string $metaClass ): string
 	{
-		$snippet = <<<PHP
-// Load meta data for updating and validate changes
-\$Meta->import( \$data );
-\$validation = \$Meta->validate();
+		return <<<END
+			// Load meta data for updating and validate changes
+			\$Meta->import( \$data );
+			\$validation = \$Meta->validate();
 
-// Save meta data if there are no errors
-if ( is_wp_error( \$validation ) ) {
-	Admin_Notices::error( Meta_Schema::create_error_message( \$validation ) );
-} else {
-	\$Meta->save();
-}
+			// Save meta data if there are no errors
+			if ( is_wp_error( \$validation ) ) {
+				Admin_Notices::error( Meta_Schema::create_error_message( \$validation ) );
+			} else {
+				\$Meta->save();
+			}
 
-PHP;
-
-		return self::indentSnippet( $snippet, "\t\t\t", true );
+		END;
 	}
 
 	/**
-	 * Build the import data snippet for boolean/array values.
+	 * Build the code snippets for handling data submitted through the WP admin.
 	 *
-	 * @param array<string, string> $variables The variable names and types.
+	 * @param array $variables The variable names as keys and types as values.
 	 *
-	 * @return string The formatted import snippet.
+	 * @return string The formatted code snippet.
 	 */
 	private static function buildImportDataSnippet( array $variables ): string
 	{
-		$sections = [];
-		$sections[] = '';
+		$sections = [''];
 
 		foreach ( $variables as $name => $type ) {
+			// Handle boolean template
 			if ( 'boolean' === $type ) {
 				$sections[] = str_replace(
 					'{{var_name}}',
 					$name,
-					<<<'PHP'
-// Boolean values require text->boolean translation
-if ( isset( $data['{{var_name}}'] ) && 'yes' === $data['{{var_name}}'] ) {
-	$data['{{var_name}}'] = true;
-} else {
-	$data['{{var_name}}'] = false;
-}
-PHP
+<<<'END'
+		// Boolean values require text->boolean translation
+		if ( isset( $data['{{var_name}}'] ) && 'yes' === $data['{{var_name}}'] ) {
+			$data['{{var_name}}'] = true;
+		} else {
+			$data['{{var_name}}'] = false;
+		}
+END
 				);
-			} elseif ( 'array' === $type ) {
+
+			}
+
+			// Handle array template
+			elseif ( 'array' === $type ) {
 				$sections[] = str_replace(
 					'{{var_name}}',
 					$name,
-					<<<'PHP'
-// Array values must be manually managed
-$data['{{var_name}}'] = $Meta->{{var_name}};
+<<<'END'
+		// Array values must be manually managed
+		$data['{{var_name}}'] = $Meta->{{var_name}};
 
-if ( isset( $data['clear_{{var_name}}'] ) && 'yes' === $data['clear_{{var_name}}'] ) {
-	$data['{{var_name}}'] = [];
-}
+		if ( isset( $data['clear_{{var_name}}'] ) && 'yes' === $data['clear_{{var_name}}'] ) {
+			$data['{{var_name}}'] = [];
+		}
 
-array_push( $data['{{var_name}}'], strval( time() ) );
-PHP
+		array_push( $data['{{var_name}}'], strval( time() ) );
+END
 				);
 			}
-		}
 
-		if ( empty( $sections ) ) {
-			return '';
-		}
+		} // foreach
 
-		return self::indentSnippet( implode( "\n\n", $sections ), "\t\t\t", true );
+		return implode( "\n\n", $sections );
 	}
 
 	/**
@@ -541,108 +498,113 @@ PHP
 	 */
 	private static function buildRenderBodyHtml( array $variables, string $className ): string
 	{
+		// Define the array of section HTML templates
 		$templates = [
-			// Array HTML template
-			'array' => <<<'HTML'
-<div class="{{var_name_slug}} array-meta">
-    <h3>Displaying values in a list from `{{var_name}}`:</h3>
-    <ul>
 
-        <?php foreach ( $Meta->{{var_name}} as $value ) : $Time = new \DateTime( sprintf( '@%s', $value ) ); ?>
+			'array' => // ----- Array HTML template -----
+<<<'HTML'
+	<div class="{{var_name_slug}} array-meta">
+		<h3>Displaying values in a list from `{{var_name}}`:</h3>
+		<ul>
 
-            <li><?php echo $Time->format( 'd/m/Y H:i:s' ); ?></li>
+			<?php foreach ( $Meta->{{var_name}} as $value ) : $Time = new \DateTime( sprintf( '@%s', $value ) ); ?>
 
-        <?php endforeach; ?>
-    
-    </ul>
+				<li><?php echo $Time->format( 'd/m/Y H:i:s' ); ?></li>
 
-    <div>
-        Clear list on page save?
-        <input
-            name="<?php echo {{class_name}}::create_input_name( 'clear_{{var_name}}' ); ?>"
-            type="checkbox"
-            value="yes"
-        />
-    </div>
-</div>
+			<?php endforeach; ?>
+		
+		</ul>
+
+		<div>
+			Clear list on page save?
+			<input
+				name="<?php echo {{class_name}}::create_input_name( 'clear_{{var_name}}' ); ?>"
+				type="checkbox"
+				value="yes"
+			/>
+		</div>
+	</div>
 HTML,
-			// String HTML template
-			'string' => <<<'HTML'
+
+			'string' => // ----- String HTML template -----
+<<<'HTML'
 <div class="{{var_name_slug}} string-meta">
-    <h3>Current string value for `{{var_name}}`:</h3>
+	<h3>Current string value for `{{var_name}}`:</h3>
 
-    <div>
-        <sup>(This value should only contain letters, numbers, and spaces)</sup>
-    </div>
+	<div>
+		<sup>(This value should only contain letters, numbers, and spaces)</sup>
+	</div>
 
-    <div>
-        <input
-            name="<?php echo {{class_name}}::create_input_name( '{{var_name}}' ); ?>"
-            type="text"
-            value="<?php echo $Meta->{{var_name}}; ?>"
-        />
-    </div>
+	<div>
+		<input
+			name="<?php echo {{class_name}}::create_input_name( '{{var_name}}' ); ?>"
+			type="text"
+			value="<?php echo $Meta->{{var_name}}; ?>"
+		/>
+	</div>
 </div>
 HTML,
-			// Boolean HTML template
-			'boolean' => <<<'HTML'
+
+			'boolean' => // ----- Boolean HTML template -----
+<<<'HTML'
 <div class="{{var_name_slug}} boolean-meta">
-    <h3>A boolean toggle for `{{var_name}}`:</h3>
+	<h3>A boolean toggle for `{{var_name}}`:</h3>
 
-    <div>
-        <input
-            name="<?php echo {{class_name}}::create_input_name( '{{var_name}}' ); ?>"
-            type="checkbox"
-            value="yes"
-            <?php echo checked( $Meta->{{var_name}}, true ); // https://developer.wordpress.org/reference/functions/checked/ ?>
-        />
-    </div>
+	<div>
+		<input
+			name="<?php echo {{class_name}}::create_input_name( '{{var_name}}' ); ?>"
+			type="checkbox"
+			value="yes"
+			<?php echo checked( $Meta->{{var_name}}, true ); // https://developer.wordpress.org/reference/functions/checked/ ?>
+		/>
+	</div>
 </div>
 HTML,
-			// Integer HTML template
-			'integer' => <<<'HTML'
-<div class="{{var_name_slug}} integer-meta">
-    <h3>An integer field for `{{var_name}}`:</h3>
 
-    <div>
-        <input
-            inputmode="numeric"
-            min="0"
-            name="<?php echo {{class_name}}::create_input_name( '{{var_name}}' ); ?>"
-            step="1"
-            type="number"
-			value="<?php echo $Meta->{{var_name}}; ?>"
-        />
-    </div>
-</div>
+			'integer' => // ----- Integer HTML template -----
+<<<'HTML'
+	<div class="{{var_name_slug}} integer-meta">
+		<h3>An integer field for `{{var_name}}`:</h3>
+
+		<div>
+			<input
+				inputmode="numeric"
+				min="0"
+				name="<?php echo {{class_name}}::create_input_name( '{{var_name}}' ); ?>"
+				step="1"
+				type="number"
+				value="<?php echo $Meta->{{var_name}}; ?>"
+			/>
+		</div>
+	</div>
 HTML,
-			// Float HTML template
-			'float' => <<<'HTML'
-<div class="{{var_name_slug}} float-meta">
-    <h3>A float field for `{{var_name}}`:</h3>
 
-    <div>
-        <input
-            inputmode="decimal"
-            min="0.1"
-            name="<?php echo {{class_name}}::create_input_name( '{{var_name}}' ); ?>"
-            step="0.01"
-            type="number"
-			value="<?php echo $Meta->{{var_name}}; ?>"
-        />
-    </div>
-</div>
+			'float' => // ----- Float HTML template -----
+<<<'HTML'
+	<div class="{{var_name_slug}} float-meta">
+		<h3>A float field for `{{var_name}}`:</h3>
+
+		<div>
+			<input
+				inputmode="decimal"
+				min="0.1"
+				name="<?php echo {{class_name}}::create_input_name( '{{var_name}}' ); ?>"
+				step="0.01"
+				type="number"
+				value="<?php echo $Meta->{{var_name}}; ?>"
+			/>
+		</div>
+	</div>
 HTML,
-		];
 
+		]; // $templates
+
+		// Construct the sections from the passed variables
 		$sections = [];
 
 		foreach ( $variables as $name => $type ) {
-			if ( ! array_key_exists( $type, $templates ) ) {
-				continue;
-			}
-
 			$slug = Utility::slugify( $name );
+
 			$section = str_replace(
 				[ '{{var_name}}', '{{var_name_slug}}', '{{class_name}}' ],
 				[ $name, $slug, $className ],
@@ -656,8 +618,7 @@ HTML,
 			return self::renderFallbackHtml( $className );
 		}
 
-		$combined = implode( "\n\n<hr />\n\n", $sections );
-		return self::indentSnippet( $combined, '    ', true );
+		return implode( "\n\n<hr />\n\n", $sections );
 	}
 
 	/**
@@ -669,7 +630,7 @@ HTML,
 	 */
 	private static function renderFallbackHtml( string $className ): string
 	{
-		return self::indentSnippet( sprintf( '<p>This is the output of %s.</p>', $className ), '    ', true );
+		return sprintf( "\t<p>This is the output of %s.</p>", $className );
 	}
 
 	/**
@@ -689,6 +650,7 @@ HTML,
 	): int {
 		$screens = self::getScreenFiles();
 
+		// Give a choice between updating a screen and a post type, if screens are available
 		if ( ! empty( $screens ) ) {
 			$choice = new ChoiceQuestion(
 				StyleUtil::color(
@@ -712,7 +674,10 @@ HTML,
 				$screenLocation = self::selectScreenLocation( $bundle );
 				return self::insertMetaBoxIntoScreen( $screenFile, $className, $screenLocation );
 			}
-		} else {
+		}
+
+		// Otherwise offer to update the post type
+		else {
 			if ( ! $this->askYesNo(
 				$bundle->input,
 				$bundle->output,
@@ -726,13 +691,14 @@ HTML,
 	}
 
 	/**
-	 * Get available screen files.
+	 * Get available screen files in the admin includes directory.
 	 *
 	 * @return array The list of screen file paths.
 	 */
 	private static function getScreenFiles(): array
 	{
-		$directory = sprintf( '%s/%s', getcwd(), self::SCREEN_DIR );
+		$directory = sprintf( '%s/%s', getcwd(), 'admin/includes/screens' );
+
 		if ( ! is_dir( $directory ) ) {
 			return [];
 		}
@@ -748,7 +714,7 @@ HTML,
 	}
 
 	/**
-	 * Prompt the user to select a screen file.
+	 * Prompt the user to select a screen class.
 	 *
 	 * @param HelperBundle $bundle The IO interfaces for the terminal.
 	 * @param array $screens The screen file paths.
@@ -760,11 +726,12 @@ HTML,
 		$choices = [];
 		$classToFile = [];
 
+		// Find class names for given screen files
 		foreach ( $screens as $screenFile ) {
 			$className = Utility::get_file_class_name( $screenFile );
 			$label = '' !== $className ? $className : basename( $screenFile );
 
-			// Keep labels unique while preferring class names for display.
+			// Labels are unique and prefer class names for display
 			if ( isset( $classToFile[ $label ] ) ) {
 				$label = sprintf( '%s (%s)', $label, basename( $screenFile ) );
 			}
@@ -778,13 +745,14 @@ HTML,
 			$choices
 		);
 
-		$selection = $bundle->helper->ask( $bundle->input, $bundle->output, $question );
+		// Ask the user which screen class to use
+		$selectedClass = $bundle->helper->ask( $bundle->input, $bundle->output, $question );
 
-		if ( ! isset( $classToFile[ $selection ] ) ) {
-			throw new \RuntimeException( sprintf( 'Screen `%s` is invalid.', $selection ) );
+		if ( ! isset( $classToFile[ $selectedClass ] ) ) {
+			throw new \RuntimeException( sprintf( 'Screen `%s` is invalid.', $selectedClass ) );
 		}
 
-		return $classToFile[ $selection ];
+		return $classToFile[ $selectedClass ];
 	}
 
 	/**
@@ -801,7 +769,7 @@ HTML,
 				'Which screen should the meta box appear on?',
 				ConsoleColor::BrightYellow
 			),
-			[ 'post create screen', 'post edit screen', 'both post screens' ]
+			[ 'Post create screen', 'Post edit screen', 'Both post screens' ]
 		);
 
 		return $bundle->helper->ask( $bundle->input, $bundle->output, $question );
@@ -822,27 +790,20 @@ HTML,
 		string $location
 	): int {
 		$contents = file_get_contents( $screenFile );
-		if ( false === $contents ) {
-			return Command::FAILURE;
-		}
 
-		$insert = "\n\t\t\t{$className}::instance()->add_meta_box();\n";
+		$insert = "\t{$className}::instance()->add_meta_box();\n\t\t";
 		$targets = [];
 
-		if ( 'post create screen' === $location ) {
+		if ( 'Post create screen' === $location ) {
 			$targets[] = 'add_post';
-		} elseif ( 'post edit screen' === $location ) {
+		} elseif ( 'Post edit screen' === $location ) {
 			$targets[] = 'view_post';
 		} else {
 			$targets = [ 'add_post', 'view_post' ];
 		}
 
-		try {
-			foreach ( $targets as $functionName ) {
-				$contents = CliUtil::insertIntoFunction( $insert, $functionName, $contents, 'before_closing' );
-			}
-		} catch ( \RuntimeException $e ) {
-			return Command::FAILURE;
+		foreach ( $targets as $functionName ) {
+			$contents = CliUtil::insertIntoFunction( $insert, $functionName, $contents, 'before_closing' );
 		}
 
 		if ( ! file_put_contents( $screenFile, $contents ) ) {
@@ -853,7 +814,7 @@ HTML,
 	}
 
 	/**
-	 * Insert a meta box call into a post type file.
+	 * Insert a meta box registration call into a post type file.
 	 *
 	 * @param string $postTypePath The post type file path.
 	 * @param string $className The meta box class name.
@@ -863,17 +824,8 @@ HTML,
 	private static function insertMetaBoxIntoPostType( string $postTypePath, string $className ): int
 	{
 		$contents = file_get_contents( $postTypePath );
-		if ( false === $contents ) {
-			return Command::FAILURE;
-		}
-
-		$insert = "\n\t\t\t\$this->add_meta_box( {$className}::instance() );\n";
-
-		try {
-			$contents = CliUtil::insertIntoFunction( $insert, '__construct', $contents, 'before_closing' );
-		} catch ( \RuntimeException $e ) {
-			return Command::FAILURE;
-		}
+		$insert = "\t\$this->add_meta_box( {$className}::instance() );\n\t\t";
+		$contents = CliUtil::insertIntoFunction( $insert, '__construct', $contents, 'before_closing' );
 
 		if ( ! file_put_contents( $postTypePath, $contents ) ) {
 			return Command::FAILURE;
@@ -928,33 +880,6 @@ HTML,
 	}
 
 	/**
-	 * Indent a multi-line snippet by a prefix.
-	 *
-	 * @param string $snippet The snippet to indent.
-	 * @param string $prefix The prefix to add to each line.
-	 *
-	 * @return string The indented snippet.
-	 */
-	private static function indentSnippet( string $snippet, string $prefix, bool $skipFirst = false ): string
-	{
-		$lines = preg_split( '/\\r?\\n/', rtrim( $snippet ) );
-
-		foreach ( $lines as $index => $line ) {
-			if ( '' === $line ) {
-				continue;
-			}
-
-			if ( $skipFirst && 0 === $index ) {
-				continue;
-			}
-
-			$lines[ $index ] = $prefix . $line;
-		}
-
-		return implode( "\n", $lines );
-	}
-
-	/**
 	 * Determine the plugin class name from the current slug.
 	 *
 	 * @param string $slug The current plugin slug.
@@ -967,6 +892,7 @@ HTML,
 
 		if ( is_file( $pluginFile ) ) {
 			$className = Utility::get_file_class_name( $pluginFile );
+
 			if ( '' !== $className ) {
 				return $className;
 			}
