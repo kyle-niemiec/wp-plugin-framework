@@ -95,7 +95,7 @@ final class CreateMetaBoxCommand extends PluginCliCommand
 		$renderTemplateFile = self::metaBoxTemplatePath( $templateSlug );
 
 		if ( file_exists( $metaBoxFile ) || file_exists( $renderTemplateFile ) ) {
-			$output->writeln( StyleUtil::error( 'Error: The meta box file or template already exists.' ) );
+			$output->writeln( StyleUtil::error( 'Error: The meta box file or template file already exist.' ) );
 			return Command::FAILURE;
 		}
 
@@ -117,8 +117,12 @@ final class CreateMetaBoxCommand extends PluginCliCommand
 				'{{meta_box_id}}' => $metaBoxId,
 				'{{plugin_class}}' => $pluginClass,
 				'{{template_slug}}' => $templateSlug,
+				'{{maybe_init_meta}}' => $metaClass ? "\n\t\t\$Meta = new {$metaClass}( \$Post );\n" : '',
 				'{{maybe_save_meta}}' => $metaClass ? self::buildSaveMetaSnippet( $metaClass ) : '',
+				'{{maybe_pass_meta}}' => $metaClass ? ' $Meta ' : '',
 				'{{maybe_import_data}}' => $metaClass ? self::buildImportDataSnippet( $metaVariables ) : '',
+				'{{maybe_pass_args}}' => $metaClass ? sprintf( ' %s $Meta ', $metaClass ) : '',
+				'{{maybe_pass_args_doc}}' => $metaClass ? sprintf( "\n\t\t * @param %s \$Meta The meta data associated with this meta box.\n\t\t * ", $metaClass ) : '',
 			]
 		);
 
@@ -145,7 +149,7 @@ final class CreateMetaBoxCommand extends PluginCliCommand
 			return Command::FAILURE;
 		}
 
-		$placementStatus = self::registerMetaBoxPlacement( $bundle, $postTypePath, $className );
+		$placementStatus = $this->registerMetaBoxPlacement( $bundle, $postTypePath, $className, $postTypeClass );
 		if ( Command::FAILURE === $placementStatus ) {
 			return Command::FAILURE;
 		}
@@ -446,7 +450,6 @@ final class CreateMetaBoxCommand extends PluginCliCommand
 	{
 		$snippet = <<<PHP
 // Load meta data for updating and validate changes
-\$Meta = new {$metaClass}( \$Post );
 \$Meta->import( \$data );
 \$validation = \$Meta->validate();
 
@@ -456,6 +459,7 @@ if ( is_wp_error( \$validation ) ) {
 } else {
 	\$Meta->save();
 }
+
 PHP;
 
 		return self::indentSnippet( $snippet, "\t\t\t", true );
@@ -471,6 +475,7 @@ PHP;
 	private static function buildImportDataSnippet( array $variables ): string
 	{
 		$sections = [];
+		$sections[] = '';
 
 		foreach ( $variables as $name => $type ) {
 			if ( 'boolean' === $type ) {
@@ -492,6 +497,8 @@ PHP
 					$name,
 					<<<'PHP'
 // Array values must be manually managed
+$data['{{var_name}}'] = $Meta->{{var_name}};
+
 if ( isset( $data['clear_{{var_name}}'] ) && 'yes' === $data['clear_{{var_name}}'] ) {
 	$data['{{var_name}}'] = [];
 }
@@ -519,7 +526,7 @@ PHP
 	private static function buildImportMetaSnippet( string $metaClass ): string
 	{
 		return sprintf(
-			"global \$post;\n\$Test_Meta = new %s( \$post );\n",
+			"global \$post;\n\$Meta = new %s( \$post );\n",
 			$metaClass
 		);
 	}
@@ -535,14 +542,15 @@ PHP
 	private static function buildRenderBodyHtml( array $variables, string $className ): string
 	{
 		$templates = [
+			// Array HTML template
 			'array' => <<<'HTML'
 <div class="{{var_name_slug}} array-meta">
     <h3>Displaying values in a list from `{{var_name}}`:</h3>
     <ul>
 
-        <?php foreach ( $Test_Meta->{{var_name}} as $value ) : ?>
+        <?php foreach ( $Meta->{{var_name}} as $value ) : $Time = new \DateTime( sprintf( '@%s', $value ) ); ?>
 
-            <li><?php echo $value; ?></li>
+            <li><?php echo $Time->format( 'd/m/Y H:i:s' ); ?></li>
 
         <?php endforeach; ?>
     
@@ -558,6 +566,7 @@ PHP
     </div>
 </div>
 HTML,
+			// String HTML template
 			'string' => <<<'HTML'
 <div class="{{var_name_slug}} string-meta">
     <h3>Current string value for `{{var_name}}`:</h3>
@@ -570,11 +579,12 @@ HTML,
         <input
             name="<?php echo {{class_name}}::create_input_name( '{{var_name}}' ); ?>"
             type="text"
-            value="<?php echo $Test_Meta->{{var_name}}; ?>"
+            value="<?php echo $Meta->{{var_name}}; ?>"
         />
     </div>
 </div>
 HTML,
+			// Boolean HTML template
 			'boolean' => <<<'HTML'
 <div class="{{var_name_slug}} boolean-meta">
     <h3>A boolean toggle for `{{var_name}}`:</h3>
@@ -584,11 +594,12 @@ HTML,
             name="<?php echo {{class_name}}::create_input_name( '{{var_name}}' ); ?>"
             type="checkbox"
             value="yes"
-            <?php echo checked( $Test_Meta->{{var_name}}, true ); // https://developer.wordpress.org/reference/functions/checked/ ?>
+            <?php echo checked( $Meta->{{var_name}}, true ); // https://developer.wordpress.org/reference/functions/checked/ ?>
         />
     </div>
 </div>
 HTML,
+			// Integer HTML template
 			'integer' => <<<'HTML'
 <div class="{{var_name_slug}} integer-meta">
     <h3>An integer field for `{{var_name}}`:</h3>
@@ -600,10 +611,12 @@ HTML,
             name="<?php echo {{class_name}}::create_input_name( '{{var_name}}' ); ?>"
             step="1"
             type="number"
+			value="<?php echo $Meta->{{var_name}}; ?>"
         />
     </div>
 </div>
 HTML,
+			// Float HTML template
 			'float' => <<<'HTML'
 <div class="{{var_name_slug}} float-meta">
     <h3>A float field for `{{var_name}}`:</h3>
@@ -615,6 +628,7 @@ HTML,
             name="<?php echo {{class_name}}::create_input_name( '{{var_name}}' ); ?>"
             step="0.01"
             type="number"
+			value="<?php echo $Meta->{{var_name}}; ?>"
         />
     </div>
 </div>
@@ -667,37 +681,43 @@ HTML,
 	 *
 	 * @return int The status of the registration steps.
 	 */
-	private static function registerMetaBoxPlacement(
+	private function registerMetaBoxPlacement(
 		HelperBundle $bundle,
 		string $postTypePath,
-		string $className
+		string $className,
+		string $postTypeClass
 	): int {
 		$screens = self::getScreenFiles();
 
 		if ( ! empty( $screens ) ) {
 			$choice = new ChoiceQuestion(
 				StyleUtil::color(
-					'Would you like to add the meta box to a screen or the post type?',
+					sprintf(
+						'Would you like to add the meta box to an existing %s class or the %s post type?',
+						StyleUtil::color( 'Screen', ConsoleColor::BrightCyan ),
+						StyleUtil::color( $postTypeClass, ConsoleColor::BrightCyan )
+					),
 					ConsoleColor::BrightYellow
 				),
-				[ 'screen', 'post type' ]
+				[
+					'Add to screen class',
+					'Add to all ' . $postTypeClass . ' screens'
+				]
 			);
 
 			$selection = $bundle->helper->ask( $bundle->input, $bundle->output, $choice );
 
-			if ( 'screen' === $selection ) {
+			if ( 'Add to screen class' === $selection ) {
 				$screenFile = self::selectScreenFile( $bundle, $screens );
 				$screenLocation = self::selectScreenLocation( $bundle );
 				return self::insertMetaBoxIntoScreen( $screenFile, $className, $screenLocation );
 			}
 		} else {
-			$yn = StyleUtil::color( '(yes/no) ', ConsoleColor::Yellow );
-			$question = new Question(
-				'No screens were found. Add the meta box to the post type instead? ' . $yn
-			);
-			$question->setValidator( CliUtil::yesNoValidator() );
-			$answer = $bundle->helper->ask( $bundle->input, $bundle->output, $question );
-			if ( ! in_array( $answer, [ 'yes', 'y' ], true ) ) {
+			if ( ! $this->askYesNo(
+				$bundle->input,
+				$bundle->output,
+				sprintf( 'Would you like to add the meta box to the %s post type?', $postTypeClass )
+			) ) {
 				return Command::SUCCESS;
 			}
 		}
@@ -737,16 +757,34 @@ HTML,
 	 */
 	private static function selectScreenFile( HelperBundle $bundle, array $screens ): string
 	{
-		$choices = array_map( 'basename', $screens );
+		$choices = [];
+		$classToFile = [];
+
+		foreach ( $screens as $screenFile ) {
+			$className = Utility::get_file_class_name( $screenFile );
+			$label = '' !== $className ? $className : basename( $screenFile );
+
+			// Keep labels unique while preferring class names for display.
+			if ( isset( $classToFile[ $label ] ) ) {
+				$label = sprintf( '%s (%s)', $label, basename( $screenFile ) );
+			}
+
+			$choices[] = $label;
+			$classToFile[ $label ] = $screenFile;
+		}
+
 		$question = new ChoiceQuestion(
 			StyleUtil::color( 'Select which screen to use:', ConsoleColor::BrightYellow ),
 			$choices
 		);
 
 		$selection = $bundle->helper->ask( $bundle->input, $bundle->output, $question );
-		$index = array_search( $selection, $choices, true );
 
-		return $screens[ $index ];
+		if ( ! isset( $classToFile[ $selection ] ) ) {
+			throw new \RuntimeException( sprintf( 'Screen `%s` is invalid.', $selection ) );
+		}
+
+		return $classToFile[ $selection ];
 	}
 
 	/**

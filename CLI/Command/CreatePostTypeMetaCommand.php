@@ -151,25 +151,24 @@ final class CreatePostTypeMetaCommand extends PluginCliCommand
 		$variables = [];
 		self::updateVariableDisplay( $displaySection, $variables );
 
-		$nameQuestion = new Question( StyleUtil::color(
-			'Enter a variable name (blank if finished): ',
+		$nameQuestion = fn() => new Question( StyleUtil::color(
+			'Enter a variable name to add to the meta data (blank if finished): ',
 			ConsoleColor::BrightYellow
-		) );
+		) )->setValidator( self::snakeCaseValidator() );
 
-		$nameQuestion->setValidator( self::snakeCaseValidator() );
-
-		$typeQuestion = new Question( StyleUtil::color(
-			'Enter a type (array, boolean, float, integer, string): ',
+		$typeQuestion = fn( string $name ) => new Question( StyleUtil::color(
+			sprintf(
+				'Enter the variable type for %s (array, boolean, float, integer, string): ',
+				StyleUtil::color( $name, ConsoleColor::BrightCyan )
+			),
 			ConsoleColor::BrightYellow
-		) );
-
-		$typeQuestion->setValidator( self::typeValidator() );
+		) )->setValidator( self::typeValidator() );
 
 		// Loop prompting for user input until they are finished
 		while ( true ) {
 			// Ask for the variable name
 			self::maybeClearPrompt( $promptSection );
-			$name = $bundle->helper->ask( $bundle->input, $promptSection, $nameQuestion );
+			$name = $bundle->helper->ask( $bundle->input, $promptSection, $nameQuestion() );
 
 			if ( '' === $name ) {
 				break;
@@ -180,7 +179,7 @@ final class CreatePostTypeMetaCommand extends PluginCliCommand
 
 			// Ask for the variable type
 			self::maybeClearPrompt( $promptSection );
-			$type = $bundle->helper->ask( $bundle->input, $promptSection, $typeQuestion );
+			$type = $bundle->helper->ask( $bundle->input, $promptSection, $typeQuestion( $name ) );
 			$variables[ $name ] = $type;
 			self::updateVariableDisplay( $displaySection, $variables );
 		}
@@ -370,7 +369,7 @@ final class CreatePostTypeMetaCommand extends PluginCliCommand
 	{
 		switch( $type ) {
 			case 'array':
-				return "new Meta_Schema( 'array', new Meta_Schema( 'string', '^[a-zA-Z0-9 ]+$/' ) )";
+				return "new Meta_Schema( 'array', new Meta_Schema( 'string', '/^[a-zA-Z0-9 ]+$/' ) )";
 				break;
 			case 'boolean':
 				return "new Meta_Schema( 'boolean' )";
@@ -382,7 +381,7 @@ final class CreatePostTypeMetaCommand extends PluginCliCommand
 				return "new Meta_Schema( 'integer' )";
 				break;
 			case 'string':
-				return "new Meta_Schema( 'string', '^[a-zA-Z0-9 ]+$/', [ 'pattern_hint' => __( \"Only letters, numbers, and spaces are allowed.\" ) ] )";
+				return "new Meta_Schema( 'string', '/^[a-zA-Z0-9 ]+$/', [ 'pattern_hint' => __( \"Only letters, numbers, and spaces are allowed.\" ) ] )";
 				break;
 			default:
 				return "new Meta_Schema( 'string' )";

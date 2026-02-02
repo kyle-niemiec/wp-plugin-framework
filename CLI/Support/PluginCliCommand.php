@@ -79,13 +79,36 @@ abstract class PluginCliCommand extends Command
 			) );
 		}
 
+		$choices = [];
+		$classToFile = [];
+
+		foreach ( $files as $file ) {
+			$filePath = sprintf( '%s/%s/%s', getcwd(), CreatePostTypeCommand::POST_TYPES_DIR, $file );
+			$className = Utility::get_file_class_name( $filePath );
+			$label = '' !== $className ? $className : $file;
+
+			// Keep labels unique while still preferring class names for display.
+			if ( isset( $classToFile[ $label ] ) ) {
+				$label = sprintf( '%s (%s)', $label, $file );
+			}
+
+			$choices[] = $label;
+			$classToFile[ $label ] = $file;
+		}
+
 		$question = new ChoiceQuestion(
 			StyleUtil::color( 'Select which custom post type to use:', ConsoleColor::BrightYellow ),
-			$files
+			$choices
 		);
 
 		$question->setErrorMessage( 'Post type %s is invalid.' );
-		return $bundle->helper->ask( $bundle->input, $bundle->output, $question );
+		$selection = $bundle->helper->ask( $bundle->input, $bundle->output, $question );
+
+		if ( ! isset( $classToFile[ $selection ] ) ) {
+			throw new \RuntimeException( sprintf( 'Post type `%s` is invalid.', $selection ) );
+		}
+
+		return $classToFile[ $selection ];
 	}
 
 	/**
@@ -319,9 +342,9 @@ abstract class PluginCliCommand extends Command
 	 *
 	 * @return bool True if the user confirms creation.
 	 */
-	private function askYesNo( InputInterface $input, OutputInterface $output, string $questionText ): bool
+	protected function askYesNo( InputInterface $input, OutputInterface $output, string $questionText ): bool
 	{
-		$q = sprintf( '%s %s ', $questionText, StyleUtil::color( '(yes/no)', ConsoleColor::Yellow ) );
+		$q = sprintf( '%s %s ', $questionText, StyleUtil::color( '(yes/no)', ConsoleColor::BrightYellow ) );
 		$question = new Question( $q );
 		$question->setValidator( CliUtil::yesNoValidator() );
 

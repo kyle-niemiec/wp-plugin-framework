@@ -53,21 +53,23 @@ if ( ! class_exists( '{{class_name}}', false ) ) {
 			if ( ! $is_custom_post ) {
 				return $post_id;
 			}
-
+			{{maybe_init_meta}}
 			// Read the data sent from the admin page
-			$data = self::prepare_data();
+			$data = self::prepare_data({{maybe_pass_meta}});
 			{{maybe_save_meta}}
 			return $post_id;
 		}
 
 		/**
 		 * A function you can use to read and modify the data being sent from the admin page.
-		 * 
+		 * {{maybe_pass_args_doc}}
 		 * @return array The data to save to the meta.
 		 */
-		private static function prepare_data() {
+		private static function prepare_data({{maybe_pass_args}}) {
 			$data = self::get_post_data();
 			{{maybe_import_data}}
+
+			// Return the data sent from the admin page
 			return $data;
 		}
 
