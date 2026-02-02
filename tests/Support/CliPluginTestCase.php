@@ -162,6 +162,10 @@ abstract class CliPluginTestCase extends TestCase
 	{
 		$pluginAdminFile = sprintf( 'admin/%s-admin.php', self::PLUGIN_SLUG );
 
+		if ( ! is_dir( dirname( $pluginAdminFile ) ) ) {
+			mkdir( dirname( $pluginAdminFile ), 0777, true );
+		}
+
 		if ( ! file_exists( $pluginAdminFile ) ) {
 			file_put_contents( $pluginAdminFile, "<?php\n// Test admin plugin.\n" );
 		}
@@ -179,7 +183,10 @@ abstract class CliPluginTestCase extends TestCase
 		$postTypeFile = CreatePostTypeCommand::POST_TYPES_DIR . '/class-test-post-type.php';
 
 		if ( ! file_exists( $postTypeFile ) ) {
-			file_put_contents( $postTypeFile, "<?php\nfinal class Test_Post_Type {}\n" );
+			file_put_contents(
+				$postTypeFile,
+				"<?php\nfinal class Test_Post_Type {\n\tpublic function __construct() {\n\t}\n}\n"
+			);
 		}
 	}
 
