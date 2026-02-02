@@ -670,24 +670,34 @@ HTML,
 			$selection = $bundle->helper->ask( $bundle->input, $bundle->output, $choice );
 
 			if ( 'Add to screen class' === $selection ) {
+				// Get the screen and location from the user before inserting the import
 				$screenFile = self::selectScreenFile( $bundle, $screens );
 				$screenLocation = self::selectScreenLocation( $bundle );
+
 				return self::insertMetaBoxIntoScreen( $screenFile, $className, $screenLocation );
+			} else {
+				// Explicitly insert into the post type
+				return self::insertMetaBoxIntoPostType( $postTypePath, $className );
 			}
+
 		}
 
 		// Otherwise offer to update the post type
 		else {
-			if ( ! $this->askYesNo(
+			$insertIntoPostType = $this->askYesNo(
 				$bundle->input,
 				$bundle->output,
 				sprintf( 'Would you like to add the meta box to the %s post type?', $postTypeClass )
-			) ) {
+			);
+
+			if ( ! $insertIntoPostType ) {
 				return Command::SUCCESS;
 			}
+
+			// Insert into the post type by default
+			return self::insertMetaBoxIntoPostType( $postTypePath, $className );
 		}
 
-		return self::insertMetaBoxIntoPostType( $postTypePath, $className );
 	}
 
 	/**
