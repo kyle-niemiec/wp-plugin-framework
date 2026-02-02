@@ -25,7 +25,7 @@ if ( ! class_exists( '{{class_name}}', false ) ) {
 		/**
 		 * @inheritDoc
 		 */
-		final public static function key() { return '_{{class_slug}}'; }
+		final public static function key(): string { return '_{{class_slug}}'; }
 
 		/**
 		 * Construct the meta data class with a given custom post type.
@@ -59,7 +59,7 @@ if ( ! class_exists( '{{class_name}}', false ) ) {
 		 * 
 		 * @return array The array representation of the {@see use WPPF\v1_2_1\WordPress\Post_Meta}.
 		 */
-		final public function export()
+		final public function export(): array
 		{
 			$export = [];
 

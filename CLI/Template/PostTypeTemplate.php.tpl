@@ -17,7 +17,7 @@ if ( ! class_exists( '{{class_name}}', false ) ) {
 		/**
 		 * @inheritDoc
 		 */
-		final public static function post_type() { return '{{slug}}'; }
+		final public static function post_type(): string { return '{{slug}}'; }
 
 		/**
 		 * Add meta boxes and run code when this class is registered to the framework.
@@ -32,7 +32,7 @@ if ( ! class_exists( '{{class_name}}', false ) ) {
 		 * 
 		 * @return array The custom post type options.
 		 */
-		final protected function post_type_options()
+		final protected function post_type_options(): array
 		{
 			return [
 				'labels' => [

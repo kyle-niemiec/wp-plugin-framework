@@ -19,22 +19,23 @@ if ( ! class_exists( '{{class_name}}', false ) ) {
 		/**
 		 * @inheritDoc
 		 */
-		final public static function meta_key() { return '{{meta_box_key}}'; }
+		final public static function meta_key(): string { return '{{meta_box_key}}'; }
 
 		/**
 		 * @inheritDoc
 		 */
-		final public static function get_title() { return '{{meta_box_title}}'; }
+		final public static function get_title(): string { return '{{meta_box_title}}'; }
 
 		/**
 		 * @inheritDoc
 		 */
-		final public static function get_id() { return '{{meta_box_id}}'; }
+		final public static function get_id(): string { return '{{meta_box_id}}'; }
 
 		/**
 		 * @inheritDoc
 		 */
-		final protected static function render() {
+		final protected static function render(): void
+		{
 			{{plugin_class}}::instance()->get_admin_module()->get_template( '{{template_slug}}' );
 		}
 
@@ -46,7 +47,8 @@ if ( ! class_exists( '{{class_name}}', false ) ) {
 		 * 
 		 * @return int The post ID.
 		 */
-		final protected static function save_post( int $post_id, ?\WP_Post $Post = null ) {
+		final protected static function save_post( int $post_id, ?\WP_Post $Post = null ): int
+		{
 			$is_custom_post = $Post->post_type === {{post_type_class}}::post_type();
 
 			// Don't save anything if the post being saved isn't our post type
@@ -65,7 +67,8 @@ if ( ! class_exists( '{{class_name}}', false ) ) {
 		 * {{maybe_pass_args_doc}}
 		 * @return array The data to save to the meta.
 		 */
-		private static function prepare_data({{maybe_pass_args}}) {
+		private static function prepare_data({{maybe_pass_args}}): array
+		{
 			$data = self::get_post_data();
 			{{maybe_import_data}}
 

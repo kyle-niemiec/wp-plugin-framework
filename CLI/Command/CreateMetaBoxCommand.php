@@ -792,19 +792,17 @@ HTML,
 		$contents = file_get_contents( $screenFile );
 
 		$insert = "\t{$className}::instance()->add_meta_box();\n\t\t";
-		$targets = [];
+		$target = '';
 
 		if ( 'Post create screen' === $location ) {
-			$targets[] = 'add_post';
+			$target = 'add_post';
 		} elseif ( 'Post edit screen' === $location ) {
-			$targets[] = 'view_post';
+			$target = 'view_post';
 		} else {
-			$targets = [ 'add_post', 'view_post' ];
+			$target = 'current_screen';
 		}
 
-		foreach ( $targets as $functionName ) {
-			$contents = CliUtil::insertIntoFunction( $insert, $functionName, $contents, 'before_closing' );
-		}
+		$contents = CliUtil::insertIntoFunction( $insert, $target, $contents, 'before_closing' );
 
 		if ( ! file_put_contents( $screenFile, $contents ) ) {
 			return Command::FAILURE;

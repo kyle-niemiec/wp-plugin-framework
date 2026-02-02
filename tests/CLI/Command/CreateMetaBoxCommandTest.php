@@ -40,6 +40,7 @@ final class CreateMetaBoxCommandTest extends CliPluginTestCase
 		file_put_contents( 'admin/' . self::PLUGIN_SLUG . '-admin.php', "<?php\n// Test admin plugin.\n" );
 
 		$postTypeFile = CreatePostTypeCommand::POST_TYPES_DIR . '/class-test-post-type.php';
+
 		file_put_contents(
 			$postTypeFile,
 			"<?php\nfinal class Test_Post_Type {\n\tpublic function __construct() {\n\t}\n}\n"

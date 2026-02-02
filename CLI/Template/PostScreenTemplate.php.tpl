@@ -17,15 +17,12 @@ if ( ! class_exists( '{{class_name}}', false ) ) {
 		/**
 		 * @inheritDoc
 		 */
-		final public static function post_type() { return {{post_type_class}}::post_type(); }
+		final public static function post_type(): string { return {{post_type_class}}::post_type(); }
 
 		/**
-		 * The primary entry function for running code globally in the admin area. This code will run with regular Module constructions.
+		 * @inheritDoc
 		 */
-		final public static function construct_screen()
-		{
-
-		}
+		final public static function construct_screen(): void { }
 
 		/**
 		 * The primary entry function for running code locally in the screen. This code will run in the 'current_screen' WordPress hook.
@@ -33,9 +30,9 @@ if ( ! class_exists( '{{class_name}}', false ) ) {
 		 * 
 		 * @param \WP_Screen $current_screen The current Screen being viewed.
 		 */
-		final public static function current_screen( \WP_Screen $current_screen )
+		final public static function current_screen( \WP_Screen $current_screen ): void
 		{
-
+			// Runs for any matching post screen
 		}
 
 		/**
@@ -43,9 +40,9 @@ if ( ! class_exists( '{{class_name}}', false ) ) {
 		 * 
 		 * @param \WP_Screen The current screen object.
 		 */
-		final public static function view_post( \WP_Screen $current_screen )
+		final public static function view_post( \WP_Screen $current_screen ): void
 		{
-
+			// Runs when viewing/editing a post
 		}
 
 		/**
@@ -53,9 +50,9 @@ if ( ! class_exists( '{{class_name}}', false ) ) {
 		 * 
 		 * @param \WP_Screen The current screen object.
 		 */
-		final public static function view_posts( \WP_Screen $current_screen )
+		final public static function view_posts( \WP_Screen $current_screen ): void
 		{
-
+			// Runs when viewing all posts
 		}
 
 		/**
@@ -63,9 +60,9 @@ if ( ! class_exists( '{{class_name}}', false ) ) {
 		 * 
 		 * @param \WP_Screen The current screen object.
 		 */
-		final public static function add_post( \WP_Screen $current_screen )
+		final public static function add_post( \WP_Screen $current_screen ): void
 		{
-
+			// Runs when adding a new post
 		}
 
 	}
