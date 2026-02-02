@@ -23,7 +23,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use WPPF\CLI\Enum\ConsoleColor;
 use WPPF\CLI\Support\PluginCliCommand;
-use WPPF\v1_2_1\Framework\Utility;
+use WPPF\v1_2_2\Framework\Utility;
 
 /**
  * A command to create a post screen class for the current plugin.

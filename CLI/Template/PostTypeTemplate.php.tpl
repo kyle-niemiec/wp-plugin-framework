@@ -1,11 +1,11 @@
 <?php
 /**
- * A custom @see WPPF\v1_2_1\WordPress\Post_Type containing configuration information for related functionality.
+ * A custom @see WPPF\v1_2_2\WordPress\Post_Type containing configuration information for related functionality.
  */
 
 defined( 'ABSPATH' ) or exit;
 
-use WPPF\v1_2_1\WordPress\Post_Type;
+use WPPF\v1_2_2\WordPress\Post_Type;
 
 if ( ! class_exists( '{{class_name}}', false ) ) {
 
@@ -28,7 +28,7 @@ if ( ! class_exists( '{{class_name}}', false ) ) {
 		}
 
 		/**
-		 * The WordPress custom post type options. @see WPPF\v1_2_1\WordPress\Post_Type for the complete list.
+		 * The WordPress custom post type options. @see WPPF\v1_2_2\WordPress\Post_Type for the complete list.
 		 * 
 		 * @return array The custom post type options.
 		 */

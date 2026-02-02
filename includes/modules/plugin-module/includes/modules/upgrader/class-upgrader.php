@@ -11,13 +11,13 @@
  * @package WPPF
  */
 
-namespace WPPF\v1_2_1\Plugin;
+namespace WPPF\v1_2_2\Plugin;
 
 defined( 'ABSPATH' ) or exit;
 
-use WPPF\v1_2_1\Framework\Module;
+use WPPF\v1_2_2\Framework\Module;
 
-if ( ! class_exists( '\WPPF\v1_2_1\Plugin\Upgrader', false ) ) {
+if ( ! class_exists( '\WPPF\v1_2_2\Plugin\Upgrader', false ) ) {
 
 	/**
 	 * A Module for providing automated access to running tasks on Plugin version updates.

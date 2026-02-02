@@ -11,14 +11,14 @@
  * @package WPPF
  */
 
-namespace WPPF\v1_2_1\WooCommerce;
+namespace WPPF\v1_2_2\WooCommerce;
 
 defined( 'ABSPATH' ) or exit;
 
-use WPPF\v1_2_1\WPPF_Shadow_Plugin;
-use WPPF\v1_2_1\Framework\Utility;
+use WPPF\v1_2_2\WPPF_Shadow_Plugin;
+use WPPF\v1_2_2\Framework\Utility;
 
-if ( ! class_exists( '\WPPF\v1_2_1\WooCommerce\WC_Tab_Navigator', false ) ) {
+if ( ! class_exists( '\WPPF\v1_2_2\WooCommerce\WC_Tab_Navigator', false ) ) {
 
 	/**
 	 * A class to encompass the creation and script handling of the WooCommerce Tabs UI component.

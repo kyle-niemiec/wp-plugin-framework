@@ -11,12 +11,12 @@
  * @package WPPF
  */
 
-namespace WPPF\v1_2_1\Action_Scheduler;
+namespace WPPF\v1_2_2\Action_Scheduler;
 
 defined( 'ABSPATH' ) or exit;
 
-use WPPF\v1_2_1\Plugin\Action_Scheduler\Form_Builder;
-use WPPF\v1_2_1\Plugin\Action_Scheduler\Simple_Timer;
+use WPPF\v1_2_2\Plugin\Action_Scheduler\Form_Builder;
+use WPPF\v1_2_2\Plugin\Action_Scheduler\Simple_Timer;
 
 ?>
 

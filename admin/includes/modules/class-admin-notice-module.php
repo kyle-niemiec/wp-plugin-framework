@@ -11,15 +11,15 @@
  * @package WPPF
  */
 
-namespace WPPF\v1_2_1\Admin;
+namespace WPPF\v1_2_2\Admin;
 
 defined( 'ABSPATH' ) or exit;
 
-use WPPF\v1_2_1\Framework\Module;
-use WPPF\v1_2_1\WordPress\Admin\Admin_Notices;
-use WPPF\v1_2_1\WPPF_Shadow_Plugin;
+use WPPF\v1_2_2\Framework\Module;
+use WPPF\v1_2_2\WordPress\Admin\Admin_Notices;
+use WPPF\v1_2_2\WPPF_Shadow_Plugin;
 
-if ( ! class_exists( '\WPPF\v1_2_1\Admin\Admin_Notice_Module', false ) ) {
+if ( ! class_exists( '\WPPF\v1_2_2\Admin\Admin_Notice_Module', false ) ) {
 
 	/**
 	 * This module holds the logic for saving our admin notices as transients and displaying them on an admin page load.

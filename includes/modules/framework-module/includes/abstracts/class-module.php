@@ -11,14 +11,14 @@
  * @package WPPF
  */
 
-namespace WPPF\v1_2_1\Framework;
+namespace WPPF\v1_2_2\Framework;
 
 defined( 'ABSPATH' ) or exit;
 
-use WPPF\v1_2_1\Framework\Framework;
-use WPPF\v1_2_1\Framework\Singleton;
+use WPPF\v1_2_2\Framework\Framework;
+use WPPF\v1_2_2\Framework\Singleton;
 
-if ( ! class_exists( '\WPPF\v1_2_1\Framework\Module', false ) ) {
+if ( ! class_exists( '\WPPF\v1_2_2\Framework\Module', false ) ) {
 
 	/**
 	 * A class to represent crucial project file system structures and bind their PHP functionalities to WordPress.

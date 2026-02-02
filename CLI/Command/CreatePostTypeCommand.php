@@ -24,7 +24,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
 use WPPF\CLI\Enum\ConsoleColor;
 use WPPF\CLI\Support\PluginCliCommand;
-use WPPF\v1_2_1\Framework\Utility;
+use WPPF\v1_2_2\Framework\Utility;
 
 /**
  * A command to create a post type class for the current plugin.
@@ -113,7 +113,7 @@ final class CreatePostTypeCommand extends PluginCliCommand
 
 		$output->writeln(
 			StyleUtil::color(
-				'See \\WPPF\\v1_2_1\\WordPress\\Post_Type for the complete list of post type options.',
+				'See \\WPPF\\v1_2_2\\WordPress\\Post_Type for the complete list of post type options.',
 				ConsoleColor::Gray
 			)
 		);

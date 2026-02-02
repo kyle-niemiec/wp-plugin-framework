@@ -11,13 +11,13 @@
  * @package WPPF
  */
 
-namespace WPPF\v1_2_1\WordPress;
+namespace WPPF\v1_2_2\WordPress;
 
 defined( 'ABSPATH' ) or exit;
 
-use WPPF\v1_2_1\Framework\Utility;
+use WPPF\v1_2_2\Framework\Utility;
 
-if ( ! class_exists( '\WPPF\v1_2_1\WordPress\Meta', false ) ) {
+if ( ! class_exists( '\WPPF\v1_2_2\WordPress\Meta', false ) ) {
 
 	/**
 	 * An abstract class for other abstract classes to inherit regarding saving meta values in standard form in the WordPress database.
@@ -25,7 +25,7 @@ if ( ! class_exists( '\WPPF\v1_2_1\WordPress\Meta', false ) ) {
 	 */
 	abstract class Meta {
 
-		/** @var \WPPF\v1_2_1\Meta_Schema The Schema for the Meta. */
+		/** @var \WPPF\v1_2_2\Meta_Schema The Schema for the Meta. */
 		protected $Schema;
 
 		/** @var string Whether the meta data is being updated as a single key or with multiple keys. */
@@ -65,7 +65,7 @@ if ( ! class_exists( '\WPPF\v1_2_1\WordPress\Meta', false ) ) {
 		/**
 		 * Return the Meta schema.
 		 * 
-		 * @return \WPPF\v1_2_1\Meta_Schema The Meta schema.
+		 * @return \WPPF\v1_2_2\Meta_Schema The Meta schema.
 		 */
 		final public function get_schema() { return $this->Schema; }
 
@@ -105,7 +105,7 @@ if ( ! class_exists( '\WPPF\v1_2_1\WordPress\Meta', false ) ) {
 		/**
 		 * Set the schema for the Meta data.
 		 * 
-		 * @param \WPPF\v1_2_1\Meta_Schema $Schema The Meta Value to use for the schema.
+		 * @param \WPPF\v1_2_2\Meta_Schema $Schema The Meta Value to use for the schema.
 		 */
 		final protected function set_schema( Meta_Schema $Schema ) {
 			$this->Schema = $Schema;

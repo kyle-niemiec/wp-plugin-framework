@@ -11,13 +11,13 @@
  * @package WPPF
  */
 
-namespace WPPF\v1_2_1\WordPress\Admin;
+namespace WPPF\v1_2_2\WordPress\Admin;
 
 defined( 'ABSPATH' ) or exit;
 
-use WPPF\v1_2_1\Framework\Singleton;
+use WPPF\v1_2_2\Framework\Singleton;
 
-if ( ! class_exists( '\WPPF\v1_2_1\WordPress\Admin\Meta_Box', false ) ) {
+if ( ! class_exists( '\WPPF\v1_2_2\WordPress\Admin\Meta_Box', false ) ) {
 
 	/**
 	 * A manager for Meta Boxes that appear on admin edit pages. Manages the form rendering and post save hooking processes.

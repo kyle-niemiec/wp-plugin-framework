@@ -25,7 +25,7 @@ use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Question\Question;
 use WPPF\CLI\Enum\ConsoleColor;
 use WPPF\CLI\Support\PluginCliCommand;
-use WPPF\v1_2_1\Framework\Utility;
+use WPPF\v1_2_2\Framework\Utility;
 
 /**
  * A command to create a meta box class and render template for a post type.
@@ -349,7 +349,7 @@ final class CreateMetaBoxCommand extends PluginCliCommand
 		}
 
 		// Find all the generated variables first.
-		if ( ! preg_match( '/\\$generated_values = \\[\\n(.+)\\n\\];/', $contents, $matches ) ) {
+		if ( ! preg_match( '/\\$generated_values = \\[\\n([\\s\\S]+)\\n\\s*\\];/', $contents, $matches ) ) {
 			return [];
 		}
 

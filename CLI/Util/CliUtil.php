@@ -87,7 +87,7 @@ final class CliUtil
 	}
 
 	/**
-	 * A shortcut for requiring the {@see WPPF\v1_2_1\Framework\Utility}. It's useful.
+	 * A shortcut for requiring the {@see WPPF\v1_2_2\Framework\Utility}. It's useful.
 	 */
 	public static function requireFrameworkUtility(): void
 	{

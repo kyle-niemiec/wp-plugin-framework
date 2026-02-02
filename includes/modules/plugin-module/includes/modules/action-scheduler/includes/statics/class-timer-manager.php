@@ -11,13 +11,13 @@
  * @package WPPF
  */
 
-namespace WPPF\v1_2_1\Plugin\Action_Scheduler;
+namespace WPPF\v1_2_2\Plugin\Action_Scheduler;
 
 defined( 'ABSPATH' ) or exit;
 
-use WPPF\v1_2_1\Plugin\Action_Scheduler\Timer;
+use WPPF\v1_2_2\Plugin\Action_Scheduler\Timer;
 
-if ( ! class_exists( '\WPPF\v1_2_1\Plugin\Action_Scheduler\Timer_Manager', false ) ) {
+if ( ! class_exists( '\WPPF\v1_2_2\Plugin\Action_Scheduler\Timer_Manager', false ) ) {
 
 	/**
 	 * A static class to manage the saving and loading of Timers from the database.
@@ -59,7 +59,7 @@ if ( ! class_exists( '\WPPF\v1_2_1\Plugin\Action_Scheduler\Timer_Manager', false
 		 * 
 		 * @param string $timer_id The Timer ID.
 		 * 
-		 * @return null|\WPPF\v1_2_1\Plugin\Action_Scheduler\Timer The Timer instance or NULL.
+		 * @return null|\WPPF\v1_2_2\Plugin\Action_Scheduler\Timer The Timer instance or NULL.
 		 */
 		final public static function get_timer( string $timer_id ) {
 			$Timers = self::get_timers();
@@ -74,7 +74,7 @@ if ( ! class_exists( '\WPPF\v1_2_1\Plugin\Action_Scheduler\Timer_Manager', false
 		/**
 		 * Update/add a Timer, optionally merge Actions with a previously existing Timer being overwritten.
 		 * 
-		 * @param \WPPF\v1_2_1\Plugin\Action_Scheduler\Timer $Timer The Timer instance to update.
+		 * @param \WPPF\v1_2_2\Plugin\Action_Scheduler\Timer $Timer The Timer instance to update.
 		 * @param bool $merge_actions Whether or not to merge action with a previously existing Timer. (default FALSE)
 		 * 
 		 * @return bool Whether or not the Timers were persisted to the database.
@@ -94,7 +94,7 @@ if ( ! class_exists( '\WPPF\v1_2_1\Plugin\Action_Scheduler\Timer_Manager', false
 		/**
 		 * Given an array of Timers, update all Timers in the database to reflect the data in the array.
 		 * 
-		 * @param \WPPF\v1_2_1\Plugin\Action_Scheduler\Timer[] The Timers to save.
+		 * @param \WPPF\v1_2_2\Plugin\Action_Scheduler\Timer[] The Timers to save.
 		 * 
 		 * @return bool Whether or not the option was persisted to the database.
 		 */

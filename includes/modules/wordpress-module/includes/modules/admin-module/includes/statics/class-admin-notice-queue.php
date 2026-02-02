@@ -11,11 +11,11 @@
  * @package WPPF
  */
 
-namespace WPPF\v1_2_1\WordPress\Admin;
+namespace WPPF\v1_2_2\WordPress\Admin;
 
 defined( 'ABSPATH' ) or exit;
 
-if ( ! class_exists( '\WPPF\v1_2_1\WordPress\Admin\Admin_Notice_Queue', false ) ) {
+if ( ! class_exists( '\WPPF\v1_2_2\WordPress\Admin\Admin_Notice_Queue', false ) ) {
 
 	/**
 	 * Utility functions class to hold useful chunks of code we find ourselves often reusing.

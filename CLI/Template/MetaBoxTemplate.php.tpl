@@ -1,13 +1,13 @@
 <?php
 /**
- * This file manages the configuration for a @see WPPF\v1_2_1\WordPress\Admin\Meta_Box appearing on a post screen.
+ * This file manages the configuration for a @see WPPF\v1_2_2\WordPress\Admin\Meta_Box appearing on a post screen.
  */
 
 defined( 'ABSPATH' ) or exit;
 
-use WPPF\v1_2_1\WordPress\Admin\Admin_Notices;
-use WPPF\v1_2_1\WordPress\Admin\Meta_Box;
-use WPPF\v1_2_1\WordPress\Meta_Schema;
+use WPPF\v1_2_2\WordPress\Admin\Admin_Notices;
+use WPPF\v1_2_2\WordPress\Admin\Meta_Box;
+use WPPF\v1_2_2\WordPress\Meta_Schema;
 
 if ( ! class_exists( '{{class_name}}', false ) ) {
 

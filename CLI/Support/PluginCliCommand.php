@@ -24,7 +24,7 @@ use WPPF\CLI\Command\CreatePostTypeCommand;
 use WPPF\CLI\Enum\ConsoleColor;
 use WPPF\CLI\Util\CliUtil;
 use WPPF\CLI\Util\StyleUtil;
-use WPPF\v1_2_1\Framework\Utility;
+use WPPF\v1_2_2\Framework\Utility;
 
 /**
  * A shared command base for plugin-related CLI commands.

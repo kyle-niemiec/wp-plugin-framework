@@ -1,11 +1,11 @@
 <?php
 /**
- * Configuration information relating to the @see WPPF\v1_2_1\WordPress\Admin\Screens pertaining to a specific custom post type.
+ * Configuration information relating to the @see WPPF\v1_2_2\WordPress\Admin\Screens pertaining to a specific custom post type.
  */
 
 defined( 'ABSPATH' ) or exit;
 
-use WPPF\v1_2_1\WordPress\Admin\Screens\Post_Screens;
+use WPPF\v1_2_2\WordPress\Admin\Screens\Post_Screens;
 
 if ( ! class_exists( '{{class_name}}', false ) ) {
 

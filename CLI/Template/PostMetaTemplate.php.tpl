@@ -1,12 +1,12 @@
 <?php
 /**
- * A {@see use WPPF\v1_2_1\WordPress\Post_Meta} for a custom post type, containing configuration and schema information for meta data.
+ * A {@see use WPPF\v1_2_2\WordPress\Post_Meta} for a custom post type, containing configuration and schema information for meta data.
  */
 
 defined( 'ABSPATH' ) or exit;
 
-use WPPF\v1_2_1\WordPress\Meta_Schema;
-use WPPF\v1_2_1\WordPress\Post_Meta;
+use WPPF\v1_2_2\WordPress\Meta_Schema;
+use WPPF\v1_2_2\WordPress\Post_Meta;
 
 if ( ! class_exists( '{{class_name}}', false ) ) {
 
@@ -30,7 +30,7 @@ if ( ! class_exists( '{{class_name}}', false ) ) {
 		/**
 		 * Construct the meta data class with a given custom post type.
 		 * 
-		 * @param \WP_Post $Post The custom post type the {@see use WPPF\v1_2_1\WordPress\Post_Meta} values belong to.
+		 * @param \WP_Post $Post The custom post type the {@see use WPPF\v1_2_2\WordPress\Post_Meta} values belong to.
 		 */
 		public function __construct( \WP_Post $Post )
 		{
@@ -57,7 +57,7 @@ if ( ! class_exists( '{{class_name}}', false ) ) {
 		/**
 		 * This is called when saving the custom post type meta data and returns what is saved.
 		 * 
-		 * @return array The array representation of the {@see use WPPF\v1_2_1\WordPress\Post_Meta}.
+		 * @return array The array representation of the {@see use WPPF\v1_2_2\WordPress\Post_Meta}.
 		 */
 		final public function export(): array
 		{

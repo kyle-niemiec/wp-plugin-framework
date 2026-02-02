@@ -11,14 +11,14 @@
  * @package WPPF
  */
 
-namespace WPPF\v1_2_1\Plugin\Action_Scheduler;
+namespace WPPF\v1_2_2\Plugin\Action_Scheduler;
 
 defined( 'ABSPATH' ) or exit;
 
-use WPPF\v1_2_1\Plugin\Action_Scheduler\Action;
-use WPPF\v1_2_1\Framework\Utility;
+use WPPF\v1_2_2\Plugin\Action_Scheduler\Action;
+use WPPF\v1_2_2\Framework\Utility;
 
-if ( ! class_exists( '\WPPF\v1_2_1\Plugin\Action_Scheduler\Timer', false ) ) {
+if ( ! class_exists( '\WPPF\v1_2_2\Plugin\Action_Scheduler\Timer', false ) ) {
 
 	/**
 	 * A Timer template for the Action Scheduler system that other timer classes can extend and implement their own settings for.
@@ -119,7 +119,7 @@ if ( ! class_exists( '\WPPF\v1_2_1\Plugin\Action_Scheduler\Timer', false ) ) {
 		/**
 		 * Get the Actions.
 		 * 
-		 * @return \WPPF\v1_2_1\Plugin\Action_Scheduler\Action[] The Actions.
+		 * @return \WPPF\v1_2_2\Plugin\Action_Scheduler\Action[] The Actions.
 		 */
 		final public function get_actions() { return $this->Actions; }
 
@@ -198,7 +198,7 @@ if ( ! class_exists( '\WPPF\v1_2_1\Plugin\Action_Scheduler\Timer', false ) ) {
 		/**
 		 * Add an Action to the Timer instance, optionally update the Action and { $this->action_data } if it already exists.
 		 * 
-		 * @param \WPPF\v1_2_1\Plugin\Action_Scheduler\Action $Action The Action to try and add.
+		 * @param \WPPF\v1_2_2\Plugin\Action_Scheduler\Action $Action The Action to try and add.
 		 * @param bool $update Whether or not to replace the Action if it already exists by ID (default FALSE)
 		 * 
 		 * @return bool Whether or not the action was added.
@@ -218,7 +218,7 @@ if ( ! class_exists( '\WPPF\v1_2_1\Plugin\Action_Scheduler\Timer', false ) ) {
 		 * 
 		 * @param string $action_id The ID of the Action to look for.
 		 * 
-		 * @return null|\WPPF\v1_2_1\Plugin\Action_Scheduler\Action The Action instance or NULL.
+		 * @return null|\WPPF\v1_2_2\Plugin\Action_Scheduler\Action The Action instance or NULL.
 		 */
 		final public function get_action( string $action_id ) {
 			if ( $this->Actions[ $action_id ] ) {
@@ -240,7 +240,7 @@ if ( ! class_exists( '\WPPF\v1_2_1\Plugin\Action_Scheduler\Timer', false ) ) {
 		}
 
 		/**
-		 * A wrapper function for \WPPF\v1_2_1\Plugin\Action_Scheduler\Timer_Manager::update_timer().
+		 * A wrapper function for \WPPF\v1_2_2\Plugin\Action_Scheduler\Timer_Manager::update_timer().
 		 * 
 		 * @param bool $merge Whether or not to merge existing Actions if the Timer already exists.
 		 * 
@@ -263,7 +263,7 @@ if ( ! class_exists( '\WPPF\v1_2_1\Plugin\Action_Scheduler\Timer', false ) ) {
 		/**
 		 * Merge Actions from another Timer instance into this instance.
 		 * 
-		 * @param \WPPF\v1_2_1\Plugin\Action_Scheduler\Timer $Timer The Timer instance to merge Actions from.
+		 * @param \WPPF\v1_2_2\Plugin\Action_Scheduler\Timer $Timer The Timer instance to merge Actions from.
 		 */
 		final public function merge_actions( Timer $Timer ) {
 			foreach ( $Timer->get_actions() as $Action ) {
@@ -298,7 +298,7 @@ if ( ! class_exists( '\WPPF\v1_2_1\Plugin\Action_Scheduler\Timer', false ) ) {
 		 * 
 		 * @param string $timer_id The ID of the Timer.
 		 * 
-		 * @return null|\WPPF\v1_2_1\Plugin\Action_Scheduler\Timer The timer that was instantiated or FALSE.
+		 * @return null|\WPPF\v1_2_2\Plugin\Action_Scheduler\Timer The timer that was instantiated or FALSE.
 		 */
 		final public static function instantiate_timer( string $timer_id, array $timer_options ) {
 

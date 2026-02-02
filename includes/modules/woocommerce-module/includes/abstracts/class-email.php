@@ -11,11 +11,11 @@
  * @package WPPF
  */
 
-namespace WPPF\v1_2_1\WooCommerce;
+namespace WPPF\v1_2_2\WooCommerce;
 
 defined( 'ABSPATH' ) or exit;
 
-if ( ! class_exists( '\WPPF\v1_2_1\WooCommerce\Email', false ) ) {
+if ( ! class_exists( '\WPPF\v1_2_2\WooCommerce\Email', false ) ) {
 
 	/**
 	 * An abstract class for mandating essential parts of the \WC_Email, and implementing email set-up and sending.

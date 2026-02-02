@@ -17,17 +17,17 @@
 
 defined( 'ABSPATH' ) or exit;
 
-use WPPF\v1_2_1\Framework\Autoloader;
-use WPPF\v1_2_1\Framework\Admin_Module;
-use WPPF\v1_2_1\Framework\Framework;
-use WPPF\v1_2_1\Framework\Module;
+use WPPF\v1_2_2\Framework\Autoloader;
+use WPPF\v1_2_2\Framework\Admin_Module;
+use WPPF\v1_2_2\Framework\Framework;
+use WPPF\v1_2_2\Framework\Module;
 
 global $WPPF_FRAMEWORKS;
 
 /**
  * Require the basic class files to spin up the autoloader.
  */
-if ( ! class_exists( '\WPPF\v1_2_1\Autoloader', false ) ) {
+if ( ! class_exists( '\WPPF\v1_2_2\Autoloader', false ) ) {
 	require_once ( plugin_dir_path( __FILE__ ) . 'includes/modules/framework-module/includes/classes/class-autoloader.php' );
 	require_once ( plugin_dir_path( __FILE__ ) . 'includes/modules/framework-module/includes/abstracts/class-module.php' );
 	require_once ( plugin_dir_path( __FILE__ ) . 'includes/modules/plugin-module/includes/modules/upgrader/includes/traits/class-plugin-upgrader-trait.php' );
@@ -41,7 +41,7 @@ if ( ! class_exists( '\WPPF\v1_2_1\Autoloader', false ) ) {
 /**
  * Set global function for accessing Framework instances.
  * 
- * @return \WPPF\v1_2_1\Framework[] The WordPress plugin frameworks by version.
+ * @return \WPPF\v1_2_2\Framework[] The WordPress plugin frameworks by version.
  */
 if ( ! function_exists( 'wppf_frameworks' ) ) {
 
@@ -57,13 +57,13 @@ if ( ! function_exists( 'wppf_frameworks' ) ) {
 /**
  * Instantiate the current Framework version and add to the Frameworks list.
  */
-if ( ! class_exists( '\WPPF\v1_2_1\Framework', false ) ) {
+if ( ! class_exists( '\WPPF\v1_2_2\Framework', false ) ) {
 	$WPPF_FRAMEWORKS[ Framework::get_version() ] = Framework::instance();
 }
 
 /**
  * Initialize the shadow plugin
  */
-if ( ! class_exists( '\WPPF\v1_2_1\WPPF_Shadow_Plugin', false ) ) {
+if ( ! class_exists( '\WPPF\v1_2_2\WPPF_Shadow_Plugin', false ) ) {
 	require_once( __DIR__ . '/wppf-shadow-plugin.php' );
 }
