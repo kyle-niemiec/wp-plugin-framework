@@ -347,7 +347,7 @@ final class CreateMetaBoxCommand extends PluginCliCommand
 	 *
 	 * @param string $file The meta class file path.
 	 *
-	 * @return array<string, string> The variable names and inferred types.
+	 * @return array The variable names and inferred types.
 	 */
 	private static function extractMetaVariables( string $file ): array
 	{
@@ -501,7 +501,7 @@ END
 	/**
 	 * Build the render body HTML based on meta variables.
 	 *
-	 * @param array<string, string> $variables The variable names and types.
+	 * @param array $variables The variable names and types.
 	 * @param string $className The meta box class name.
 	 *
 	 * @return string The HTML snippet.

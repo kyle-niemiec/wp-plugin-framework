@@ -383,7 +383,7 @@ abstract class PluginCliCommand extends Command
 	/**
 	 * List post type files available in includes/post-types.
 	 *
-	 * @return array<string> The list of post type file names.
+	 * @return array The list of post type file names.
 	 */
 	private function postTypeFiles(): array
 	{

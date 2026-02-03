@@ -106,7 +106,7 @@ final class CreatePostTypeMetaCommandTest extends CliPluginTestCase
 	/**
 	 * Provide console inputs for the command prompts.
 	 *
-	 * @return array<string, array<int, array<int, string>>>
+	 * @return array
 	 */
 	public static function consoleInputProvider(): array
 	{
@@ -127,7 +127,7 @@ final class CreatePostTypeMetaCommandTest extends CliPluginTestCase
 	/**
 	 * Build an ArrayInput backed by a memory stream.
 	 *
-	 * @param array<int, string> $lines The input lines to feed into the command.
+	 * @param array $lines The input lines to feed into the command.
 	 *
 	 * @return ArrayInput The configured input instance.
 	 */
