@@ -20,8 +20,10 @@
 	},
 	"scripts": {
 		"cache:clear": "rm -rf ./.doctum-cache ; mkdir ./.doctum-cache",
-		"docs:clean": "rm -rf ./docs ; mkdir -p ./docs/api",
-		"docs:generate": "composer docs:clean ; ./vendor/bin/doctum.php update ./doctum.php",
+		"docs:clean": "rm -rf ./docs",
+		"docs:mkdocs": "mkdocs build --clean",
+		"docs:api": "mkdir -p ./docs/api && php -d error_reporting=\"E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED\" ./vendor/bin/doctum.php update ./doctum.php",
+		"docs:build": "composer docs:clean ; composer docs:mkdocs ; composer docs:api",
 		"framework:version:upgrade": "./bin/wppf framework:version:upgrade",
 		"tests:run:all": "bin/xphp vendor/bin/phpunit -c ./phpunit.xml"
 	},

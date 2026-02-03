@@ -1,0 +1,25 @@
+site_name: WordPress Plugin Framework
+site_description: Documentation for the WordPress Plugin Framework.
+docs_dir: docs-src
+site_dir: docs
+use_directory_urls: false
+
+theme:
+  name: mkdocs
+
+plugins:
+  - search
+
+nav:
+  - Home:
+      - Overview: index.md
+      - Intro: home/intro.md
+      - Site Map: home/site-map.md
+  - Tutorial:
+      - Overview: tutorial/index.md
+      - Build a Plugin: tutorial/build/index.md
+      - Framework Tools: tutorial/tools/index.md
+  - References:
+      - CLI Docs: reference/cli/index.md
+      - API Docs: reference/api.md
+      - Links: reference/links.md

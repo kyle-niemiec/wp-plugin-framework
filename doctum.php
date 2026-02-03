@@ -1,4 +1,6 @@
 <?php
+// Temporary workaround until Doctum can be updated
+error_reporting(E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED);
 
 use Doctum\Doctum;
 use Symfony\Component\Finder\Finder;
