@@ -60,7 +60,7 @@ final class CreatePostTypeCommand extends PluginCliCommand
 		// Collect post type information
 		$singularName = self::askSingularName( $bundle );
 		$pluralName = self::askPluralName( $bundle );
-		$showInMenu = self::askShowInMenu( $bundle );
+		$showInMenu = $this->askShowInMenu( $bundle );
 		$menuName = $singularName;
 
 		if ( $showInMenu ) {
@@ -174,15 +174,13 @@ final class CreatePostTypeCommand extends PluginCliCommand
 	 *
 	 * @return bool True if the post type should show in the admin menu.
 	 */
-	private static function askShowInMenu( HelperBundle $bundle ): bool
+	private function askShowInMenu( HelperBundle $bundle ): bool
 	{
-		$yn = StyleUtil::color( '(yes/no) ', ConsoleColor::Yellow );
-		$question = new Question( 'Do you want to show this post type in the admin menu? ' . $yn );
-		$question->setValidator( CliUtil::yesNoValidator() );
-
-		$answer = $bundle->helper->ask( $bundle->input, $bundle->output, $question );
-
-		return in_array( $answer, [ 'yes', 'y' ] );
+		return $this->askYesNo(
+			$bundle->input,
+			$bundle->output,
+			'Do you want to show this post type in the admin menu?'
+		);
 	}
 
 	/**

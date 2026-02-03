@@ -86,8 +86,6 @@ final class CreateMetaBoxCommand extends PluginCliCommand
 		$metaBoxId = self::askMetaBoxId( $bundle, $snakeTitle );
 		$metaBoxKey = self::askMetaBoxKey( $bundle, $snakeTitle . '_meta' );
 
-		$output->writeln( '' );
-
 		// Ensure the meta box doesn't already exist
 		$className = sprintf( '%s_Meta_Box', CliUtil::underscorify( $metaBoxId, true ) );
 		$classSlug = Utility::slugify( $className );
@@ -105,7 +103,6 @@ final class CreateMetaBoxCommand extends PluginCliCommand
 		$metaVariables = $metaInfo['variables'] ?? [];
 
 		$pluginClass = self::getPluginClassName( $slug );
-
 		$output->writeln( '' );
 
 		// Apply the data to the meta box template.
@@ -145,34 +142,35 @@ final class CreateMetaBoxCommand extends PluginCliCommand
 		if ( ! self::createFile( $metaBoxTemplate, $metaBoxFile ) ) {
 			$output->writeln( StyleUtil::error( 'There was an error writing out the meta box file to disk.' ) );
 			return Command::FAILURE;
+		} else {
+			$output->writeln(
+				StyleUtil::color(
+					sprintf( 'Meta box class `%s` created at `%s/class-%s.php`.', $className, self::META_BOX_DIR, $classSlug ),
+					ConsoleColor::BrightGreen
+				)
+			);
 		}
 
 		if ( ! self::createFile( $renderTemplate, $renderTemplateFile ) ) {
 			$output->writeln( StyleUtil::error( 'There was an error writing out the render template to disk.' ) );
 			return Command::FAILURE;
+		} else {
+			$output->writeln(
+				StyleUtil::color(
+					sprintf( 'Render template created at `%s/%s-template.php`.', self::META_BOX_TEMPLATE_DIR, $classSlug ),
+					ConsoleColor::BrightGreen
+				)
+			);
+
+			$output->writeln( '' );
 		}
 
 		// Write out the meta box registration to the screen/post-type
 		$placementStatus = $this->registerMetaBoxPlacement( $bundle, $postTypePath, $className, $postTypeClass );
-		$output->writeln( '' );
 
 		if ( Command::FAILURE === $placementStatus ) {
 			return Command::FAILURE;
 		}
-
-		$output->writeln(
-			StyleUtil::color(
-				sprintf( 'Meta box class `%s` created at `%s/class-%s.php`.', $className, self::META_BOX_DIR, $classSlug ),
-				ConsoleColor::BrightGreen
-			)
-		);
-
-		$output->writeln(
-			StyleUtil::color(
-				sprintf( 'Render template created at `%s/%s-template.php`.', self::META_BOX_TEMPLATE_DIR, $classSlug ),
-				ConsoleColor::Gray
-			)
-		);
 
 		$output->writeln( '' );
 		return Command::SUCCESS;
@@ -294,6 +292,7 @@ final class CreateMetaBoxCommand extends PluginCliCommand
 		);
 
 		// Ask which meta class to attach to the meta box
+		$bundle->output->writeln( '' );
 		$selection = $bundle->helper->ask( $bundle->input, $bundle->output, $question );
 
 		if ( $skip_text === $selection ) {
@@ -701,10 +700,10 @@ HTML,
 
 				$screenLocation = self::selectScreenLocation( $bundle, $output );
 
-				return self::insertMetaBoxIntoScreen( $screenFile, $className, $screenLocation );
+				return self::insertMetaBoxIntoScreen( $bundle, $screenFile, $className, $screenLocation );
 			} else {
 				// Explicitly insert into the post type
-				return self::insertMetaBoxIntoPostType( $postTypePath, $className );
+				return self::insertMetaBoxIntoPostType( $bundle, $postTypePath, $className );
 			}
 
 		}
@@ -714,7 +713,7 @@ HTML,
 			$insertIntoPostType = $this->askYesNo(
 				$bundle->input,
 				$bundle->output,
-				sprintf( 'Would you like to add the meta box to the %s post type?', $postTypeClass )
+				sprintf( 'Would you like to add the meta box to the `%s` post type?', $postTypeClass )
 			);
 
 			if ( ! $insertIntoPostType ) {
@@ -722,7 +721,7 @@ HTML,
 			}
 
 			// Insert into the post type by default
-			return self::insertMetaBoxIntoPostType( $postTypePath, $className );
+			return self::insertMetaBoxIntoPostType( $bundle, $postTypePath, $className );
 		}
 
 	}
@@ -818,6 +817,7 @@ HTML,
 	/**
 	 * Insert a meta box call into a screen file.
 	 *
+	 * @param HelperBundle $bundle The IO interfaces for the terminal.
 	 * @param string $screenFile The screen file path.
 	 * @param string $className The meta box class name.
 	 * @param string $location The selected screen location.
@@ -825,6 +825,7 @@ HTML,
 	 * @return int The status of the insertion.
 	 */
 	private static function insertMetaBoxIntoScreen(
+		HelperBundle $bundle,
 		string $screenFile,
 		string $className,
 		string $location
@@ -848,19 +849,32 @@ HTML,
 			return Command::FAILURE;
 		}
 
+		$bundle->output->writeln( '' );
+
+		$bundle->output->writeln(
+			StyleUtil::color(
+				"Meta box registration code injected.",
+				ConsoleColor::BrightGreen
+			)
+		);
+
 		return Command::SUCCESS;
 	}
 
 	/**
 	 * Insert a meta box registration call into a post type file.
 	 *
+	 * @param HelperBundle $bundle The IO interfaces for the terminal.
 	 * @param string $postTypePath The post type file path.
 	 * @param string $className The meta box class name.
 	 *
 	 * @return int The status of the insertion.
 	 */
-	private static function insertMetaBoxIntoPostType( string $postTypePath, string $className ): int
-	{
+	private static function insertMetaBoxIntoPostType(
+		HelperBundle $bundle,
+		string $postTypePath,
+		string $className
+	): int {
 		$contents = file_get_contents( $postTypePath );
 		$insert = "\t\$this->add_meta_box( {$className}::instance() );\n\t\t";
 		$contents = CliUtil::insertIntoFunction( $insert, '__construct', $contents, 'before_closing' );
@@ -868,6 +882,15 @@ HTML,
 		if ( ! file_put_contents( $postTypePath, $contents ) ) {
 			return Command::FAILURE;
 		}
+
+		$bundle->output->writeln( '' );
+
+		$bundle->output->writeln(
+			StyleUtil::color(
+				"Meta box registration code injected.",
+				ConsoleColor::BrightGreen
+			)
+		);
 
 		return Command::SUCCESS;
 	}

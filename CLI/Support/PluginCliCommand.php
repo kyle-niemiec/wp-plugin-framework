@@ -251,7 +251,7 @@ abstract class PluginCliCommand extends Command
 
 		$output->writeln(
 			StyleUtil::color(
-				sprintf( 'Admin module file not found (%s/admin/%s-admin.php).', getcwd(), $slug ),
+				sprintf( 'Admin module file not found `admin/%s-admin.php`.', $slug ),
 				ConsoleColor::Yellow
 			)
 		);
@@ -365,6 +365,11 @@ abstract class PluginCliCommand extends Command
 	 */
 	private function runDependencyCommand( string $commandName, InputInterface $input, OutputInterface $output ): int
 	{
+		$output->writeln( StyleUtil::color(
+			sprintf( "\n--- Running command `%s` ---", $commandName ),
+			ConsoleColor::BrightMagenta
+		) );
+
 		$command = $this->getApplication()->find( $commandName );
 
 		if ( null === $command ) {
@@ -377,7 +382,19 @@ abstract class PluginCliCommand extends Command
 		$dependencyInput = new ArrayInput( [] );
 		$dependencyInput->setInteractive( $input->isInteractive() );
 
-		return $command->run( $dependencyInput, $output );
+		$status = $command->run( $dependencyInput, $output );
+
+		$output->writeln(
+			sprintf(
+				"%s `%s` ---",
+				StyleUtil::color( sprintf( "--- Dependency command `%s` finished with status", $commandName ), ConsoleColor::BrightMagenta ),
+				Command::SUCCESS === $status
+					? StyleUtil::color( 'success', ConsoleColor::Green )
+					: StyleUtil::color( 'failure', ConsoleColor::BrightRed )
+			)
+		);
+
+		return $status;
 	}
 
 	/**
