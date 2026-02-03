@@ -61,7 +61,7 @@ final class CreateMetaBoxCommand extends PluginCliCommand
 	protected function execute( InputInterface $input, OutputInterface $output ): int
 	{
 		$output->writeln( StyleUtil::color(
-			sprintf( 'Creating a new meta box.' ),
+			sprintf( "\nCreating a new meta box...\n" ),
 			ConsoleColor::BrightCyan
 		) );
 
@@ -78,17 +78,21 @@ final class CreateMetaBoxCommand extends PluginCliCommand
 			return Command::FAILURE;
 		}
 
+		$output->writeln( '' );
+
 		// Collect general meta box details
 		$title = self::askMetaBoxTitle( $bundle );
 		$snakeTitle = CliUtil::underscorify( $title );
 		$metaBoxId = self::askMetaBoxId( $bundle, $snakeTitle );
 		$metaBoxKey = self::askMetaBoxKey( $bundle, $snakeTitle . '_meta' );
 
+		$output->writeln( '' );
+
 		// Ensure the meta box doesn't already exist
 		$className = sprintf( '%s_Meta_Box', CliUtil::underscorify( $metaBoxId, true ) );
-		$templateSlug = Utility::slugify( $className );
-		$metaBoxFile = self::metaBoxFilePath( $templateSlug );
-		$renderTemplateFile = self::metaBoxTemplatePath( $templateSlug );
+		$classSlug = Utility::slugify( $className );
+		$metaBoxFile = self::metaBoxFilePath( $classSlug );
+		$renderTemplateFile = self::metaBoxTemplatePath( $classSlug );
 
 		if ( file_exists( $metaBoxFile ) || file_exists( $renderTemplateFile ) ) {
 			$output->writeln( StyleUtil::error( 'Error: The meta box file or template file already exist.' ) );
@@ -102,6 +106,8 @@ final class CreateMetaBoxCommand extends PluginCliCommand
 
 		$pluginClass = self::getPluginClassName( $slug );
 
+		$output->writeln( '' );
+
 		// Apply the data to the meta box template.
 		$metaBoxTemplate = CliUtil::applyTemplate(
 			'MetaBox',
@@ -112,7 +118,7 @@ final class CreateMetaBoxCommand extends PluginCliCommand
 				'{{meta_box_title}}' => $title,
 				'{{meta_box_id}}' => $metaBoxId,
 				'{{plugin_class}}' => $pluginClass,
-				'{{template_slug}}' => $templateSlug,
+				'{{template_slug}}' => $classSlug,
 				'{{maybe_init_meta}}' => $metaClass ? "\n\t\t\$Meta = new {$metaClass}( \$Post );\n" : '',
 				'{{maybe_save_meta}}' => $metaClass ? self::buildSaveMetaSnippet( $metaClass ) : '',
 				'{{maybe_pass_meta}}' => $metaClass ? ' $Meta ' : '',
@@ -148,6 +154,7 @@ final class CreateMetaBoxCommand extends PluginCliCommand
 
 		// Write out the meta box registration to the screen/post-type
 		$placementStatus = $this->registerMetaBoxPlacement( $bundle, $postTypePath, $className, $postTypeClass );
+		$output->writeln( '' );
 
 		if ( Command::FAILURE === $placementStatus ) {
 			return Command::FAILURE;
@@ -155,18 +162,19 @@ final class CreateMetaBoxCommand extends PluginCliCommand
 
 		$output->writeln(
 			StyleUtil::color(
-				sprintf( 'Meta box class `%s` created at `%s`.', $className, $metaBoxFile ),
+				sprintf( 'Meta box class `%s` created at `%s/class-%s.php`.', $className, self::META_BOX_DIR, $classSlug ),
 				ConsoleColor::BrightGreen
 			)
 		);
 
 		$output->writeln(
 			StyleUtil::color(
-				sprintf( 'Render template created at `%s`.', $renderTemplateFile ),
+				sprintf( 'Render template created at `%s/%s-template.php`.', self::META_BOX_TEMPLATE_DIR, $classSlug ),
 				ConsoleColor::Gray
 			)
 		);
 
+		$output->writeln( '' );
 		return Command::SUCCESS;
 	}
 

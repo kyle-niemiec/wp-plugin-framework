@@ -48,7 +48,7 @@ final class CreatePostScreenCommand extends PluginCliCommand
 	protected function execute( InputInterface $input, OutputInterface $output ): int
 	{
 		$output->writeln( StyleUtil::color(
-			sprintf( 'Creating a new admin post screen.' ),
+			sprintf( "\nCreating a new admin post screen...\n" ),
 			ConsoleColor::BrightCyan
 		) );
 
@@ -56,6 +56,7 @@ final class CreatePostScreenCommand extends PluginCliCommand
 
 		// Ask the user which post type to use
 		$selectedPostType = $this->promptForPostTypeFile( $bundle );
+		$output->writeln( '' );
 
 		$postTypeClass = Utility::get_file_class_name( sprintf(
 			'%s/%s',
@@ -66,7 +67,8 @@ final class CreatePostScreenCommand extends PluginCliCommand
 		$className = sprintf( '%s_Post_Screens', $postTypeClass );
 
 		// Check that the post screen doesn't already exist
-		$filePath = self::postScreenFilePath( Utility::slugify( $className ) );
+		$slug = Utility::slugify( $className );
+		$filePath = self::postScreenFilePath( $slug );
 
 		if ( file_exists( $filePath ) ) {
 			$output->writeln( StyleUtil::error( sprintf( 'The post screen `%s` already exists.', $className ) ) );
@@ -93,11 +95,12 @@ final class CreatePostScreenCommand extends PluginCliCommand
 
 		$output->writeln(
 			StyleUtil::color(
-				sprintf( 'Post screen class `%s` created at `%s`.', $className, $filePath ),
+				sprintf( 'Post screen class `%s` created at `admin/includes/screens/class-%s.php`.', $className, $slug ),
 				ConsoleColor::BrightGreen
 			)
 		);
 
+		$output->writeln( '' );
 		return Command::SUCCESS;
 	}
 

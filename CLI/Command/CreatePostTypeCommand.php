@@ -52,7 +52,7 @@ final class CreatePostTypeCommand extends PluginCliCommand
 
 		$output->writeln(
 			StyleUtil::color(
-				sprintf( 'Creating a new custom post type.' ),
+				sprintf( "\nCreating a new custom post type..." ),
 				ConsoleColor::BrightCyan
 			)
 		);
@@ -69,6 +69,7 @@ final class CreatePostTypeCommand extends PluginCliCommand
 
 		$className = CliUtil::underscorify( $singularName, true );
 		$postTypeKey = CliUtil::underscorify( $singularName );
+		$output->writeln( '' );
 
 		// Make sure the post type doesn't already exist
 		if ( self::checkPostTypeExists( $postTypeKey ) ) {
@@ -107,7 +108,7 @@ final class CreatePostTypeCommand extends PluginCliCommand
 					self::POST_TYPES_DIR,
 					$slug
 				),
-				ConsoleColor::Green
+				ConsoleColor::BrightGreen
 			)
 		);
 
@@ -118,6 +119,7 @@ final class CreatePostTypeCommand extends PluginCliCommand
 			)
 		);
 
+		$output->writeln( '' );
 		return Command::SUCCESS;
 	}
 
@@ -130,7 +132,7 @@ final class CreatePostTypeCommand extends PluginCliCommand
 	 */
 	private static function askSingularName( HelperBundle $bundle ): string
 	{
-		$question = new Question( 'What is the singular name of the custom post type? ' );
+		$question = new Question( 'Singular name: ' );
 
 		$question->setValidator( function ( $value ): string {
 			if ( null === $value || '' === trim( $value ) ) {
@@ -152,7 +154,7 @@ final class CreatePostTypeCommand extends PluginCliCommand
 	 */
 	private static function askPluralName( HelperBundle $bundle ): string
 	{
-		$question = new Question( 'What is the plural name of the custom post type? ' );
+		$question = new Question( 'Plural name: ' );
 
 		$question->setValidator( function ( $value ): string {
 			if ( null === $value || '' === trim( $value ) ) {

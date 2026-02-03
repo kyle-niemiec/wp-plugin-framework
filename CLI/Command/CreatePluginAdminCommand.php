@@ -60,7 +60,7 @@ final class CreatePluginAdminCommand extends PluginCliCommand
 
 		$output->writeln(
 			StyleUtil::color(
-				sprintf( 'Creating admin module class %s (admin/%s-admin.php)', $moduleClassName, $slug ),
+				sprintf( "\nCreating admin module class `%s`...", $moduleClassName, $slug ),
 				ConsoleColor::BrightCyan
 			)
 		);
@@ -77,6 +77,8 @@ final class CreatePluginAdminCommand extends PluginCliCommand
 			throw $e;
 		}
 
+		$output->writeln( '' );
+
 		// Write file
 		if ( ! $this->createAdminModuleFile( $template, $slug ) ) {
 			$output->writeln( StyleUtil::error( "There was an error writing out the admin module file to disk." ) );
@@ -84,10 +86,11 @@ final class CreatePluginAdminCommand extends PluginCliCommand
 		}
 
 		$output->writeln( StyleUtil::color(
-			"Admin module file was created!",
-			ConsoleColor::Green
+			sprintf( "Admin module file was created at `admin/%s-admin.php`.", $slug ),
+			ConsoleColor::BrightGreen
 		) );
 
+		$output->writeln( '' );
 		return Command::SUCCESS;
 	}
 

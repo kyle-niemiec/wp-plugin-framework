@@ -75,8 +75,8 @@ final class CreatePluginCommand extends PluginCliCommand
 		}
 
 		$output->writeln( StyleUtil::color(
-			"Plugin file was created!",
-			ConsoleColor::Green
+			sprintf( "\nPlugin file was created at `%s`.php.\n", $slug ),
+			ConsoleColor::BrightGreen
 		) );
 
 		// Success!
@@ -235,14 +235,16 @@ final class CreatePluginCommand extends PluginCliCommand
 	 */
 	private static function informationalOutput( OutputInterface $output, string $pluginClassName, string $slug ): void
 	{
+		$output->writeln( '' );
 		$output->writeln( "🚀~~~✨" );
 		$output->writeln( "Thanks for using my plugin framework! I hope you get as much use out of it as I have!" );
 		$output->writeln( "Follow the prompts below to create your main plugin file." );
 		$output->writeln( "✨~~~🚀" );
+		$output->writeln( '' );
 
 		$output->writeln(
 			StyleUtil::color(
-				sprintf( 'Creating plugin class %s (%s.php)', $pluginClassName, $slug ),
+				sprintf( 'Creating plugin class `%s`...', $pluginClassName ),
 				ConsoleColor::BrightCyan
 			)
 		);

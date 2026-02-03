@@ -34,7 +34,7 @@ use WPPF\v1_2_2\Framework\Utility;
  */
 #[AsCommand(
 	description: 'Create a custom post type Meta class from a template.',
-	name: 'make:post-type-meta'
+	name: 'make:post-meta'
 )]
 final class CreatePostTypeMetaCommand extends PluginCliCommand
 {
@@ -52,13 +52,14 @@ final class CreatePostTypeMetaCommand extends PluginCliCommand
 	protected function execute( InputInterface $input, OutputInterface $output ): int
 	{
 		$output->writeln( StyleUtil::color(
-			sprintf( 'Creating a new post type meta.' ),
+			sprintf( "\nCreating a new post type meta...\n" ),
 			ConsoleColor::BrightCyan
 		) );
 
 		// Select post type for meta
 		$bundle = new HelperBundle( new QuestionHelper, $input, $output );
 		$selectedPostType = $this->promptForPostTypeFile( $bundle );
+		$output->writeln( '' );
 
 		// Ensure meta file doesn't already exist
 		$postTypeSlug = pathinfo( $selectedPostType, PATHINFO_FILENAME );
@@ -85,6 +86,7 @@ final class CreatePostTypeMetaCommand extends PluginCliCommand
 		}
 
 		$variables = self::askVariableInformationLoop( $bundle, $promptSection, $displaySection );
+		$output->writeln( '' );
 
 		// Create the meta file
 		try {
@@ -109,18 +111,19 @@ final class CreatePostTypeMetaCommand extends PluginCliCommand
 
 		$output->writeln(
 			StyleUtil::color(
-				sprintf( 'Post type meta class `%s` created.', $className ),
+				sprintf( 'Post meta class `%s` created at `%s`.', $className, $filePath ),
 				ConsoleColor::BrightGreen
 			)
 		);
 
 		$output->writeln(
 			StyleUtil::color(
-				sprintf( 'You can set the default values of your variables under `%s`.', $filePath ),
+				'You can set the default values inside the generated array in the class.',
 				ConsoleColor::Gray
 			)
 		);
 
+		$output->writeln( '' );
 		return Command::SUCCESS;
 	}
 
