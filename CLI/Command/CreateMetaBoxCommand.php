@@ -27,7 +27,7 @@ use Symfony\Component\Console\Question\Question;
 use WPPF\CLI\Enum\ConsoleColor;
 use WPPF\CLI\Support\PluginCliCommand;
 use WPPF\CLI\Support\SectionQuestionHelper;
-use WPPF\v1_2_1\Framework\Utility;
+use WPPF\v1_2_2\Framework\Utility;
 
 /**
  * A command to create a meta box class and render template for a post type.
