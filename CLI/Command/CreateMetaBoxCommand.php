@@ -18,13 +18,15 @@ use WPPF\CLI\Support\HelperBundle;
 use WPPF\CLI\Util\StyleUtil;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\ConsoleOutputInterface;
+use Symfony\Component\Console\Output\ConsoleSectionOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Question\Question;
 use WPPF\CLI\Enum\ConsoleColor;
 use WPPF\CLI\Support\PluginCliCommand;
+use WPPF\CLI\Support\SectionQuestionHelper;
 use WPPF\v1_2_1\Framework\Utility;
 
 /**
@@ -63,7 +65,7 @@ final class CreateMetaBoxCommand extends PluginCliCommand
 			ConsoleColor::BrightCyan
 		) );
 
-		$bundle = new HelperBundle( new QuestionHelper, $input, $output );
+		$bundle = new HelperBundle( new SectionQuestionHelper, $input, $output );
 		$slug = basename( getcwd() );
 
 		// Select post type for meta box
@@ -663,16 +665,33 @@ HTML,
 				),
 				[
 					'Add to screen class',
-					'Add to all ' . $postTypeClass . ' screens'
+					'Add to all ' . $postTypeClass . ' screens',
 				]
 			);
 
-			$selection = $bundle->helper->ask( $bundle->input, $bundle->output, $choice );
+			if ( $bundle->output instanceof ConsoleOutputInterface ) {
+				/** @var ConsoleSectionOutput $output */
+				$output = $bundle->output->section();
+			} else {
+				/** @var ConsoleOutputInterface $output */
+				$output = $bundle->output;
+			}
+
+			$selection = $bundle->helper->ask( $bundle->input, $output, $choice );
 
 			if ( 'Add to screen class' === $selection ) {
 				// Get the screen and location from the user before inserting the import
-				$screenFile = self::selectScreenFile( $bundle, $screens );
-				$screenLocation = self::selectScreenLocation( $bundle );
+				if ( $output instanceof ConsoleSectionOutput ) {
+					$output->clear();
+				}
+
+				$screenFile = self::selectScreenFile( $bundle, $output, $screens );
+
+				if ( $output instanceof ConsoleSectionOutput ) {
+					$output->clear();
+				}
+
+				$screenLocation = self::selectScreenLocation( $bundle, $output );
 
 				return self::insertMetaBoxIntoScreen( $screenFile, $className, $screenLocation );
 			} else {
@@ -731,8 +750,11 @@ HTML,
 	 *
 	 * @return string The selected screen file path.
 	 */
-	private static function selectScreenFile( HelperBundle $bundle, array $screens ): string
-	{
+	private static function selectScreenFile(
+		HelperBundle $bundle,
+		ConsoleSectionOutput $output,
+		array $screens
+	): string {
 		$choices = [];
 		$classToFile = [];
 
@@ -756,7 +778,7 @@ HTML,
 		);
 
 		// Ask the user which screen class to use
-		$selectedClass = $bundle->helper->ask( $bundle->input, $bundle->output, $question );
+		$selectedClass = $bundle->helper->ask( $bundle->input, $output, $question );
 
 		if ( ! isset( $classToFile[ $selectedClass ] ) ) {
 			throw new \RuntimeException( sprintf( 'Screen `%s` is invalid.', $selectedClass ) );
@@ -772,7 +794,7 @@ HTML,
 	 *
 	 * @return string The screen location choice.
 	 */
-	private static function selectScreenLocation( HelperBundle $bundle ): string
+	private static function selectScreenLocation( HelperBundle $bundle, ConsoleSectionOutput $output ): string
 	{
 		$question = new ChoiceQuestion(
 			StyleUtil::color(
@@ -782,7 +804,7 @@ HTML,
 			[ 'Post create screen', 'Post edit screen', 'Both post screens' ]
 		);
 
-		return $bundle->helper->ask( $bundle->input, $bundle->output, $question );
+		return $bundle->helper->ask( $bundle->input, $output, $question );
 	}
 
 	/**
