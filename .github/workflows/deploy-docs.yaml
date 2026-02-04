@@ -10,7 +10,7 @@ permissions:
   id-token: write
 
 env:
-  S3_BUCKET: WP_Plugin_Framework_Docs
+  S3_BUCKET: wpfpluginframeworkfdocs
 
 jobs:
   deploy:
@@ -18,6 +18,26 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.4"
+          tools: composer
+
+      - name: Install Composer dependencies
+        run: composer install --no-interaction --prefer-dist
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install MkDocs
+        run: pip install mkdocs
+
+      - name: Build docs
+        run: composer docs:build
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
