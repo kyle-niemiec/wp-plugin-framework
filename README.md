@@ -50,7 +50,7 @@ vendor/bin/wppf list
 
 ## Documentation
 
-- The current examples and API docs are currently hosted at [CodeFlower.io](wp-plugin-framework.codeflower.io).
+- The current examples and API docs are currently hosted at [CodeFlower.io](https://wp-plugin-framework.codeflower.io).
 - An older article with some examples and concepts exists at [CodeFlower.io](https://codeflower.io/designink-wordpress-framework/).
 
 ## CLI Commands
