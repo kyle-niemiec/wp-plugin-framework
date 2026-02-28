@@ -1,20 +1,25 @@
 # Build a Plugin
 
-This section walks through building a full plugin from scratch using the WPPF CLI. Each step is a dedicated page, and you can follow them in order.
+This tutorial walks through building a plugin the “WPPF way.” It is opinionated and assumes you are comfortable with Composer and WordPress development basics.
 
-## Steps
+## What you’ll build
+
+- A plugin entry file that extends `WPPF\v1_2_2\WordPress\Plugin`.
+- A custom post type with supporting meta and admin screens.
+- An admin module, meta box, and a few framework utilities.
+
+## How to follow along
+
+Run all CLI commands from your plugin root directory (the folder whose name matches your plugin slug). Most commands use the current working directory to decide file paths and class names.
+
+## Plugin tutorial map
 
 | Step | Page |
 | --- | --- |
-| Getting started (installation) | [Getting started (installation)](getting-started.md) |
-| Create a plugin file (using CLI) | [Create a plugin file](create-plugin.md) |
-| Create a post type (using CLI) | [Create a post type](create-post-type.md) |
-| Create a post type meta (using CLI) | [Create a post type meta](create-post-type-meta.md) |
-| Create a plugin admin module (using CLI) | [Create a plugin admin module](create-plugin-admin.md) |
-| Create a post screen (using CLI) | [Create a post screen](create-post-screen.md) |
-| Create a meta box (using CLI) | [Create a meta box](create-meta-box.md) |
-
-## Notes
-
-- Run all CLI commands from your plugin root folder.
-- The CLI relies on the folder name for class and file naming.
+| Getting started | [Getting started (installation)](getting-started.md) |
+| Main plugin file | [Create a plugin file](create-plugin.md) |
+| Post type | [Create a post type](create-post-type.md) |
+| Post type meta | [Create a post type meta](create-post-type-meta.md) |
+| Admin module | [Create a plugin admin module](create-plugin-admin.md) |
+| Post screens | [Create a post screen](create-post-screen.md) |
+| Meta boxes | [Create a meta box](create-meta-box.md) |

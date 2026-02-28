@@ -1,21 +1,11 @@
-# Tutorial: A plugin building adventure
+# Tutorials
 
-This tutorial walks through building a plugin the “WPPF way.” It is opinionated and assumes you are comfortable with Composer and WordPress development basics.
-
-## What you’ll build
-
-- A plugin entry file that extends `WPPF\v1_2_2\WordPress\Plugin`.
-- A custom post type with supporting meta and admin screens.
-- An admin module, meta box, and a few framework utilities.
-
-## How to follow along
-
-Run all CLI commands from your plugin root directory (the folder whose name matches your plugin slug). Most commands use the current working directory to decide file paths and class names.
+A short tutorial is provided for you to follow along with in creating a plugin using the provided CLI tools. Additionally, some short examples have been created to demonstrate the usage of some common framework tools.
 
 ## Sections
 
-- **Build a plugin**: step-by-step scaffolding with the CLI.
-- **Framework Tools**: guides for common functionality.
+- [**Build a plugin**](build/index.md): step-by-step scaffolding with the CLI.
+- [**Framework Tools**](tools/index.md): guides for common functionality.
 
 ## Build a plugin map
 

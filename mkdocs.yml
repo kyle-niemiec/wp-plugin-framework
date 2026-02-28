@@ -4,8 +4,34 @@ docs_dir: docs-src
 site_dir: docs
 use_directory_urls: false
 
+extra_css:
+  - stylesheets/codeflower.css
+
+markdown_extensions:
+  - pymdownx.caret
+  - pymdownx.mark
+  - pymdownx.tilde
+
 theme:
-  name: mkdocs
+  logo: assets/images/codeflower-wppf.png
+  name: material
+  favicon: assets/images/codeflower-wppf.png
+  features:
+    - content.action.edit
+    - content.action.view
+    - content.code.annotate
+    - content.code.copy
+    - content.tooltips
+    - navigation.footer
+    - navigation.indexes
+    - navigation.sections
+    - navigation.tabs
+    - navigation.top
+    - navigation.tracking
+    - search.highlight
+    - search.share
+    - search.suggest
+    - toc.follow
 
 plugins:
   - search
@@ -15,11 +41,34 @@ nav:
       - Overview: index.md
       - Intro: home/intro.md
       - Site Map: home/site-map.md
-  - Tutorial:
-      - Overview: tutorial/index.md
-      - Build a Plugin: tutorial/build/index.md
-      - Framework Tools: tutorial/tools/index.md
+  - Tutorials:
+      - tutorial/index.md
+      - Build a Plugin:
+        - tutorial/build/index.md
+        - Getting Started: 'tutorial/build/getting-started.md'
+        - Plugin: 'tutorial/build/create-plugin.md'
+        - Plugin Admin: 'tutorial/build/create-plugin-admin.md'
+        - Post Screen: 'tutorial/build/create-post-screen.md'
+        - Post Type: 'tutorial/build/create-post-type.md'
+        - Post Type Meta: 'tutorial/build/create-post-type-meta.md'
+        - Meta Box: 'tutorial/build/create-meta-box.md'
+      - Framework Tools:
+        - tutorial/tools/index.md
+        - Use the Action Sheduler: 'tutorial/tools/action-scheduler.md'
+        - Creating Admin Notices: 'tutorial/tools/admin-notice.md'
+        - Calling a Plugin Template: 'tutorial/tools/calling-templates.md'
+        - Enqueueing JS/CSS Assets: 'tutorial/tools/enqueueing-assets.md'
+        - Using Staging Detection: 'tutorial/tools/staging-detection.md'
+        - Creating Upgrade Actions: 'tutorial/tools/upgrade-schema.md'
+        - Debugging using the Utility: 'tutorial/tools/utility-debugging.md'
   - References:
-      - CLI Docs: reference/cli/index.md
+      - CLI Reference:
+        - reference/cli/index.md
+        - Plugin: 'reference/cli/create-plugin.md'
+        - Plugin Admin: 'reference/cli/create-plugin-admin.md'
+        - Post Screen: 'reference/cli/create-post-screen.md'
+        - Post Type: 'reference/cli/create-post-type.md'
+        - Post Type Meta: 'reference/cli/create-post-type-meta.md'
+        - Meta Box: 'reference/cli/create-meta-box.md'
       - API Docs: reference/api.md
       - Links: reference/links.md

@@ -1,0 +1,23 @@
+:root {
+  --md-footer-bg-color: #678f54ff;
+  --md-footer-bg-color--dark: #49673ba0;
+  --md-primary-fg-color: #678f54ff;
+}
+
+footer.md-footer {
+    margin-top: 1rem;
+}
+
+html .md-tabs__item {
+    height: unset;
+    padding: 1rem;
+    padding-top: 0.5rem;
+}
+
+html .md-tabs__link {
+    font-size: 0.86rem;
+}
+
+html .md-nav {
+    font-size: 0.75rem;
+}

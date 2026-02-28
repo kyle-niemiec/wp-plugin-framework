@@ -1,23 +1,11 @@
 # WordPress Plugin Framework
 
-The WordPress Plugin Framework (WPPF) is a pragmatic, code-first toolkit for building WordPress plugins with a consistent structure. It provides a base plugin class, an admin module system, a small CLI for scaffolding, and a growing library of reusable modules.
+The WordPress Plugin Framework (WPPF) is a library of object-oriented classes intended to facilitate the development of custom WordPress plugins in PHP. The framework lays out a file structure using a system of "modules" which organize code into functional components. This project also provides a CLI for quickly generating scaffolding code and further reducing the load of configuration on the developer. This documentation will cover creating code components as well as provide examples of useful framework tools. Through the use of example, I hope to both facilitate and encourage the use of the [WordPress Coding Standards](https://developer.wordpress.org/coding-standards/wordpress-coding-standards/php/).
 
 ## What this documentation covers
 
-- A guided tutorial that walks through building a plugin with the CLI.
-- Practical notes on framework tools like admin notices, templates, and the Action Scheduler.
-- Reference pages for CLI commands and the generated API docs.
-
-## Start here
-
-- **Intro**: goals, conventions, and how the framework thinks about plugin structure.
-- **Tutorial overview**: the “plugin building adventure” end-to-end.
-- **CLI reference**: all scaffolders and what they generate.
-
-## Quick links
-
-- [Intro](home/intro.md)
-- [Site Map](home/site-map.md)
-- [Tutorial Overview](tutorial/index.md)
-- [CLI Docs](reference/cli/index.md)
-- [API Docs](reference/api.md)
+- [**Intro**](home/intro.md): goals, conventions, and how the framework thinks about plugin structure.
+- [**Build a plugin**](tutorial/build/index.md): a tutorial walking through plugin construction.
+- [**Framework tools**](tutorial/tools/index.md): explanations and examples of tools provided with the framework.
+- [**CLI reference**](reference/cli/index.md): all scaffolders and what they generate.
+- [**API docs**](reference/api.md): the generated documentation from the codebase.

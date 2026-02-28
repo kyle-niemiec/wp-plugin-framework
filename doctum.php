@@ -13,6 +13,6 @@ $iterator = Finder::create()
 
 return new Doctum( $iterator, [
     'title' => 'WordPress Plugin Framework',
-    'build_dir' => sprintf( '%s/docs/api', __DIR__ ),
+    'build_dir' => sprintf( '%s/docs-src/api', __DIR__ ),
     'cache_dir' => sprintf( '%s/.doctum-cache', __DIR__ ),
 ] );

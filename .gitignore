@@ -6,7 +6,9 @@ vendor/
 
 # Doctum
 /docs
+/docs-src/api
 /.doctum-cache
+/docs-venv
 
 # PHPUnit
 /.phpunit.cache
