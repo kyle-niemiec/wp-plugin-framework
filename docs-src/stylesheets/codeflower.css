@@ -8,6 +8,19 @@ footer.md-footer {
     margin-top: 1rem;
 }
 
+.md-footer-meta {
+    background-image: url('/assets/images/footer-bg.png');
+    background-position: bottom;
+    background-repeat: repeat-x;
+    background-size: contain;
+}
+
+.md-header {
+    background-image: url('/assets/images/header-bg.png');
+    background-repeat: repeat-x;
+    background-size: contain;
+}
+
 html .md-tabs__item {
     height: unset;
     padding: 1rem;

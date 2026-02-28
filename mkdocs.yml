@@ -1,8 +1,6 @@
-site_name: WordPress Plugin Framework
-site_description: Documentation for the WordPress Plugin Framework.
+# General configuration
+
 docs_dir: docs-src
-site_dir: docs
-use_directory_urls: false
 
 extra_css:
   - stylesheets/codeflower.css
@@ -12,12 +10,23 @@ markdown_extensions:
   - pymdownx.mark
   - pymdownx.tilde
 
+plugins:
+  - search
+
+repo_url: https://github.com/kyle-niemiec/wp-plugin-framework
+repo_name: kyle-niemiec/wp-plugin-framework
+site_description: Documentation for the WordPress Plugin Framework.
+site_dir: docs
+site_name: WordPress Plugin Framework
+use_directory_urls: false
+
+# Theme configuration
+
 theme:
   logo: assets/images/codeflower-wppf.png
   name: material
   favicon: assets/images/codeflower-wppf.png
   features:
-    - content.action.edit
     - content.action.view
     - content.code.annotate
     - content.code.copy
@@ -33,8 +42,7 @@ theme:
     - search.suggest
     - toc.follow
 
-plugins:
-  - search
+# Nav configuration
 
 nav:
   - Home:
