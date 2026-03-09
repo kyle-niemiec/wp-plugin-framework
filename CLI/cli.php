@@ -20,6 +20,7 @@ $application = new Application( 'WP Plugin Framework CLI', '1.0.0' );
 // Register commands
 $application->add( new CreatePluginAdminCommand );
 $application->add( new CreatePluginCommand );
+$application->add( new CreateModuleCommand );
 $application->add( new CreatePostTypeCommand );
 $application->add( new CreateMetaBoxCommand );
 $application->add( new CreatePostTypeMetaCommand );
