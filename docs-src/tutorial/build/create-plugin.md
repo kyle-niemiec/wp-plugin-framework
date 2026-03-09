@@ -16,6 +16,12 @@ This creates the main plugin file in your plugin root and wires it to the framew
 vendor/kyle-niemiec/wp-plugin-framework/bin/wppf make:plugin
 ```
 
+If you are building a WooCommerce plugin, use `--woocommerce` to generate a `WC_Plugin` class that extends `WPPF\v1_2_2\WooCommerce\WooCommerce_Plugin`.
+
+```bash
+vendor/kyle-niemiec/wp-plugin-framework/bin/wppf make:plugin --woocommerce
+```
+
 ## What it prompts for
 
 - Plugin name

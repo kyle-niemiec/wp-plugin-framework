@@ -20,6 +20,7 @@ use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
 use WPPF\CLI\Enum\ConsoleColor;
@@ -34,6 +35,22 @@ use WPPF\CLI\Support\PluginCliCommand;
 )]
 final class CreatePluginCommand extends PluginCliCommand
 {
+	/** @var string The class name used for WooCommerce plugin wrappers. */
+	private const WOOCOMMERCE_PLUGIN_CLASS = 'WC_Plugin';
+
+	/**
+	 * Add command options.
+	 */
+	protected function configure(): void
+	{
+		$this->addOption(
+			'woocommerce',
+			null,
+			InputOption::VALUE_NONE,
+			'Generate a WooCommerce plugin wrapper class.'
+		);
+	}
+
 	/**
 	 * Set up the helper variables, control user message flow.
 	 * 
@@ -46,6 +63,7 @@ final class CreatePluginCommand extends PluginCliCommand
 	{
 		// Set up command variables
 		$slug = basename( getcwd() );
+		$isWoocommerce = boolval( $input->getOption( 'woocommerce' ) );
 		$pluginClassName = CliUtil::underscorify( $slug, true );
 		$bundle = new HelperBundle( new QuestionHelper, $input, $output );
 
@@ -56,14 +74,17 @@ final class CreatePluginCommand extends PluginCliCommand
 		}
 
 		// Informational output (say hello)
-		self::informationalOutput( $output, $pluginClassName, $slug );
+		self::informationalOutput( $output, $pluginClassName, $isWoocommerce );
 
 		// Gather user information
 		$templateData = self::gatherPluginInformation( $bundle, $pluginClassName );
 
 		// Apply the data to the template
 		try {
-			$template = CliUtil::applyTemplate( 'Plugin', $templateData );
+			$template = CliUtil::applyTemplate(
+				$isWoocommerce ? 'WCPlugin' : 'Plugin',
+				$templateData
+			);
 		} catch ( \RuntimeException $e ) {
 			throw $e;
 		}
@@ -231,10 +252,13 @@ final class CreatePluginCommand extends PluginCliCommand
 	 * 
 	 * @param OutputInterface $output The terminal output interface.
 	 * @param string $pluginClassName The Upper_Underscore_Case class name for informational output.
-	 * @param string $slug The reference slug for the plugin naming.
+	 * @param bool $isWoocommerce Whether the current plugin being created is a WC_Plugin.
 	 */
-	private static function informationalOutput( OutputInterface $output, string $pluginClassName, string $slug ): void
-	{
+	private static function informationalOutput(
+		OutputInterface $output,
+		string $pluginClassName,
+		bool $isWoocommerce
+	): void {
 		$output->writeln( '' );
 		$output->writeln( "🚀~~~✨" );
 		$output->writeln( "Thanks for using my plugin framework! I hope you get as much use out of it as I have!" );
@@ -242,10 +266,16 @@ final class CreatePluginCommand extends PluginCliCommand
 		$output->writeln( "✨~~~🚀" );
 		$output->writeln( '' );
 
+		$color = $isWoocommerce ? ConsoleColor::BrightMagenta : ConsoleColor::BrightCyan;
+
 		$output->writeln(
 			StyleUtil::color(
-				sprintf( 'Creating plugin class `%s`...', $pluginClassName ),
-				ConsoleColor::BrightCyan
+				sprintf(
+					'Creating%s plugin class `%s`...',
+					$isWoocommerce ? ' WooCommerce' : '',
+					$pluginClassName
+				),
+				$color
 			)
 		);
 	}

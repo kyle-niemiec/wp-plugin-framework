@@ -22,3 +22,13 @@ Creates the main plugin file in the current directory using the framework templa
 
 - The plugin class name is derived from the folder name.
 - The generated file requires `vendor/kyle-niemiec/wp-plugin-framework/index.php` and extends `WPPF\v1_2_2\WordPress\Plugin`.
+
+## WooCommerce Option
+
+Pass `--woocommerce` to generate a WooCommerce-compatible main plugin file instead of the standard WordPress plugin wrapper.
+
+```bash
+vendor/kyle-niemiec/wp-plugin-framework/bin/wppf make:plugin --woocommerce
+```
+
+- Generates a `WPPF\v1_2_2\WooCommerce\WooCommerce_Plugin` class
