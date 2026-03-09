@@ -47,6 +47,30 @@ final class CreateModuleCommandTest extends CliPluginTestCase
 	}
 
 	/**
+	 * Pass: Create a new admin module class in admin/includes/modules.
+	 */
+	#[Test]
+	public function testCommandCreatesAdminModulePass(): void
+	{
+		$output = 'admin/includes/modules/class-admin-module.php';
+
+		if ( file_exists( $output ) ) {
+			unlink( $output );
+		}
+
+		$this->tester->setInputs( [
+			'Admin Module',
+		] );
+
+		$status = $this->tester->execute( [ '--admin' => true ], [ 'interactive' => true ] );
+		self::assertSame( Command::SUCCESS, $status );
+		self::assertFileExists( $output );
+
+		$contents = file_get_contents( $output );
+		self::assertStringContainsString( 'final class Admin_Module extends Module', $contents );
+	}
+
+	/**
 	 * Fail: A module file already exists.
 	 */
 	#[Test]

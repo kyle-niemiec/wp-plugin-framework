@@ -20,6 +20,7 @@ use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
 use WPPF\CLI\Enum\ConsoleColor;
@@ -35,11 +36,27 @@ use WPPF\v1_2_2\Framework\Utility;
 )]
 final class CreateModuleCommand extends PluginCliCommand
 {
-	/** @var bool @inheritDoc */
+	/** @var bool {@inheritDoc} */
 	protected static bool $requiresPlugin = true;
 
 	/** @var string The directory where module files should be placed. */
 	private const MODULES_DIR = 'includes/modules';
+
+	/** @var string The directory where admin module files should be placed. */
+	private const ADMIN_MODULES_DIR = 'admin/includes/modules';
+
+	/**
+	 * Add command options.
+	 */
+	protected function configure(): void
+	{
+		$this->addOption(
+			'admin',
+			null,
+			InputOption::VALUE_NONE,
+			'Create an admin module.'
+		);
+	}
 
 	/**
 	 * Set up the helper variables and control message flow.
@@ -60,7 +77,12 @@ final class CreateModuleCommand extends PluginCliCommand
 		$moduleName = self::askModuleName( $bundle );
 		$className = CliUtil::underscorify( $moduleName, true );
 		$slug = Utility::slugify( $className );
-		$filePath = self::moduleFilePath( $slug );
+
+		$modulesDir = boolval( $input->getOption( 'admin' ) )
+			? self::ADMIN_MODULES_DIR
+			: self::MODULES_DIR;
+
+		$filePath = self::moduleFilePath( $slug, $modulesDir );
 
 		if ( file_exists( $filePath ) ) {
 			$output->writeln( StyleUtil::error( 'Error: The module file already exists.' ) );
@@ -85,7 +107,7 @@ final class CreateModuleCommand extends PluginCliCommand
 
 		$output->writeln(
 			StyleUtil::color(
-				sprintf( "\nModule class `%s` created at `%s/class-%s.php`.", $className, self::MODULES_DIR, $slug ),
+				sprintf( "\nModule class `%s` created at `%s/class-%s.php`.", $className, $modulesDir, $slug ),
 				ConsoleColor::BrightGreen
 			)
 		);
@@ -122,12 +144,13 @@ final class CreateModuleCommand extends PluginCliCommand
 	 * Build the module file path for the current plugin.
 	 *
 	 * @param string $slug The module class slug.
+	 * @param string $modulesDir The module directory relative to plugin root.
 	 *
 	 * @return string The module file path.
 	 */
-	private static function moduleFilePath( string $slug ): string
+	private static function moduleFilePath( string $slug, string $modulesDir ): string
 	{
-		return sprintf( '%s/%s/class-%s.php', getcwd(), self::MODULES_DIR, $slug );
+		return sprintf( '%s/%s/class-%s.php', getcwd(), $modulesDir, $slug );
 	}
 
 	/**
