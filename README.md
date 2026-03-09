@@ -1,6 +1,37 @@
 # WordPress Plugin Framework (WPPF)
 
+[![Documentation](https://img.shields.io/badge/docs-online-blue)](https://wp-plugin-framework.codeflower.io/)
+
 The WordPress Plugin Framework (WPPF) is the culmination of a few years of my hard work building WordPress plugins and the need for a stricter organization than what examples I had seen. It is built to automate boilder-plate code of registering post types and meta boxes, enqueuing assets, separating administrative functionality, and more. While a set of classes manages many of the native WordPress function calls, developers are more free to define "modules", which describe parts of a plugin and focus on assigning functionality to actions and filters to build out custom functionality. Best practices for [WordPress PHP Coding Standards](https://developer.wordpress.org/coding-standards/wordpress-coding-standards/php/) are encouraged through the use of file names, variable conventions, whitespace, and more.
+
+## Quick Example
+
+A minimal WPPF module might look like this:
+
+```php
+class My_API extends Module
+{
+    public static function construct(): void {
+        add_action( 'rest_api_init', [ __CLASS__, 'init' ] );
+    }
+
+    public static function init(): void {
+        register_rest_route( ... )
+    }
+}
+```
+
+## Example Plugin
+
+If you'd like to see how WPPF is used in a real project, check out the **[WPPF Test Plugin](https://github.com/kyle-niemiec/wppf-test-plugin)**.
+
+It demonstrates:
+
+- custom post types
+- structured post meta with validation
+- admin modules
+- WooCommerce email integration
+- upgrade schemas
 
 ## Features
 
@@ -8,7 +39,6 @@ The WordPress Plugin Framework (WPPF) is the culmination of a few years of my ha
 - Map-backed PSR-4 autoloader separating projects into functional "modules".
 - CLI-generated scaffolding for plugins, post types, meta, screens, and meta boxes.
 - Versioned framework namespaces with backward compatibility support.
-- Supports the [WP Plugin Update Server](https://github.com/kyle-niemiec/wp-plugin-update-server) and the [WPPF Update Helper](https://github.com/kyle-niemiec/wppf-update-helper).
 - Assortment of tools for productivity including:
 	- Template loading with variable support.
 	- Admin notice messaging system.
@@ -37,9 +67,9 @@ composer require kyle-niemiec/wp-plugin-framework
 3. Install the framework’s dev dependencies (required for the CLI):
 
 ```bash
-cd vendor/kyle-niemiec/wp-plugin-framework;
-composer install --dev;
-cd ../../;
+cd vendor/kyle-niemiec/wp-plugin-framework
+composer install --dev
+cd ../../../
 ```
 
 4. Run the CLI using the vendor-packaged binary
@@ -47,11 +77,6 @@ cd ../../;
 ```bash
 vendor/bin/wppf list
 ```
-
-## Documentation
-
-- The current examples and API docs are currently hosted at [CodeFlower.io](https://wp-plugin-framework.codeflower.io).
-- An older article with some examples and concepts exists at [CodeFlower.io](https://codeflower.io/designink-wordpress-framework/).
 
 ## CLI Commands
 
@@ -71,3 +96,15 @@ GPL-3.0. See `license.txt`.
 ## Contributing
 
 Issues and PRs are welcome. Please follow the project and WordPress PHP Coding Standards when contributing.
+
+## WPPF Ecosystem
+
+This project is part of the WPPF ecosystem:
+
+[WordPress Plugin Framework (WPPF)](https://github.com/kyle-niemiec/wp-plugin-framework) – Core plugin architecture framework
+
+[WPPF Test Plugin](https://github.com/kyle-niemiec/wppf-test-plugin) – Example project demonstrating a implementation of a plugin using WPPF.
+
+[WP Plugin Update Server](https://github.com/kyle-niemiec/wp-plugin-update-server) – Self-hosted WordPress plugin update infrastructure with GUI management.
+
+[WPPF Update Helper](https://github.com/kyle-niemiec/wppf-update-helper) – Simple integration layer for the WP Plugin Update Server.
