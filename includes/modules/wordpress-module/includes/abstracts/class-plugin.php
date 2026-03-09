@@ -216,8 +216,9 @@ if ( ! class_exists( '\WPPF\v1_2_2\WordPress\Plugin', false ) ) {
 		 */
 		final public function deactivate() {
 			$current = get_option( 'active_plugins', array() );
+			$key = array_search( $this->get_plugin_id(), $current );
 
-			if ( $key = array_search( $this->get_plugin_id(), $current ) ) {
+			if ( false !== $key ) {
 				array_splice( $current, $key, 1 );
 			}
 

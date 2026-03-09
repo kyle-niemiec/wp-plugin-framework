@@ -67,10 +67,10 @@ if ( ! class_exists( '\WPPF\v1_2_2\Framework\Module', false ) ) {
 					static::$includes
 				);
 
-				$this->register_submodules();
-
+				$this::construct();
+				
 				if ( ! $this->is_submodule ) {
-					$this::construct();
+					$this->register_submodules();
 					$this->construct_submodules();
 				}
 			}

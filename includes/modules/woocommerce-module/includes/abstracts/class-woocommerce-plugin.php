@@ -133,14 +133,10 @@ if ( ! class_exists( '\WPPF\v1_2_2\WooCommerce\WooCommerce_Plugin', false ) ) {
 					$message = sprintf( "WooCommerce must be enabled in order to activate %s.", $plugin_info['plugin_name'] );
 					die( __( $message ) );
 				} else {
-					add_action( 'plugins_loaded', function() use ( $plugin_info ) {
-						if ( ! function_exists( 'WC' ) ) {
-							$message = __( sprintf( 'WooCommerce must be enabled in order to use %s. The plugin will be deactivated for safety.', $plugin_info['plugin_name'] ) );
-							$Notice = new Admin_Notice( 'error', $message );
-							Admin_Notice_Queue::add_notice( $Notice );
-							$this->deactivate();
-						}
-					} );
+					$message = __( sprintf( 'WooCommerce must be enabled in order to use %s. The plugin will be deactivated for safety.', $plugin_info['plugin_name'] ) );
+					$Notice = new Admin_Notice( 'error', $message );
+					Admin_Notice_Queue::add_notice( $Notice );
+					$this->deactivate();
 				}
 
 				return false;
