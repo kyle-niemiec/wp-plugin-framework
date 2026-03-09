@@ -1,11 +1,11 @@
 <?php
 /**
- * This file manages the configuration for a custom @see WPPF\v1_2_2\Module.
+ * This file manages the configuration for a custom @see WPPF\v1_2_3\Module.
  */
 
 defined( 'ABSPATH' ) or exit;
 
-use WPPF\v1_2_2\Framework\Module;
+use WPPF\v1_2_3\Framework\Module;
 
 if ( ! class_exists( '{{class_name}}', false ) ) {
 

@@ -11,21 +11,21 @@
  * @package WPPF
  */
 
-namespace WPPF\v1_2_2\Admin;
+namespace WPPF\v1_2_3\Admin;
 
 defined( 'ABSPATH' ) or exit;
 
-use WPPF\v1_2_2\Admin\Screens\Action_Scheduler_Page;
-use WPPF\v1_2_2\Framework\Module;
+use WPPF\v1_2_3\Admin\Screens\Action_Scheduler_Page;
+use WPPF\v1_2_3\Framework\Module;
 
-if ( ! class_exists( '\WPPF\v1_2_2\Admin\Action_Scheduler_Page_Module', false ) ) {
+if ( ! class_exists( '\WPPF\v1_2_3\Admin\Action_Scheduler_Page_Module', false ) ) {
 
 	/**
 	 * Manage the settings for for this plugin.
 	 */
 	final class Action_Scheduler_Page_Module extends Module {
 
-		/** @var \WPPF\v1_2_2\WordPress\Admin\Pages\Management_Page $Page The Page instance. */
+		/** @var \WPPF\v1_2_3\WordPress\Admin\Pages\Management_Page $Page The Page instance. */
 		public static $Page;
 
 		/**

@@ -11,13 +11,13 @@
  * @package WPPF
  */
 
-namespace WPPF\v1_2_2;
+namespace WPPF\v1_2_3;
 
 defined( 'ABSPATH' ) or exit;
 
-use WPPF\v1_2_2\Framework\Module;
+use WPPF\v1_2_3\Framework\Module;
 
-if ( ! class_exists( '\WPPF\v1_2_2\WooCommerce_Module', false ) ) {
+if ( ! class_exists( '\WPPF\v1_2_3\WooCommerce_Module', false ) ) {
 
 	/**
 	 * This Module manages the WooCommerce features.

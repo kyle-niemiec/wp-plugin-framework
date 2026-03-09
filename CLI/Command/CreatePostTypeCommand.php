@@ -24,7 +24,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
 use WPPF\CLI\Enum\ConsoleColor;
 use WPPF\CLI\Support\PluginCliCommand;
-use WPPF\v1_2_2\Framework\Utility;
+use WPPF\v1_2_3\Framework\Utility;
 
 /**
  * A command to create a post type class for the current plugin.

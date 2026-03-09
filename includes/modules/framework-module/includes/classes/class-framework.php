@@ -11,15 +11,15 @@
  * @package WPPF
  */
 
-namespace WPPF\v1_2_2\Framework;
+namespace WPPF\v1_2_3\Framework;
 
 defined( 'ABSPATH' ) or exit;
 
-use WPPF\v1_2_2\Framework\Autoloader;
-use WPPF\v1_2_2\Framework\Singleton;
-use WPPF\v1_2_2\WordPress\Plugin;
+use WPPF\v1_2_3\Framework\Autoloader;
+use WPPF\v1_2_3\Framework\Singleton;
+use WPPF\v1_2_3\WordPress\Plugin;
 
-if ( ! class_exists( '\WPPF\v1_2_2\Framework\Framework', false ) ) {
+if ( ! class_exists( '\WPPF\v1_2_3\Framework\Framework', false ) ) {
 
 	/**
 	 * The wrappper class for a proprietary set of code which seeks to facilitate WordPress development and encourage use of the documented coding standards.
@@ -30,7 +30,7 @@ if ( ! class_exists( '\WPPF\v1_2_2\Framework\Framework', false ) ) {
 		/**
 		 * @var string VERSION constant for compatibility.
 		 */
-		const VERSION = '1.2.2';
+		const VERSION = '1.2.3';
 
 		/**
 		 * @var string[] The list of backward-compatible versions for the framework.
@@ -39,10 +39,11 @@ if ( ! class_exists( '\WPPF\v1_2_2\Framework\Framework', false ) ) {
 		const COMPATIBILITY_VERSIONS = array(
 			'v1_2_0',
 			'v1_2_1',
+			'v1_2_2',
 		);
 
 		/**
-		 * @var \WPPF\v1_2_2\Autoloader Class autoloader instance.
+		 * @var \WPPF\v1_2_3\Autoloader Class autoloader instance.
 		 */
 		protected $autoloader;
 
@@ -66,9 +67,9 @@ if ( ! class_exists( '\WPPF\v1_2_2\Framework\Framework', false ) ) {
 		}
 
 		/**
-		 * Return the WPPF\v1_2_2\Autoloader instance.
+		 * Return the WPPF\v1_2_3\Autoloader instance.
 		 * 
-		 * @return \WPPF\v1_2_2\Autoloader The instance.
+		 * @return \WPPF\v1_2_3\Autoloader The instance.
 		 */
 		final public function get_autoloader() {
 			return $this->autoloader;
@@ -77,7 +78,7 @@ if ( ! class_exists( '\WPPF\v1_2_2\Framework\Framework', false ) ) {
 		/**
 		 * Add a plugin instance to the list of registered plugins.
 		 * 
-		 * @param \WPPF\v1_2_2 $plugin The plugin to register.
+		 * @param \WPPF\v1_2_3 $plugin The plugin to register.
 		 */
 		final public function register_plugin( Plugin $Plugin ) {
 			$class_name = $Plugin->get_class_reflection()->getName();

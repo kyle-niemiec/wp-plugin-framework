@@ -10,7 +10,7 @@
 
 defined( 'ABSPATH' ) or exit;
 
-use WPPF\v1_2_2\WooCommerce\WooCommerce_Plugin;
+use WPPF\v1_2_3\WooCommerce\WooCommerce_Plugin;
 
 // Require the WordPress Plugin Framework
 require_once __DIR__ . '/vendor/kyle-niemiec/wp-plugin-framework/index.php';

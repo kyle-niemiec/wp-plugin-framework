@@ -11,14 +11,14 @@
  * @package WPPF
  */
 
-namespace WPPF\v1_2_2\Plugin;
+namespace WPPF\v1_2_3\Plugin;
 
 defined( 'ABSPATH' ) or exit;
 
-use WPPF\v1_2_2\WordPress\Plugin;
-use WPPF\v1_2_2\Framework\Utility;
+use WPPF\v1_2_3\WordPress\Plugin;
+use WPPF\v1_2_3\Framework\Utility;
 
-if ( ! trait_exists( '\WPPF\v1_2_2\Plugin\Plugin_Upgrader_Trait', false ) ) {
+if ( ! trait_exists( '\WPPF\v1_2_3\Plugin\Plugin_Upgrader_Trait', false ) ) {
 
 	/**
 	 * A trait to extend the Plugin functionality by providing methods for running tasks on version updates.
