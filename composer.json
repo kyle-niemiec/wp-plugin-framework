@@ -10,7 +10,16 @@
 		}
 	},
 	"bin": ["bin/wppf", "bin/xphp"],
-	"description": "My framework for facilitating WordPress plugin development.",
+	"description": "A modular framework for building maintainable WordPress plugins with Composer and CLI scaffolding.",
+	"keywords": [
+		"wordpress",
+		"wordpress-plugin",
+		"wordpress-framework",
+		"plugin-framework",
+		"php",
+		"composer",
+		"wppf"
+	],
 	"license": "GPL-3.0",
 	"name": "kyle-niemiec/wp-plugin-framework",
 	"require-dev": {
