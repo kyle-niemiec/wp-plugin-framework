@@ -60,6 +60,7 @@ nav:
         - Post Type: 'tutorial/build/create-post-type.md'
         - Post Type Meta: 'tutorial/build/create-post-type-meta.md'
         - Meta Box: 'tutorial/build/create-meta-box.md'
+        - Module: 'tutorial/build/create-module.md'
       - Framework Tools:
         - tutorial/tools/index.md
         - Use the Action Sheduler: 'tutorial/tools/action-scheduler.md'
@@ -74,6 +75,7 @@ nav:
         - reference/cli/index.md
         - Plugin: 'reference/cli/create-plugin.md'
         - Plugin Admin: 'reference/cli/create-plugin-admin.md'
+        - Module: 'reference/cli/create-module.md'
         - Post Screen: 'reference/cli/create-post-screen.md'
         - Post Type: 'reference/cli/create-post-type.md'
         - Post Type Meta: 'reference/cli/create-post-type-meta.md'

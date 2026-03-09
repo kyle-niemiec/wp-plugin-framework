@@ -20,6 +20,7 @@ Run commands from your plugin root directory so generated paths are correct.
 | --- | --- | --- |
 | [`make:plugin`](create-plugin.md) | Create a base plugin file with prompts. | Writes `<plugin-slug>.php`. |
 | [`make:plugin-admin`](create-plugin-admin.md) | Create an admin module class. | Requires an existing plugin file. |
+| [`make:module`](create-module.md) | Create a custom module class. | Writes to `includes/modules`. |
 | [`make:post-type`](create-post-type.md) | Create a custom post type class. | Writes to `includes/post-types`. |
 | [`make:post-meta`](create-post-type-meta.md) | Create a post meta class. | Requires post types. |
 | [`make:post-screen`](create-post-screen.md) | Create a post screen class. | Requires post types. |

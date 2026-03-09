@@ -18,6 +18,7 @@ A short tutorial is provided for you to follow along with in creating a plugin u
 | Admin module | [Create a plugin admin module](build/create-plugin-admin.md) |
 | Post screens | [Create a post screen](build/create-post-screen.md) |
 | Meta boxes | [Create a meta box](build/create-meta-box.md) |
+| Custom modules | [Create a custom module](build/create-module.md) |
 
 ## Framework tools map
 

@@ -23,3 +23,4 @@ Run all CLI commands from your plugin root directory (the folder whose name matc
 | Admin module | [Create a plugin admin module](create-plugin-admin.md) |
 | Post screens | [Create a post screen](create-post-screen.md) |
 | Meta boxes | [Create a meta box](create-meta-box.md) |
+| Custom modules | [Create a custom module](create-module.md) |
